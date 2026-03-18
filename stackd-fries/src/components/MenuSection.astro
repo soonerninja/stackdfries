@@ -1,0 +1,61 @@
+---
+import siteConfig from "../config/site.json";
+import MenuCard from "./MenuCard.astro";
+
+const { loadedFries, sidesAndDrinks } = siteConfig.menu;
+---
+
+<section id="menu">
+  <div class="container">
+    <h2 class="section-title reveal">THE MENU</h2>
+
+    <h3 class="menu-group-title font-label reveal">Loaded Fries</h3>
+    <div class="menu-grid">
+      {loadedFries.map((item) => (
+        <MenuCard
+          name={item.name}
+          price={item.price}
+          description={item.description}
+          image={item.image}
+          isSpecial={item.isSpecial}
+          badgeLabel={(item as any).badgeLabel}
+        />
+      ))}
+    </div>
+
+    <h3 class="menu-group-title font-label reveal">Sides & Drinks</h3>
+    <div class="menu-grid">
+      {sidesAndDrinks.map((item) => (
+        <MenuCard
+          name={item.name}
+          price={item.price}
+          description={item.description}
+          image={item.image}
+          isSpecial={item.isSpecial}
+        />
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--card-gap);
+    margin-bottom: 48px;
+  }
+
+  .menu-group-title {
+    font-size: 14px;
+    color: var(--brand-gold);
+    margin-bottom: 20px;
+    padding-left: 4px;
+  }
+
+  @media (max-width: 767px) {
+    .menu-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
