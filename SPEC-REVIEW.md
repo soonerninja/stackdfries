@@ -237,17 +237,17 @@ Key difference: Only `HoursStatus` needs client-side JS hydration. Everything el
 
 ---
 
-## Summary of Questions for Stakeholder
+## Stakeholder Answers & Decisions
 
-| # | Question | Impact |
-|---|----------|--------|
-| 1 | **Framework preference:** Astro (recommended) or Next.js? | Architecture decision |
-| 2 | **Hero image:** Is V1 text-only hero, or is there a food photo to include? | Hero layout |
-| 3 | **Contact info in footer:** Add email/phone, or social DMs only? | Footer content |
-| 4 | **Menu sub-sections:** Should Funnel Cake & Dirty Sodas be grouped separately from loaded fries? | Menu layout |
-| 5 | **Square or Toast:** Which ordering platform? Need the URL for the Order Now CTA. | CTA link |
-| 6 | **Nav "Order" link:** Confirm nav has three items: Menu, Find Us, Order (external)? | Nav structure |
-| 7 | **Mobile menu style:** Full-screen overlay preferred over slide-in panel? | Mobile UX |
+| # | Question | Answer | Decision |
+|---|----------|--------|----------|
+| 1 | **Framework preference** | No preference | **Astro** — lighter, faster, ships zero JS by default. Perfect for a static marketing site. |
+| 2 | **Hero image** | No preference | **Text-only hero for V1** with the gold radial glow background. Food photography can be added later without layout changes. Avoids blocking launch on a photoshoot. |
+| 3 | **Contact info in footer** | stackfries@gmail.com, (405) 435-1002 | **Add both** to footer — email and phone displayed alongside social links. |
+| 4 | **Menu sub-sections** | Yes, separate them | **Two groups:** "LOADED FRIES" (4 items including rotating special) and "SIDES & DRINKS" (Funnel Cake, Dirty Sodas). |
+| 5 | **Ordering platform** | Square | **Square Online ordering.** Placeholder URL in config until the Square storefront link is ready. |
+| 6 | **Nav links** | Yes, three items | **Menu** (anchor #menu), **Find Us** (anchor #location), **Order** (external Square link, new tab). |
+| 7 | **Mobile menu style** | No preference | **Full-screen overlay** — more impactful on the dark brand canvas, simpler to implement, no off-canvas scroll issues. Gold links centered on black backdrop. |
 
 ---
 
@@ -259,18 +259,33 @@ Key difference: Only `HoursStatus` needs client-side JS hydration. Everything el
 | Seasonal hours logic edge cases (2am day-boundary) | Medium | Thorough unit tests on hours utility |
 | White 35-40% text failing WCAG AA at small sizes | Medium | Bump opacity or increase font size |
 | No cookie consent for Meta Pixel | Low | Add simple banner if running ads |
-| Missing address/ordering URL at launch | High | Placeholder config, but blocks go-live |
+| Missing address/Square ordering URL at launch | High | Placeholder in config — owner must provide before go-live |
 
 ---
 
 ## Verdict
 
-**This spec is build-ready.** The 7 questions above are nice-to-haves for polish — none of them block starting development. I recommend:
+**This spec is build-ready. All stakeholder questions have been resolved.**
 
-1. Start with Astro + static deployment
-2. Build the config-driven architecture first (`site.json` + hours utility)
-3. Lay out all sections with the design tokens
-4. Add animations and interactions last
-5. Address stakeholder questions as they're answered
+### Finalized Tech Stack
+- **Framework:** Astro
+- **Hosting:** Netlify or Cloudflare Pages (both pair well with Astro)
+- **Ordering:** Square (external link)
+- **Fonts:** Google Fonts (Bebas Neue, Barlow, Barlow Condensed)
+- **Analytics:** GA4 + Meta Pixel (async, non-blocking)
+- **Config:** JSON file(s) at project root
 
-**Estimated component count:** 7-8 components, 1 config file, 1 utility module, 1 page. This is a clean, focused build.
+### Build Order
+1. Project scaffolding (Astro + config files + design tokens)
+2. Nav + Footer (global layout shell)
+3. Hero section (text-only V1 with gold glow)
+4. Menu section (config-driven cards, two groups: Loaded Fries + Sides & Drinks)
+5. Location section (map + hours + live open/closed status)
+6. Social section
+7. Responsive polish + mobile fixed CTA
+8. Animations (scroll reveals, hover states, nav transition)
+9. SEO meta, schema markup, favicon, OG image
+10. Analytics integration (GA4 + Meta Pixel)
+11. Lighthouse audit + final QA
+
+**Estimated component count:** 8-9 components, 1 config file, 1 utility module, 1 page. Clean, focused build.
