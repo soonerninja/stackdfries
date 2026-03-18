@@ -1,0 +1,217 @@
+---
+import siteConfig from "../config/site.json";
+---
+
+<nav class="nav" id="nav">
+  <div class="nav-inner container">
+    <a href="#top" class="nav-logo font-display">
+      STACK'D <span class="gold">FRIES</span>
+    </a>
+
+    <!-- Desktop links -->
+    <div class="nav-links">
+      <a href="#menu" class="nav-link font-label">Menu</a>
+      <a href="#location" class="nav-link font-label">Find Us</a>
+      <a
+        href={siteConfig.orderUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="nav-link font-label"
+        data-track="order_click_nav"
+      >Order</a>
+    </div>
+
+    <!-- Mobile hamburger -->
+    <button class="nav-hamburger" aria-label="Open menu" id="nav-toggle">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+
+  <!-- Mobile overlay -->
+  <div class="nav-overlay" id="nav-overlay">
+    <button class="nav-close" aria-label="Close menu" id="nav-close">✕</button>
+    <div class="nav-overlay-links">
+      <a href="#menu" class="nav-overlay-link font-display">Menu</a>
+      <a href="#location" class="nav-overlay-link font-display">Find Us</a>
+      <a
+        href={siteConfig.orderUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="nav-overlay-link font-display gold"
+        data-track="order_click_nav"
+      >Order Now</a>
+    </div>
+  </div>
+</nav>
+
+<style>
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--nav-height);
+    z-index: var(--z-nav);
+    transition: background var(--transition-med);
+  }
+
+  .nav.scrolled {
+    background: rgba(13, 13, 13, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+  }
+
+  .nav-logo {
+    font-size: 22px;
+    color: var(--text-primary);
+    letter-spacing: 1px;
+  }
+
+  .gold {
+    color: var(--brand-gold);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+  }
+
+  .nav-link {
+    font-size: 13px;
+    color: var(--text-secondary);
+    transition: color var(--transition-fast);
+  }
+
+  .nav-link:hover {
+    color: var(--brand-gold);
+  }
+
+  /* Hamburger */
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    min-width: 44px;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav-hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--text-primary);
+    transition: all var(--transition-fast);
+  }
+
+  /* Mobile overlay */
+  .nav-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(13, 13, 13, 0.98);
+    z-index: var(--z-mobile-menu);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition-med);
+  }
+
+  .nav-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .nav-close {
+    position: absolute;
+    top: 16px;
+    right: 24px;
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-size: 28px;
+    cursor: pointer;
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav-overlay-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .nav-overlay-link {
+    font-size: 36px;
+    color: var(--text-primary);
+    transition: color var(--transition-fast);
+  }
+
+  .nav-overlay-link:hover {
+    color: var(--brand-gold);
+  }
+
+  @media (max-width: 767px) {
+    .nav-links {
+      display: none;
+    }
+    .nav-hamburger {
+      display: flex;
+    }
+  }
+</style>
+
+<script is:inline>
+  // Sticky nav scroll behavior
+  (function() {
+    var nav = document.getElementById('nav');
+    var toggle = document.getElementById('nav-toggle');
+    var overlay = document.getElementById('nav-overlay');
+    var close = document.getElementById('nav-close');
+
+    window.addEventListener('scroll', function() {
+      if (window.scrollY > 50) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+    });
+
+    toggle.addEventListener('click', function() {
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    });
+
+    function closeMenu() {
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    close.addEventListener('click', closeMenu);
+
+    // Close on link click
+    overlay.querySelectorAll('a').forEach(function(link) {
+      link.addEventListener('click', closeMenu);
+    });
+  })();
+</script>

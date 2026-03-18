@@ -1,0 +1,178 @@
+---
+import siteConfig from "../config/site.json";
+import { getFormattedHours, getStatusText } from "../utils/hours";
+
+const hours = getFormattedHours();
+const status = getStatusText();
+const { address, mapEmbedUrl, coordinates } = siteConfig.location;
+const mapSrc = mapEmbedUrl || `https://maps.google.com/maps?q=${coordinates.lat},${coordinates.lng}&z=15&output=embed`;
+---
+
+<section id="location">
+  <div class="container">
+    <h2 class="section-title reveal">FIND US</h2>
+
+    <div class="location-grid">
+      <div class="location-info reveal">
+        <div class="location-status">
+          <span class={`status-dot ${status.isOpen ? "open" : "closed"}`}></span>
+          <span class="status-label font-label">{status.text}</span>
+        </div>
+
+        <div class="location-address">
+          <h3 class="info-heading font-label">Address</h3>
+          <p>{address}</p>
+        </div>
+
+        <div class="location-hours">
+          <h3 class="info-heading font-label">Hours</h3>
+          <table class="hours-table">
+            <tbody>
+              {hours.map(({ day, hours: time }) => (
+                <tr>
+                  <td class="hours-day font-label">{day}</td>
+                  <td class="hours-time">{time}</td>
+                </tr>
+              ))}
+              <tr>
+                <td class="hours-day font-label">Mon–Wed</td>
+                <td class="hours-time">Closed</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="hours-note">
+            Late-night Saturdays (until 2am) during OU football & spring sessions.
+          </p>
+        </div>
+
+        <div class="location-contact">
+          <h3 class="info-heading font-label">Contact</h3>
+          <p><a href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a></p>
+          <p><a href={`tel:${siteConfig.contact.phone.replace(/\D/g, "")}`}>{siteConfig.contact.phone}</a></p>
+        </div>
+      </div>
+
+      <div class="location-map reveal">
+        <iframe
+          src={mapSrc}
+          width="100%"
+          height="400"
+          style="border:0; border-radius: var(--card-radius);"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Stack'd Fries location"
+        ></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .location-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+
+  .location-info {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .location-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    background: var(--brand-dark-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--card-radius);
+    width: fit-content;
+  }
+
+  .status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  .status-dot.open {
+    background: #4ade80;
+    box-shadow: 0 0 8px rgba(74, 222, 128, 0.5);
+  }
+
+  .status-dot.closed {
+    background: var(--brand-red);
+  }
+
+  .status-label {
+    font-size: 14px;
+    color: var(--text-primary);
+  }
+
+  .info-heading {
+    font-size: 12px;
+    color: var(--brand-gold);
+    margin-bottom: 8px;
+  }
+
+  .location-info p,
+  .hours-time {
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .location-info a {
+    transition: color var(--transition-fast);
+  }
+
+  .location-info a:hover {
+    color: var(--brand-gold);
+  }
+
+  .hours-table {
+    width: 100%;
+    max-width: 280px;
+    border-collapse: collapse;
+  }
+
+  .hours-table tr {
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .hours-table td {
+    padding: 8px 0;
+  }
+
+  .hours-day {
+    font-size: 12px;
+    color: var(--text-primary);
+    width: 100px;
+  }
+
+  .hours-note {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 8px;
+    font-style: italic;
+  }
+
+  .location-map iframe {
+    width: 100%;
+    min-height: 400px;
+  }
+
+  @media (max-width: 767px) {
+    .location-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .location-map iframe {
+      min-height: 300px;
+    }
+  }
+</style>

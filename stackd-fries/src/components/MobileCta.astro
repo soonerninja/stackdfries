@@ -1,0 +1,46 @@
+---
+import siteConfig from "../config/site.json";
+---
+
+<div class="mobile-cta">
+  <a
+    href={siteConfig.orderUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="mobile-cta-btn font-label"
+    data-track="order_click_mobile"
+  >
+    Order Now
+  </a>
+</div>
+
+<style>
+  .mobile-cta {
+    display: none;
+  }
+
+  @media (max-width: 767px) {
+    .mobile-cta {
+      display: block;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      z-index: var(--z-mobile-cta);
+    }
+
+    .mobile-cta-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      background: var(--brand-gold);
+      color: var(--brand-black);
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+    }
+  }
+</style>

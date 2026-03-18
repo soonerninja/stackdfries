@@ -1,0 +1,87 @@
+---
+interface Props {
+  name: string;
+  price: number;
+  description: string;
+  image?: string | null;
+  isSpecial?: boolean;
+  badgeLabel?: string;
+}
+
+const { name, price, description, image, isSpecial = false, badgeLabel } = Astro.props;
+---
+
+<div class={`menu-card reveal ${isSpecial ? "menu-card--special" : ""}`}>
+  {image && (
+    <div class="menu-card-image">
+      <img src={image} alt={name} loading="lazy" />
+    </div>
+  )}
+  <div class="menu-card-body">
+    {isSpecial && badgeLabel && (
+      <span class="menu-card-badge font-label">{badgeLabel}</span>
+    )}
+    <h3 class="menu-card-name font-label">{name}</h3>
+    <p class="menu-card-desc">{description}</p>
+    <span class="menu-card-price font-display">${price}</span>
+  </div>
+</div>
+
+<style>
+  .menu-card {
+    background: var(--brand-dark-surface);
+    border: 0.5px solid var(--border-subtle);
+    border-left: 3px solid var(--brand-gold);
+    border-radius: var(--card-radius);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .menu-card--special {
+    border-left-color: var(--brand-red);
+  }
+
+  .menu-card-image {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+  }
+
+  .menu-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .menu-card-body {
+    padding: var(--card-padding);
+  }
+
+  .menu-card-badge {
+    display: inline-block;
+    background: var(--brand-red);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 3px;
+    margin-bottom: 10px;
+  }
+
+  .menu-card-name {
+    font-size: 15px;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+  }
+
+  .menu-card-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+
+  .menu-card-price {
+    font-size: 22px;
+    color: var(--brand-gold);
+  }
+</style>
