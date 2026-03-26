@@ -55,21 +55,33 @@ export default function LiveTracker() {
               </div>
               <div className={styles.locationName}>{tracker.location_name}</div>
             </div>
-            {tracker.latitude && tracker.longitude && (
+            {tracker.latitude && tracker.longitude ? (
               <div className={styles.mapWrap}>
                 <iframe
-                  src={`https://maps.google.com/maps?q=${tracker.latitude},${tracker.longitude}&z=15&output=embed`}
+                  src={`https://www.google.com/maps?q=${tracker.latitude},${tracker.longitude}&z=15&output=embed`}
+                  width="100%"
+                  height="400"
+                  style={{ border: 0 }}
                   allowFullScreen
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
                   title="Stack'd Fries location"
                 />
               </div>
-            )}
+            ) : null}
+            <div className={styles.contactInfo}>
+              <div>
+                <a href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a>
+                {' · '}
+                <a href={`tel:${siteConfig.contact.phone.replace(/[^\d+]/g, '')}`}>
+                  {siteConfig.contact.phone}
+                </a>
+              </div>
+            </div>
           </>
         ) : (
           <div className={styles.closedContent}>
-            <p className={styles.closedMessage}>Check back when we&apos;re live</p>
+            <p className={styles.closedMessage}>We&apos;re not live right now. Check back during operating hours.</p>
             <table className={styles.scheduleTable}>
               <tbody>
                 {hours.map((h) => (
@@ -78,8 +90,13 @@ export default function LiveTracker() {
                     <td>{h.hours}</td>
                   </tr>
                 ))}
+                <tr>
+                  <td>Mon–Wed</td>
+                  <td>Closed</td>
+                </tr>
               </tbody>
             </table>
+            <p className={styles.seasonNote}>Late-night Saturdays (until 2am) during OU football &amp; spring sessions.</p>
             <div className={styles.contactInfo}>
               <div>{siteConfig.location.address}</div>
               <div>
