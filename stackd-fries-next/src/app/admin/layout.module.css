@@ -23,6 +23,30 @@
   white-space: nowrap;
 }
 
+.topBarActions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.viewSiteLink {
+  font-family: var(--font-label);
+  font-size: 13px;
+  color: var(--gold);
+  text-decoration: none;
+  padding: 10px 12px;
+  min-height: 48px;
+  min-width: 48px;
+  display: inline-flex;
+  align-items: center;
+  transition: opacity var(--transition-fast);
+  white-space: nowrap;
+}
+
+.viewSiteLink:hover {
+  opacity: 0.75;
+}
+
 .logoutBtn {
   font-family: var(--font-label);
   font-size: 13px;

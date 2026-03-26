@@ -23,10 +23,17 @@
 @media (max-width: 767px) {
   .text {
     font-size: 16px;
+    padding: 0 20px;
   }
 
   .ctas {
     flex-direction: column;
     align-items: center;
+    padding: 0 20px;
+  }
+
+  .ctas > * {
+    min-height: 48px;
+    width: 100%;
   }
 }

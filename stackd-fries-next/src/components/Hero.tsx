@@ -28,6 +28,25 @@ export default function Hero() {
             See the Menu
           </a>
         </div>
+        <div className={styles.socialRow}>
+          <a
+            href={siteConfig.social.tiktok}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.socialLink}
+          >
+            TikTok
+          </a>
+          <span className={styles.socialDot}>·</span>
+          <a
+            href={siteConfig.social.instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.socialLink}
+          >
+            Instagram
+          </a>
+        </div>
         <div className={styles.badgeWrap}>
           <LiveStatusBadge />
         </div>

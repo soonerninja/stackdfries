@@ -17,6 +17,14 @@ export default function Catering() {
             Hit us up
           </a>
           <a
+            href={siteConfig.social.tiktok}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-outline"
+          >
+            DM on TikTok
+          </a>
+          <a
             href={siteConfig.social.instagram}
             target="_blank"
             rel="noopener noreferrer"

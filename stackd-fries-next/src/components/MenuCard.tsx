@@ -11,10 +11,14 @@ interface MenuCardProps {
 export default function MenuCard({ name, price, description, imageUrl, isSpecial }: MenuCardProps) {
   return (
     <div className={`${styles.card} ${isSpecial ? styles.special : ''}`}>
-      {imageUrl && (
+      {imageUrl ? (
         <div className={styles.imageWrap}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={imageUrl} alt={name} />
+        </div>
+      ) : (
+        <div className={`${styles.imageWrap} ${styles.placeholder}`}>
+          <span className={styles.placeholderText}>SF</span>
         </div>
       )}
       <div className={styles.body}>
