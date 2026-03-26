@@ -25,7 +25,7 @@ export default async function AdminDashboardPage() {
 
   // Fetch active drop
   const { data: activeDrop } = await supabase
-    .from('current_drops')
+    .from('current_drop')
     .select('id, name')
     .eq('is_active', true)
     .limit(1)
