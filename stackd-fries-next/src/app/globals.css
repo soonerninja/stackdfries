@@ -211,7 +211,7 @@ section {
 
 .reveal {
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(30px);
   transition: opacity var(--transition-slow), transform var(--transition-slow);
 }
 
@@ -231,6 +231,10 @@ section {
 
   body {
     padding-bottom: 60px; /* space for fixed mobile CTA */
+  }
+
+  .container {
+    padding: 0 20px;
   }
 
   .section-title {

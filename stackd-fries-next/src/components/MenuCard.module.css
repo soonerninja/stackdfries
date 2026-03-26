@@ -27,6 +27,26 @@
   object-fit: cover;
 }
 
+.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    135deg,
+    rgba(242, 199, 68, 0.08) 0%,
+    var(--rich-black) 40%,
+    rgba(232, 57, 45, 0.05) 100%
+  );
+}
+
+.placeholderText {
+  font-family: var(--font-display);
+  font-size: 36px;
+  letter-spacing: 4px;
+  color: rgba(242, 199, 68, 0.15);
+  user-select: none;
+}
+
 .body {
   padding: var(--card-padding);
 }
@@ -76,4 +96,18 @@
   padding: 4px 10px;
   border-radius: 999px;
   margin-bottom: 8px;
+}
+
+@media (max-width: 767px) {
+  .name {
+    font-size: 15px;
+  }
+
+  .description {
+    font-size: 13px;
+  }
+
+  .placeholderText {
+    font-size: 28px;
+  }
 }

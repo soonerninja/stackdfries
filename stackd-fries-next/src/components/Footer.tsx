@@ -11,20 +11,20 @@ export default function Footer() {
 
         <div className={styles.socials}>
           <a
-            href={siteConfig.social.instagram}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.socialLink}
-          >
-            Instagram
-          </a>
-          <a
             href={siteConfig.social.tiktok}
             target="_blank"
             rel="noopener noreferrer"
             className={styles.socialLink}
           >
             TikTok
+          </a>
+          <a
+            href={siteConfig.social.instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.socialLink}
+          >
+            Instagram
           </a>
           <a
             href={siteConfig.social.facebook}

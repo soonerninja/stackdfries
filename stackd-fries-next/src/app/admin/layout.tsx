@@ -41,11 +41,16 @@ export default async function AdminLayout({
     <div className={styles.shell}>
       <div className={styles.topBar}>
         <span className={styles.brand}>Stack&apos;d Admin</span>
-        <form action={logout}>
-          <button type="submit" className={styles.logoutBtn}>
-            Logout
-          </button>
-        </form>
+        <div className={styles.topBarActions}>
+          <a href="/" target="_blank" rel="noopener noreferrer" className={styles.viewSiteLink}>
+            View Site &rarr;
+          </a>
+          <form action={logout}>
+            <button type="submit" className={styles.logoutBtn}>
+              Logout
+            </button>
+          </form>
+        </div>
       </div>
       <nav className={styles.nav}>
         {navLinks.map((link) => (

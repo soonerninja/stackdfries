@@ -64,6 +64,27 @@ export default function Nav() {
         >
           Order
         </a>
+        <div className={styles.overlaySocials}>
+          <a
+            href={siteConfig.social.tiktok}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.overlaySocialLink}
+            onClick={closeMenu}
+          >
+            TikTok
+          </a>
+          <span className={styles.overlaySocialDot}>·</span>
+          <a
+            href={siteConfig.social.instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.overlaySocialLink}
+            onClick={closeMenu}
+          >
+            Instagram
+          </a>
+        </div>
       </div>
     </>
   );

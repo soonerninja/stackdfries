@@ -56,18 +56,25 @@ export default function LiveTracker() {
               <div className={styles.locationName}>{tracker.location_name}</div>
             </div>
             {tracker.latitude && tracker.longitude ? (
-              <div className={styles.mapWrap}>
-                <iframe
-                  src={`https://www.google.com/maps?q=${tracker.latitude},${tracker.longitude}&z=15&output=embed`}
-                  width="100%"
-                  height="400"
-                  style={{ border: 0 }}
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title="Stack'd Fries location"
-                />
-              </div>
+              <>
+                <div className={styles.mapWrap}>
+                  <iframe
+                    src={`https://maps.google.com/maps?q=${tracker.latitude},${tracker.longitude}&hl=en&z=15&output=embed`}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Stack'd Fries location"
+                  />
+                </div>
+                <a
+                  className={styles.mapsLink}
+                  href={`https://www.google.com/maps?q=${tracker.latitude},${tracker.longitude}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Open in Google Maps &rarr;
+                </a>
+              </>
             ) : null}
             <div className={styles.contactInfo}>
               <div>

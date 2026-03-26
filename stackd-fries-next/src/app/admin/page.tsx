@@ -36,10 +36,10 @@ export default async function AdminDashboardPage() {
 
   return (
     <div>
-      <h1 className={styles.heading}>Dashboard</h1>
+      <p className={styles.greeting}>Welcome back.</p>
 
       <div className={styles.statsGrid}>
-        <div className={styles.statCard}>
+        <div className={`${styles.statCard} ${isLive ? styles.statCardLive : styles.statCardOffline}`}>
           <div className={styles.statLabel}>Truck Status</div>
           <div className={`${styles.statValue} ${isLive ? styles.statValueLive : styles.statValueOffline}`}>
             {isLive ? 'LIVE' : 'OFFLINE'}
@@ -53,10 +53,10 @@ export default async function AdminDashboardPage() {
 
         <div className={styles.statCard}>
           <div className={styles.statLabel}>Email Signups</div>
-          <div className={styles.statValue}>{emailCount ?? 0}</div>
+          <div className={`${styles.statValue} ${styles.statValueLarge}`}>{emailCount ?? 0}</div>
         </div>
 
-        <div className={styles.statCard}>
+        <div className={`${styles.statCard} ${hasActiveDrop ? styles.statCardDrop : ''}`}>
           <div className={styles.statLabel}>Active Drop</div>
           <div className={styles.statValue}>
             {hasActiveDrop ? activeDrop.name : 'None'}
@@ -79,6 +79,9 @@ export default async function AdminDashboardPage() {
           <Link href="/admin/emails" className={styles.actionLink}>
             View Emails
           </Link>
+          <a href="/" target="_blank" rel="noopener noreferrer" className={styles.actionLinkSecondary}>
+            View Public Site
+          </a>
         </div>
       </div>
     </div>

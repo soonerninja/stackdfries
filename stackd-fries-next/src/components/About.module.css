@@ -16,5 +16,6 @@
 @media (max-width: 767px) {
   .text {
     font-size: 16px;
+    padding: 0 20px;
   }
 }
