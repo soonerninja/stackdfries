@@ -99,6 +99,14 @@
   margin-bottom: 40px;
 }
 
+.seasonNote {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-bottom: 32px;
+}
+
 .contactInfo {
   text-align: center;
   display: flex;
