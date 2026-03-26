@@ -45,6 +45,15 @@ export default function Hero() {
           >
             Instagram
           </a>
+          <span className={styles.socialDot}>·</span>
+          <a
+            href={siteConfig.social.facebook}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.socialLink}
+          >
+            Facebook
+          </a>
         </div>
       </div>
     </section>

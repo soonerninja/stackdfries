@@ -2,7 +2,17 @@
   background: var(--rich-black);
   border-top: 1px solid var(--border-subtle);
   padding: 64px 0 40px;
-  text-align: center;
+}
+
+.top {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 48px;
+  margin-bottom: 48px;
+}
+
+.brand {
+  /* left side */
 }
 
 .logo {
@@ -10,62 +20,79 @@
   font-size: 32px;
   letter-spacing: 2px;
   color: var(--text-primary);
-  margin-bottom: 24px;
 }
 
 .logoGold {
   color: var(--gold);
 }
 
-.socials {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 24px;
-  flex-wrap: wrap;
+.tagline {
+  font-family: var(--font-label);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+  margin-top: 8px;
 }
 
-.socialLink {
+.links {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+.linkGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.linkGroupTitle {
   font-family: var(--font-label);
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 1.5px;
   color: var(--gold);
-  border: 1px solid var(--gold);
-  border-radius: 999px;
-  padding: 12px 20px;
-  min-height: 48px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  transition: background var(--transition-fast), color var(--transition-fast);
+  margin-bottom: 16px;
 }
 
-.socialLink:hover {
-  background: var(--gold);
-  color: var(--black);
+.footerLink {
+  display: flex;
+  align-items: center;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-secondary);
+  padding: 6px 0;
+  min-height: 44px;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a.footerLink:hover {
+  color: var(--gold);
+}
+
+.bottom {
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 24px;
+  text-align: center;
 }
 
 .hours {
   font-family: var(--font-body);
-  font-size: 14px;
-  color: var(--text-secondary);
-  margin-bottom: 8px;
-}
-
-.location {
-  font-family: var(--font-body);
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text-muted);
-  margin-bottom: 24px;
+  margin-bottom: 12px;
 }
 
-.copyright {
+.legal {
   font-family: var(--font-body);
   font-size: 12px;
   color: var(--text-muted);
+}
+
+.legalDivider {
+  margin: 0 8px;
+  opacity: 0.5;
 }
 
 @media (max-width: 767px) {
@@ -73,18 +100,17 @@
     padding: 48px 20px 80px;
   }
 
+  .top {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
   .logo {
     font-size: 28px;
   }
 
-  .socials {
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .socialLink {
-    min-width: 200px;
-    min-height: 48px;
+  .links {
+    grid-template-columns: 1fr;
+    gap: 24px;
   }
 }

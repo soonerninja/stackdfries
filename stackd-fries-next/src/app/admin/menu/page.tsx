@@ -6,8 +6,10 @@ import type { MenuItem } from '@/types/database'
 import styles from './menu.module.css'
 
 const CATEGORIES = [
-  { value: 'loaded_fries', label: 'Loaded Fries' },
-  { value: 'sides_drinks', label: 'Sides & Drinks' },
+  { value: 'entrees', label: 'Entr\u00e9es' },
+  { value: 'sides', label: 'Sides' },
+  { value: 'drinks', label: 'Drinks' },
+  { value: 'desserts', label: 'Desserts' },
 ]
 
 export default function MenuPage() {
@@ -23,9 +25,12 @@ export default function MenuPage() {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [price, setPrice] = useState('')
-  const [category, setCategory] = useState('loaded_fries')
+  const [category, setCategory] = useState('entrees')
   const [sortOrder, setSortOrder] = useState('0')
   const [isActive, setIsActive] = useState(true)
+  const [imageUrl, setImageUrl] = useState('')
+  const [videoUrl, setVideoUrl] = useState('')
+  const [additionalImages, setAdditionalImages] = useState('')
 
   useEffect(() => {
     fetchItems()
@@ -51,9 +56,12 @@ export default function MenuPage() {
     setName('')
     setDescription('')
     setPrice('')
-    setCategory('loaded_fries')
+    setCategory('entrees')
     setSortOrder('0')
     setIsActive(true)
+    setImageUrl('')
+    setVideoUrl('')
+    setAdditionalImages('')
     setShowForm(false)
   }
 
@@ -65,6 +73,9 @@ export default function MenuPage() {
     setCategory(item.category)
     setSortOrder(String(item.sort_order))
     setIsActive(item.is_active)
+    setImageUrl(item.image_url || '')
+    setVideoUrl(item.video_url || '')
+    setAdditionalImages(item.images ? item.images.join(', ') : '')
     setShowForm(true)
     setFeedback(null)
   }
@@ -105,6 +116,10 @@ export default function MenuPage() {
     setSaving(true)
     setFeedback(null)
 
+    const imagesArray = additionalImages.trim()
+      ? additionalImages.split(',').map((s) => s.trim()).filter(Boolean)
+      : null
+
     const payload = {
       name: name.trim(),
       description: description.trim() || null,
@@ -112,6 +127,9 @@ export default function MenuPage() {
       category,
       sort_order: parseInt(sortOrder) || 0,
       is_active: isActive,
+      image_url: imageUrl.trim() || null,
+      video_url: videoUrl.trim() || null,
+      images: imagesArray,
     }
 
     if (editingId) {
@@ -228,6 +246,39 @@ export default function MenuPage() {
                 </option>
               ))}
             </select>
+          </div>
+
+          <div className={styles.field}>
+            <label className={styles.label}>Image URL</label>
+            <input
+              type="text"
+              value={imageUrl}
+              onChange={(e) => setImageUrl(e.target.value)}
+              placeholder="https://example.com/image.jpg"
+              className={styles.input}
+            />
+          </div>
+
+          <div className={styles.field}>
+            <label className={styles.label}>Video URL</label>
+            <input
+              type="text"
+              value={videoUrl}
+              onChange={(e) => setVideoUrl(e.target.value)}
+              placeholder="https://example.com/teaser.mp4"
+              className={styles.input}
+            />
+          </div>
+
+          <div className={styles.field}>
+            <label className={styles.label}>Additional Images (comma-separated URLs)</label>
+            <input
+              type="text"
+              value={additionalImages}
+              onChange={(e) => setAdditionalImages(e.target.value)}
+              placeholder="https://img1.jpg, https://img2.jpg"
+              className={styles.input}
+            />
           </div>
 
           <div className={styles.toggleRow}>
