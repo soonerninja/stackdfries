@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { siteConfig } from '@/lib/config';
+import LiveStatusBadge from './LiveStatusBadge';
 import styles from './Nav.module.css';
 
 export default function Nav() {
@@ -30,6 +31,7 @@ export default function Nav() {
           <div className={styles.desktopLinks}>
             <a href="#menu" className={styles.desktopLink}>Menu</a>
             <a href="#tracker" className={styles.desktopLink}>Find Us</a>
+            <LiveStatusBadge />
             <a
               href={siteConfig.orderUrl}
               target="_blank"
