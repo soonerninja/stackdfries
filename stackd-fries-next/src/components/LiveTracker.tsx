@@ -59,9 +59,10 @@ export default function LiveTracker() {
               <>
                 <div className={styles.mapWrap}>
                   <iframe
-                    src={`https://www.openstreetmap.org/export/embed.html?bbox=${tracker.longitude - 0.01},${tracker.latitude - 0.005},${tracker.longitude + 0.01},${tracker.latitude + 0.005}&layer=mapnik&marker=${tracker.latitude},${tracker.longitude}`}
+                    src={`https://maps.google.com/maps?q=${tracker.latitude},${tracker.longitude}&z=15&output=embed`}
                     allowFullScreen
                     loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
                     title="Stack'd Fries location"
                   />
                 </div>
