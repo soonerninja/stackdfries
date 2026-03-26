@@ -15,17 +15,23 @@ export default function LiveStatusBadge() {
     const supabase = createClient();
 
     async function fetchStatus() {
-      const { data } = await supabase
-        .from('tracker_status')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .single<TrackerStatus>();
+      try {
+        const { data } = await supabase
+          .from('tracker_status')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .single<TrackerStatus>();
 
-      if (data?.is_live) {
-        setIsLive(true);
-        setStatusText(`LIVE at ${data.location_name || 'our spot'}`);
-      } else {
+        if (data?.is_live) {
+          setIsLive(true);
+          setStatusText(`LIVE at ${data.location_name || 'our spot'}`);
+        } else {
+          const schedule = getStatusText();
+          setIsLive(schedule.isOpen);
+          setStatusText(schedule.text);
+        }
+      } catch {
         const schedule = getStatusText();
         setIsLive(schedule.isOpen);
         setStatusText(schedule.text);
