@@ -1,5 +1,5 @@
 .section {
-  background: var(--rich-black);
+  background: transparent;
   border-top: 1px solid var(--border-subtle);
 }
 

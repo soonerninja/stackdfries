@@ -59,21 +59,22 @@ export default function LiveTracker() {
               <>
                 <div className={styles.mapWrap}>
                   <iframe
-                    src={`https://maps.google.com/maps?q=${tracker.latitude},${tracker.longitude}&hl=en&z=15&output=embed`}
+                    src={`https://www.openstreetmap.org/export/embed.html?bbox=${tracker.longitude - 0.01},${tracker.latitude - 0.005},${tracker.longitude + 0.01},${tracker.latitude + 0.005}&layer=mapnik&marker=${tracker.latitude},${tracker.longitude}`}
                     allowFullScreen
                     loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
                     title="Stack'd Fries location"
                   />
                 </div>
-                <a
-                  className={styles.mapsLink}
-                  href={`https://www.google.com/maps?q=${tracker.latitude},${tracker.longitude}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Open in Google Maps &rarr;
-                </a>
+                <div style={{ textAlign: 'center' }}>
+                  <a
+                    className={styles.mapsLink}
+                    href={`https://www.google.com/maps/search/?api=1&query=${tracker.latitude},${tracker.longitude}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Open in Google Maps →
+                  </a>
+                </div>
               </>
             ) : null}
             <div className={styles.contactInfo}>

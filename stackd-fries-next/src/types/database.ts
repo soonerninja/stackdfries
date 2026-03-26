@@ -16,6 +16,8 @@ export interface MenuItem {
   price: number;
   category: string;
   image_url: string | null;
+  video_url: string | null;
+  images: string[] | null;
   sort_order: number;
   is_active: boolean;
   created_at: string;
@@ -27,6 +29,8 @@ export interface CurrentDrop {
   name: string;
   teaser_text: string | null;
   available_date: string | null;
+  start_date: string | null;
+  end_date: string | null;
   image_url: string | null;
   is_active: boolean;
   created_at: string;
