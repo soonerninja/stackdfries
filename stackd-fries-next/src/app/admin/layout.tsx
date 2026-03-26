@@ -40,7 +40,7 @@ export default async function AdminLayout({
   return (
     <div className={styles.shell}>
       <div className={styles.topBar}>
-        <span className={styles.brand}>Stack&apos;d Admin</span>
+        <Link href="/admin" className={styles.brand}>Stack&apos;d Admin</Link>
         <div className={styles.topBarActions}>
           <a href="/" target="_blank" rel="noopener noreferrer" className={styles.viewSiteLink}>
             View Site &rarr;
