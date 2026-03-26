@@ -1,0 +1,94 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { createClient } from '@/lib/supabase-browser';
+import { siteConfig } from '@/lib/config';
+import { getFormattedHours } from '@/lib/hours';
+import type { TrackerStatus } from '@/types/database';
+import styles from './LiveTracker.module.css';
+
+export default function LiveTracker() {
+  const [tracker, setTracker] = useState<TrackerStatus | null>(null);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const supabase = createClient();
+
+    async function fetchStatus() {
+      const { data } = await supabase
+        .from('tracker_status')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single<TrackerStatus>();
+
+      setTracker(data ?? null);
+      setLoaded(true);
+    }
+
+    fetchStatus();
+    const interval = setInterval(fetchStatus, 60_000);
+    return () => clearInterval(interval);
+  }, []);
+
+  if (!loaded) return null;
+
+  const isLive = tracker?.is_live ?? false;
+  const hours = getFormattedHours();
+
+  return (
+    <section className={`${styles.section} reveal`} id="tracker">
+      <div className="container">
+        <h2 className="section-title">FIND US</h2>
+
+        {isLive && tracker ? (
+          <>
+            <div className={styles.liveHeader}>
+              <div className={styles.liveLabel}>
+                <span className={styles.liveDot} />
+                LIVE NOW
+              </div>
+              <div className={styles.locationName}>{tracker.location_name}</div>
+            </div>
+            {tracker.latitude && tracker.longitude && (
+              <div className={styles.mapWrap}>
+                <iframe
+                  src={`https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY || ''}&q=${tracker.latitude},${tracker.longitude}&zoom=15`}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Stack'd Fries location"
+                />
+              </div>
+            )}
+          </>
+        ) : (
+          <div className={styles.closedContent}>
+            <p className={styles.closedMessage}>Check back when we&apos;re live</p>
+            <table className={styles.scheduleTable}>
+              <tbody>
+                {hours.map((h) => (
+                  <tr key={h.day}>
+                    <td>{h.day}</td>
+                    <td>{h.hours}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div className={styles.contactInfo}>
+              <div>{siteConfig.location.address}</div>
+              <div>
+                <a href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a>
+              </div>
+              <div>
+                <a href={`tel:${siteConfig.contact.phone.replace(/[^\d+]/g, '')}`}>
+                  {siteConfig.contact.phone}
+                </a>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}

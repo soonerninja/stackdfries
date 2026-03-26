@@ -1,0 +1,141 @@
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--nav-height);
+  z-index: var(--z-nav);
+  display: flex;
+  align-items: center;
+  transition: background var(--transition-med), backdrop-filter var(--transition-med);
+}
+
+.navScrolled {
+  background: rgba(10, 10, 10, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.inner {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-family: var(--font-display);
+  font-size: 24px;
+  letter-spacing: 2px;
+  text-decoration: none;
+  color: white;
+}
+
+.logoGold {
+  color: var(--gold);
+}
+
+.desktopLinks {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.desktopLink {
+  font-family: var(--font-label);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.desktopLink:hover {
+  color: var(--gold);
+}
+
+.orderLink {
+  color: var(--gold);
+}
+
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 44px;
+  height: 44px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 0;
+}
+
+.hamburgerLine {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--text-primary);
+  transition: transform var(--transition-fast), opacity var(--transition-fast);
+}
+
+.hamburgerOpen .hamburgerLine:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburgerOpen .hamburgerLine:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburgerOpen .hamburgerLine:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-mobile-menu);
+  background: rgba(10, 10, 10, 0.97);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-med);
+}
+
+.overlayOpen {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.overlayLink {
+  font-family: var(--font-display);
+  font-size: 48px;
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.overlayLink:hover {
+  color: var(--gold);
+}
+
+@media (max-width: 767px) {
+  .desktopLinks {
+    display: none;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+}
