@@ -1,0 +1,265 @@
+.heading {
+  font-family: var(--font-display);
+  font-size: 32px;
+  color: var(--gold);
+  margin-bottom: 24px;
+}
+
+.currentDrop {
+  background: var(--rich-black);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.currentDropLabel {
+  font-family: var(--font-label);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.currentDropName {
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: var(--text-primary);
+}
+
+.currentDropNone {
+  color: var(--text-muted);
+  font-style: italic;
+  font-size: 14px;
+}
+
+.form {
+  background: var(--rich-black);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.formTitle {
+  font-family: var(--font-label);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.label {
+  font-family: var(--font-label);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+}
+
+.input {
+  font-family: var(--font-body);
+  font-size: 16px;
+  padding: 14px 16px;
+  background: var(--black);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  color: var(--text-primary);
+  min-height: 48px;
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.input:focus {
+  border-color: var(--gold);
+}
+
+.textarea {
+  composes: input;
+  min-height: 80px;
+  resize: vertical;
+}
+
+.toggleRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.toggleLabel {
+  font-family: var(--font-label);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-secondary);
+}
+
+.toggle {
+  width: 52px;
+  height: 28px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: background var(--transition-fast);
+}
+
+.toggleOff {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.toggleOn {
+  background: #4ade80;
+}
+
+.toggle::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: white;
+  transition: transform var(--transition-fast);
+}
+
+.toggleOn::after {
+  transform: translateX(24px);
+}
+
+.submitBtn {
+  font-family: var(--font-label);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  background: var(--gold);
+  color: var(--black);
+  border: 2px solid var(--gold);
+  border-radius: 4px;
+  padding: 14px 32px;
+  min-height: 48px;
+  cursor: pointer;
+  font-weight: 600;
+  width: 100%;
+  transition: all var(--transition-fast);
+}
+
+.submitBtn:hover {
+  background: transparent;
+  color: var(--gold);
+}
+
+.submitBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.feedback {
+  text-align: center;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.feedbackSuccess {
+  background: rgba(74, 222, 128, 0.1);
+  color: #4ade80;
+  border: 1px solid rgba(74, 222, 128, 0.3);
+}
+
+.feedbackError {
+  background: rgba(232, 57, 45, 0.15);
+  color: var(--red);
+  border: 1px solid var(--red);
+}
+
+.loading {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 40px;
+  font-size: 16px;
+}
+
+.dropsList {
+  margin-top: 24px;
+}
+
+.dropsListTitle {
+  font-family: var(--font-label);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+
+.dropItem {
+  background: var(--rich-black);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.dropItemName {
+  font-family: var(--font-body);
+  font-size: 16px;
+  color: var(--text-primary);
+}
+
+.dropItemBadge {
+  font-family: var(--font-label);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 4px 10px;
+  border-radius: 3px;
+}
+
+.dropItemBadgeActive {
+  background: rgba(74, 222, 128, 0.15);
+  color: #4ade80;
+}
+
+.dropItemBadgeInactive {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-muted);
+}
+
+.editBtn {
+  font-family: var(--font-label);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: transparent;
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  border-radius: 4px;
+  padding: 8px 16px;
+  min-height: 48px;
+  min-width: 48px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.editBtn:hover {
+  background: var(--gold);
+  color: var(--black);
+}

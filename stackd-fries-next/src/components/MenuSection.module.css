@@ -1,0 +1,39 @@
+.section {
+  background: var(--black);
+}
+
+.category {
+  margin-bottom: 48px;
+}
+
+.category:last-child {
+  margin-bottom: 0;
+}
+
+.categoryTitle {
+  font-family: var(--font-label);
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--gold);
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--card-gap);
+}
+
+.orderWrap {
+  text-align: center;
+  margin-top: 48px;
+}
+
+@media (max-width: 767px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

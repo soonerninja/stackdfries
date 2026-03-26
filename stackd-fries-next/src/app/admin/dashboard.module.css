@@ -1,0 +1,82 @@
+.heading {
+  font-family: var(--font-display);
+  font-size: 32px;
+  color: var(--gold);
+  margin-bottom: 24px;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.statCard {
+  background: var(--rich-black);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.statLabel {
+  font-family: var(--font-label);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.statValue {
+  font-family: var(--font-display);
+  font-size: 28px;
+  color: var(--text-primary);
+}
+
+.statValueLive {
+  color: #4ade80;
+}
+
+.statValueOffline {
+  color: var(--text-muted);
+}
+
+.quickActions {
+  margin-top: 32px;
+}
+
+.quickActionsTitle {
+  font-family: var(--font-label);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.actionLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.actionLink {
+  font-family: var(--font-label);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--black);
+  background: var(--gold);
+  padding: 14px 24px;
+  border-radius: 4px;
+  text-decoration: none;
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  transition: all var(--transition-fast);
+}
+
+.actionLink:hover {
+  opacity: 0.85;
+}

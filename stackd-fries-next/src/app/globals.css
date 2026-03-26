@@ -15,9 +15,9 @@
   --border-subtle: rgba(255, 255, 255, 0.06);
 
   /* Typography */
-  --font-display: var(--font-bebas-neue), sans-serif;
-  --font-label: var(--font-barlow-condensed), sans-serif;
-  --font-body: var(--font-barlow), sans-serif;
+  --font-display: "Bebas Neue", sans-serif;
+  --font-label: "Barlow Condensed", sans-serif;
+  --font-body: "Barlow", sans-serif;
 
   /* Spacing */
   --section-padding: 80px;

@@ -1,0 +1,192 @@
+.heading {
+  font-family: var(--font-display);
+  font-size: 32px;
+  color: var(--gold);
+  margin-bottom: 24px;
+}
+
+.statusBanner {
+  text-align: center;
+  padding: 32px 20px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  border: 1px solid var(--border-subtle);
+}
+
+.statusBannerLive {
+  background: rgba(74, 222, 128, 0.1);
+  border-color: rgba(74, 222, 128, 0.3);
+}
+
+.statusBannerOffline {
+  background: var(--rich-black);
+}
+
+.statusText {
+  font-family: var(--font-display);
+  font-size: 48px;
+  letter-spacing: 2px;
+}
+
+.statusTextLive {
+  color: #4ade80;
+}
+
+.statusTextOffline {
+  color: var(--text-muted);
+}
+
+.locationInfo {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-top: 8px;
+}
+
+.form {
+  background: var(--rich-black);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.formTitle {
+  font-family: var(--font-label);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.label {
+  font-family: var(--font-label);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+}
+
+.input {
+  font-family: var(--font-body);
+  font-size: 16px;
+  padding: 14px 16px;
+  background: var(--black);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  color: var(--text-primary);
+  min-height: 48px;
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.input:focus {
+  border-color: var(--gold);
+}
+
+.coordRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.geoBtn {
+  font-family: var(--font-label);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: transparent;
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  border-radius: 4px;
+  padding: 12px 20px;
+  min-height: 48px;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 16px;
+  transition: all var(--transition-fast);
+}
+
+.geoBtn:hover {
+  background: var(--gold);
+  color: var(--black);
+}
+
+.bigBtn {
+  font-family: var(--font-label);
+  font-size: 18px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  padding: 20px 40px;
+  min-height: 64px;
+  width: 100%;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.bigBtnLive {
+  background: var(--gold);
+  color: var(--black);
+}
+
+.bigBtnLive:hover {
+  opacity: 0.85;
+}
+
+.bigBtnOffline {
+  background: var(--red);
+  color: white;
+}
+
+.bigBtnOffline:hover {
+  opacity: 0.85;
+}
+
+.bigBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.feedback {
+  text-align: center;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.feedbackSuccess {
+  background: rgba(74, 222, 128, 0.1);
+  color: #4ade80;
+  border: 1px solid rgba(74, 222, 128, 0.3);
+}
+
+.feedbackError {
+  background: rgba(232, 57, 45, 0.15);
+  color: var(--red);
+  border: 1px solid var(--red);
+}
+
+.loading {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 40px;
+  font-size: 16px;
+}
+
+@media (max-width: 480px) {
+  .coordRow {
+    grid-template-columns: 1fr;
+  }
+}

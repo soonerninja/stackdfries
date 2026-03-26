@@ -1,27 +1,5 @@
 import type { Metadata } from "next";
-import { Bebas_Neue, Barlow_Condensed, Barlow } from "next/font/google";
 import "./globals.css";
-
-const bebasNeue = Bebas_Neue({
-  weight: "400",
-  subsets: ["latin"],
-  variable: "--font-bebas-neue",
-  display: "swap",
-});
-
-const barlowCondensed = Barlow_Condensed({
-  weight: ["500", "600", "700"],
-  subsets: ["latin"],
-  variable: "--font-barlow-condensed",
-  display: "swap",
-});
-
-const barlow = Barlow({
-  weight: ["400", "500"],
-  subsets: ["latin"],
-  variable: "--font-barlow",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: "Stack'd Fries | Loaded Fries in Norman, Oklahoma",
@@ -78,8 +56,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${bebasNeue.variable} ${barlowCondensed.variable} ${barlow.variable}`}>
+    <html lang="en">
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500&family=Barlow+Condensed:wght@500;600;700&display=swap"
+          rel="stylesheet"
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

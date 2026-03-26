@@ -1,0 +1,70 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { siteConfig } from '@/lib/config';
+import styles from './Nav.module.css';
+
+export default function Nav() {
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const closeMenu = () => setMenuOpen(false);
+
+  return (
+    <>
+      <nav className={`${styles.nav} ${scrolled ? styles.navScrolled : ''}`}>
+        <div className={styles.inner}>
+          <a href="#top" className={styles.logo}>
+            STACK&apos;D <span className={styles.logoGold}>FRIES</span>
+          </a>
+
+          <div className={styles.desktopLinks}>
+            <a href="#menu" className={styles.desktopLink}>Menu</a>
+            <a href="#tracker" className={styles.desktopLink}>Find Us</a>
+            <a
+              href={siteConfig.orderUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`${styles.desktopLink} ${styles.orderLink}`}
+            >
+              Order
+            </a>
+          </div>
+
+          <button
+            className={`${styles.hamburger} ${menuOpen ? styles.hamburgerOpen : ''}`}
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+          >
+            <span className={styles.hamburgerLine} />
+            <span className={styles.hamburgerLine} />
+            <span className={styles.hamburgerLine} />
+          </button>
+        </div>
+      </nav>
+
+      <div className={`${styles.overlay} ${menuOpen ? styles.overlayOpen : ''}`}>
+        <a href="#menu" className={styles.overlayLink} onClick={closeMenu}>Menu</a>
+        <a href="#tracker" className={styles.overlayLink} onClick={closeMenu}>Find Us</a>
+        <a
+          href={siteConfig.orderUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.overlayLink}
+          onClick={closeMenu}
+        >
+          Order
+        </a>
+      </div>
+    </>
+  );
+}
