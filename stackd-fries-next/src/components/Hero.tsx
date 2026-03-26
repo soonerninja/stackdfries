@@ -1,5 +1,4 @@
 import { siteConfig } from '@/lib/config';
-import LiveStatusBadge from './LiveStatusBadge';
 import styles from './Hero.module.css';
 
 export default function Hero() {
@@ -46,9 +45,6 @@ export default function Hero() {
           >
             Instagram
           </a>
-        </div>
-        <div className={styles.badgeWrap}>
-          <LiveStatusBadge />
         </div>
       </div>
     </section>

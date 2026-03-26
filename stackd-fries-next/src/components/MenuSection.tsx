@@ -10,13 +10,20 @@ const CATEGORY_LABELS: Record<string, string> = {
 };
 
 export default async function MenuSection() {
-  const supabase = await createClient();
-  const { data: items } = await supabase
-    .from('menu_items')
-    .select('*')
-    .eq('is_active', true)
-    .order('sort_order', { ascending: true })
-    .returns<MenuItem[]>();
+  let items: MenuItem[] | null = null;
+
+  try {
+    const supabase = await createClient();
+    const { data } = await supabase
+      .from('menu_items')
+      .select('*')
+      .eq('is_active', true)
+      .order('sort_order', { ascending: true })
+      .returns<MenuItem[]>();
+    items = data;
+  } catch {
+    // If Supabase fails, hide the section
+  }
 
   if (!items || items.length === 0) return null;
 
