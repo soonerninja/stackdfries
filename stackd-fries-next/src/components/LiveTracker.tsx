@@ -15,14 +15,19 @@ export default function LiveTracker() {
     const supabase = createClient();
 
     async function fetchStatus() {
-      const { data } = await supabase
-        .from('tracker_status')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .single<TrackerStatus>();
+      try {
+        const { data } = await supabase
+          .from('tracker_status')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .single<TrackerStatus>();
 
-      setTracker(data ?? null);
+        setTracker(data ?? null);
+      } catch {
+        // If fetch fails, show closed state
+        setTracker(null);
+      }
       setLoaded(true);
     }
 
@@ -53,7 +58,7 @@ export default function LiveTracker() {
             {tracker.latitude && tracker.longitude && (
               <div className={styles.mapWrap}>
                 <iframe
-                  src={`https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY || ''}&q=${tracker.latitude},${tracker.longitude}&zoom=15`}
+                  src={`https://maps.google.com/maps?q=${tracker.latitude},${tracker.longitude}&z=15&output=embed`}
                   allowFullScreen
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
