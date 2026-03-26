@@ -26,7 +26,7 @@ export default function DropsPage() {
 
   async function fetchDrops() {
     const { data, error } = await supabase
-      .from('current_drops')
+      .from('current_drop')
       .select('*')
       .order('created_at', { ascending: false })
 
@@ -76,7 +76,7 @@ export default function DropsPage() {
 
     if (editingId) {
       const { error } = await supabase
-        .from('current_drops')
+        .from('current_drop')
         .update(payload)
         .eq('id', editingId)
 
@@ -89,7 +89,7 @@ export default function DropsPage() {
       }
     } else {
       const { error } = await supabase
-        .from('current_drops')
+        .from('current_drop')
         .insert(payload)
 
       if (error) {
