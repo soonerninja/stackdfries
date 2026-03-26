@@ -18,7 +18,7 @@ export default function DropsPage() {
   const [teaserText, setTeaserText] = useState('')
   const [availableDate, setAvailableDate] = useState('')
   const [imageUrl, setImageUrl] = useState('')
-  const [isActive, setIsActive] = useState(false)
+  const [isActive, setIsActive] = useState(true)
 
   useEffect(() => {
     fetchDrops()
@@ -44,7 +44,7 @@ export default function DropsPage() {
     setTeaserText('')
     setAvailableDate('')
     setImageUrl('')
-    setIsActive(false)
+    setIsActive(true)
   }
 
   function editDrop(drop: CurrentDrop) {

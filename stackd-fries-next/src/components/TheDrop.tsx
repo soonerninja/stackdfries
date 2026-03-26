@@ -3,13 +3,21 @@ import type { CurrentDrop } from '@/types/database';
 import styles from './TheDrop.module.css';
 
 export default async function TheDrop() {
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from('current_drop')
-    .select('*')
-    .eq('is_active', true)
-    .limit(1)
-    .single<CurrentDrop>();
+  let data: CurrentDrop | null = null;
+
+  try {
+    const supabase = await createClient();
+    const { data: rows } = await supabase
+      .from('current_drop')
+      .select('*')
+      .eq('is_active', true)
+      .order('created_at', { ascending: false })
+      .limit(1);
+
+    data = rows?.[0] ?? null;
+  } catch {
+    // If fetch fails, hide the section
+  }
 
   if (!data) return null;
 

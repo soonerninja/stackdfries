@@ -10,6 +10,8 @@ import Footer from '@/components/Footer';
 import MobileCta from '@/components/MobileCta';
 import ScrollReveal from '@/components/ScrollReveal';
 
+export const dynamic = 'force-dynamic';
+
 export default function Home() {
   return (
     <>
