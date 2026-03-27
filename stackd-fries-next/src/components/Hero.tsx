@@ -10,10 +10,10 @@ export default function Hero() {
           STACK&apos;D <span className={styles.logoGold}>FRIES</span>
         </h1>
         <div className={styles.tagline}>
-          <div>LOADED.</div>
-          <div className={styles.taglineGold}>ALWAYS.</div>
+          <div>OKLAHOMA&apos;S PREMIUM</div>
+          <div className={styles.taglineGold}>LOADED FRIES</div>
         </div>
-        <p className={styles.subtitle}>{siteConfig.subtitle}</p>
+        <p className={styles.subtitle}>Founded in Norman. Served statewide.</p>
         <div className={styles.ctas}>
           <a
             href={siteConfig.orderUrl}

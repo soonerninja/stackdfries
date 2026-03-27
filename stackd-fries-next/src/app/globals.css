@@ -157,8 +157,9 @@ section {
 }
 
 .btn-primary:hover {
-  background: transparent;
+  background: rgba(232, 57, 45, 0.1);
   color: var(--red);
+  border-color: var(--red);
 }
 
 .btn-gold {

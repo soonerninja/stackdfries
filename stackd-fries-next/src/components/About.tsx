@@ -10,7 +10,7 @@ export default function About() {
         <div className={styles.grid}>
           <div className={styles.mainText}>
             <p className={styles.lead}>
-              Born in Norman. Built on loaded fries and late nights.
+              Founded in Norman. Now Oklahoma&apos;s go-to for loaded fries.
             </p>
             <p className={styles.body}>
               Stack&apos;d Fries is what happens when street food meets obsession. Every order stacked
@@ -28,8 +28,8 @@ export default function About() {
               <div className={styles.highlightLabel}>Fresh Cut Daily</div>
             </div>
             <div className={styles.highlight}>
-              <div className={styles.highlightNumber}>Norman</div>
-              <div className={styles.highlightLabel}>Born & Based</div>
+              <div className={styles.highlightNumber}>Oklahoma</div>
+              <div className={styles.highlightLabel}>Born in Norman</div>
             </div>
             <div className={styles.highlight}>
               <div className={styles.highlightNumber}>0</div>
