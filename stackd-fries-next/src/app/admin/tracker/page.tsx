@@ -154,6 +154,16 @@ export default function TrackerPage() {
           <button type="button" onClick={handleUseMyLocation} className={styles.geoBtn}>
             Use My Location
           </button>
+          <p className={styles.mapNote}>
+            Tap &lsquo;Use My Location&rsquo; to set your position, or enter coordinates manually below.
+          </p>
+          <div className={styles.mapPreview}>
+            <iframe
+              src={`https://maps.google.com/maps?q=${lat || '35.2226'},${lng || '-97.4395'}&z=15&output=embed`}
+              title="Location preview"
+              allowFullScreen
+            />
+          </div>
           <div className={styles.coordRow}>
             <div className={styles.field}>
               <label className={styles.label}>Latitude</label>

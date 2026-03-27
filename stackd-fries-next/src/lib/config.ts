@@ -1,7 +1,7 @@
 export const siteConfig = {
   name: "Stack'd Fries",
   tagline: "Loaded. Always.",
-  subtitle: "Norman, Oklahoma's premium loaded fries",
+  subtitle: "Oklahoma's premium loaded fries",
   contact: {
     email: "stackfries@gmail.com",
     phone: "(405) 435-1002",
