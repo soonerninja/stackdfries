@@ -20,7 +20,7 @@
 }
 
 .input {
-  flex: 1;
+  width: 100%;
   font-family: var(--font-body);
   font-size: 15px;
   padding: 14px 16px;
@@ -50,6 +50,67 @@
   cursor: not-allowed;
 }
 
+.inputWrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.inputError {
+  border-color: var(--red) !important;
+}
+
+.inlineError {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--red);
+  margin-top: 6px;
+}
+
+.successWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  animation: successFadeIn 0.5s ease forwards;
+}
+
+.successCheck {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid var(--gold);
+  color: var(--gold);
+  font-size: 24px;
+  animation: goldPulse 1.2s ease-out;
+}
+
+@keyframes successFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes goldPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(242, 199, 68, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 12px rgba(242, 199, 68, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(242, 199, 68, 0);
+  }
+}
+
 .message {
   text-align: center;
   font-family: var(--font-label);
@@ -57,14 +118,14 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1.5px;
-  color: #22c55e;
+  color: var(--gold);
 }
 
-.messageMuted {
+.messageDuplicate {
   text-align: center;
   font-family: var(--font-body);
   font-size: 14px;
-  color: var(--text-muted);
+  color: var(--gold);
   margin-top: 12px;
 }
 

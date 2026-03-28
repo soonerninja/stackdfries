@@ -14,7 +14,7 @@ export default function MenuCard({ name, price, description, imageUrl, isSpecial
     <div className={`${styles.card} ${isSpecial ? styles.special : ''}`}>
       {imageUrl ? (
         <div className={styles.imageWrap}>
-          <Image src={imageUrl} alt={name} fill sizes="(max-width: 767px) 100vw, 50vw" style={{ objectFit: 'cover' }} />
+          <Image src={imageUrl} alt={`${name} - Stack'd Fries loaded fries`} fill sizes="(max-width: 767px) 100vw, 50vw" style={{ objectFit: 'cover' }} />
         </div>
       ) : (
         <div className={`${styles.imageWrap} ${styles.placeholder}`}>
