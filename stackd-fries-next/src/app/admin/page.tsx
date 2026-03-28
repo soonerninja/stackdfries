@@ -112,6 +112,28 @@ export default async function AdminDashboardPage() {
     <div>
       <p className={styles.greeting}>Welcome back.</p>
 
+      {/* Quick Actions */}
+      <div className={styles.quickActions}>
+        <div className={styles.quickActionsTitle}>Quick Actions</div>
+        <div className={styles.actionLinks}>
+          <Link href="/admin/tracker" className={styles.actionLink}>
+            {isLive ? 'Go Offline' : 'Go Live'}
+          </Link>
+          <Link href="/admin/drops" className={styles.actionLink}>
+            Manage Drops
+          </Link>
+          <Link href="/admin/menu" className={styles.actionLink}>
+            Edit Menu
+          </Link>
+          <Link href="/admin/emails" className={styles.actionLink}>
+            View Emails
+          </Link>
+          <a href="/" target="_blank" rel="noopener noreferrer" className={styles.actionLinkSecondary}>
+            View Public Site
+          </a>
+        </div>
+      </div>
+
       {/* Core stat cards */}
       <div className={styles.statsGrid}>
         <div className={`${styles.statCard} ${isLive ? styles.statCardLive : styles.statCardOffline}`}>
@@ -198,27 +220,6 @@ export default async function AdminDashboardPage() {
         </div>
       </div>
 
-      {/* Quick Actions */}
-      <div className={styles.quickActions}>
-        <div className={styles.quickActionsTitle}>Quick Actions</div>
-        <div className={styles.actionLinks}>
-          <Link href="/admin/tracker" className={styles.actionLink}>
-            {isLive ? 'Go Offline' : 'Go Live'}
-          </Link>
-          <Link href="/admin/drops" className={styles.actionLink}>
-            Manage Drops
-          </Link>
-          <Link href="/admin/menu" className={styles.actionLink}>
-            Edit Menu
-          </Link>
-          <Link href="/admin/emails" className={styles.actionLink}>
-            View Emails
-          </Link>
-          <a href="/" target="_blank" rel="noopener noreferrer" className={styles.actionLinkSecondary}>
-            View Public Site
-          </a>
-        </div>
-      </div>
     </div>
   )
 }

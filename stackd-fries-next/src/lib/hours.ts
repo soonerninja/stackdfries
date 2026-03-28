@@ -36,29 +36,37 @@ function timeToMinutes(timeStr: string): number {
 
 export function isOpenNow(now: Date = new Date()): boolean {
   const hours = getHoursForDate(now);
-  if (!hours) {
-    const yesterday = new Date(now);
-    yesterday.setDate(yesterday.getDate() - 1);
-    const yesterdayHours = getHoursForDate(yesterday);
-    if (!yesterdayHours) return false;
-
-    const closeMin = timeToMinutes(yesterdayHours.close);
-    if (closeMin < timeToMinutes(yesterdayHours.open)) {
-      const nowMin = now.getHours() * 60 + now.getMinutes();
-      return nowMin < closeMin;
-    }
-    return false;
-  }
-
-  const openMin = timeToMinutes(hours.open);
-  const closeMin = timeToMinutes(hours.close);
   const nowMin = now.getHours() * 60 + now.getMinutes();
 
-  if (closeMin < openMin) {
-    return nowMin >= openMin || nowMin < closeMin;
+  // Check if we're in today's open window
+  if (hours) {
+    const openMin = timeToMinutes(hours.open);
+    const closeMin = timeToMinutes(hours.close);
+
+    if (closeMin > openMin) {
+      // Same-day hours (e.g. 12:00 - 23:00)
+      if (nowMin >= openMin && nowMin < closeMin) return true;
+    } else if (closeMin < openMin) {
+      // Cross-midnight: only the "after open" part applies today
+      // e.g. open 12:00, close 02:00 — after 12:00 today counts
+      if (nowMin >= openMin) return true;
+    }
   }
 
-  return nowMin >= openMin && nowMin < closeMin;
+  // Check if yesterday's hours spill past midnight into now
+  const yesterday = new Date(now);
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yesterdayHours = getHoursForDate(yesterday);
+  if (yesterdayHours) {
+    const yOpenMin = timeToMinutes(yesterdayHours.open);
+    const yCloseMin = timeToMinutes(yesterdayHours.close);
+    // Only applies if yesterday had cross-midnight hours
+    if (yCloseMin < yOpenMin && nowMin < yCloseMin) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 export function getNextOpenTime(now: Date = new Date()): string {
