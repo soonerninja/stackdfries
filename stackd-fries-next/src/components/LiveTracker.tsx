@@ -39,6 +39,7 @@ export default function LiveTracker() {
   if (!loaded) return null;
 
   const isLive = tracker?.is_live ?? false;
+  const isTempClosed = !isLive && tracker?.location_name === 'TEMPORARILY CLOSED';
   const hours = getFormattedHours();
 
   return (
@@ -88,6 +89,21 @@ export default function LiveTracker() {
               </div>
             </div>
           </>
+        ) : isTempClosed ? (
+          <div className={styles.closedContent}>
+            <p className={styles.closedMessage}>We&apos;re taking a break! Check back soon.</p>
+            <div className={styles.contactInfo}>
+              <div>{siteConfig.location.address}</div>
+              <div>
+                <a href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a>
+              </div>
+              <div>
+                <a href={`tel:${siteConfig.contact.phone.replace(/[^\d+]/g, '')}`}>
+                  {siteConfig.contact.phone}
+                </a>
+              </div>
+            </div>
+          </div>
         ) : (
           <div className={styles.closedContent}>
             <p className={styles.closedMessage}>We&apos;re not live right now. Check back during operating hours.</p>

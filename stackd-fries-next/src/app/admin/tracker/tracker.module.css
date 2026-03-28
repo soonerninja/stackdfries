@@ -22,6 +22,11 @@
   background: var(--rich-black);
 }
 
+.statusBannerClosed {
+  background: rgba(232, 57, 45, 0.1);
+  border-color: rgba(232, 57, 45, 0.3);
+}
+
 .statusText {
   font-family: var(--font-display);
   font-size: 48px;
@@ -34,6 +39,10 @@
 
 .statusTextOffline {
   color: var(--text-muted);
+}
+
+.statusTextClosed {
+  color: var(--red);
 }
 
 .locationInfo {
@@ -156,6 +165,29 @@
 .bigBtn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.bigBtnClosed {
+  background: transparent;
+  color: var(--red);
+  border: 1px solid var(--red);
+  margin-top: 12px;
+}
+
+.bigBtnClosed:hover {
+  background: var(--red);
+  color: white;
+}
+
+.bigBtnClearClosed {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+  margin-top: 12px;
+}
+
+.bigBtnClearClosed:hover {
+  border-color: var(--text-secondary);
 }
 
 .feedback {

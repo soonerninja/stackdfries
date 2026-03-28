@@ -99,41 +99,51 @@ export default function DropsPage() {
     setSaving(true)
     setFeedback(null)
 
-    const payload = {
+    // Base payload without date columns (they may not exist yet)
+    const basePayload: Record<string, unknown> = {
       name: name.trim(),
       teaser_text: teaserText.trim() || null,
-      start_date: startDate || null,
-      end_date: endDate || null,
       available_date: startDate || null,
       image_url: imageUrl.trim() || null,
       is_active: isActive,
     }
 
-    if (editingId) {
-      const { error } = await supabase
-        .from('current_drop')
-        .update(payload)
-        .eq('id', editingId)
+    // Try with date columns first, fall back without them
+    const fullPayload = {
+      ...basePayload,
+      start_date: startDate || null,
+      end_date: endDate || null,
+    }
 
-      if (error) {
-        setFeedback({ type: 'error', message: 'Failed to update drop: ' + error.message })
+    async function trySubmit(payload: Record<string, unknown>): Promise<{ error: { message: string } | null }> {
+      if (editingId) {
+        return await supabase.from('current_drop').update(payload).eq('id', editingId)
       } else {
-        setFeedback({ type: 'success', message: 'Drop updated' })
+        return await supabase.from('current_drop').insert(payload)
+      }
+    }
+
+    let { error } = await trySubmit(fullPayload)
+
+    // If date columns don't exist, retry without them
+    if (error?.message?.includes('end_date') || error?.message?.includes('start_date')) {
+      const retryResult = await trySubmit(basePayload)
+      error = retryResult.error
+      if (!error) {
+        setFeedback({ type: 'success', message: (editingId ? 'Drop updated' : 'Drop created') + ' (run SQL migration to enable date fields)' })
         resetForm()
         await fetchDrops()
+        setSaving(false)
+        return
       }
+    }
+
+    if (error) {
+      setFeedback({ type: 'error', message: `Failed to ${editingId ? 'update' : 'create'} drop: ` + error.message })
     } else {
-      const { error } = await supabase
-        .from('current_drop')
-        .insert(payload)
-
-      if (error) {
-        setFeedback({ type: 'error', message: 'Failed to create drop: ' + error.message })
-      } else {
-        setFeedback({ type: 'success', message: 'Drop created' })
-        resetForm()
-        await fetchDrops()
-      }
+      setFeedback({ type: 'success', message: editingId ? 'Drop updated' : 'Drop created' })
+      resetForm()
+      await fetchDrops()
     }
     setSaving(false)
   }

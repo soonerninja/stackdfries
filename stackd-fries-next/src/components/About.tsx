@@ -14,18 +14,18 @@ export default function About() {
             </p>
             <p className={styles.body}>
               Stack&apos;d Fries is what happens when street food meets obsession. Every order stacked
-              with flavor, no shortcuts, no compromises. We started with a simple idea: fries should
-              be a main event, not a side dish.
+              high with flavor — no half-measures, no boring fries. We started with a simple idea:
+              fries should be the main event, not a side dish.
             </p>
             <p className={styles.body}>
-              From our trailer to your hands — fresh-cut, loaded, and worth the wait.
+              From our trailer to your hands — loaded, stacked, and worth the wait.
             </p>
           </div>
 
           <div className={styles.highlights}>
             <div className={styles.highlight}>
               <div className={styles.highlightNumber}>100%</div>
-              <div className={styles.highlightLabel}>Fresh Cut Daily</div>
+              <div className={styles.highlightLabel}>Loaded Every Time</div>
             </div>
             <div className={styles.highlight}>
               <div className={styles.highlightNumber}>Oklahoma</div>

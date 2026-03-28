@@ -76,6 +76,40 @@ export default function SettingsPage() {
     <div>
       <h1 className={styles.heading}>Settings</h1>
 
+      <div className={styles.form} style={{ marginBottom: 24 }}>
+        <h2 className={styles.formTitle}>Business Hours</h2>
+        <table className={styles.hoursTable}>
+          <tbody>
+            <tr>
+              <td className={styles.hoursDay}>Thursday</td>
+              <td className={styles.hoursTime}>5pm – 10pm</td>
+            </tr>
+            <tr>
+              <td className={styles.hoursDay}>Friday</td>
+              <td className={styles.hoursTime}>5pm – 11pm</td>
+            </tr>
+            <tr>
+              <td className={styles.hoursDay}>Saturday</td>
+              <td className={styles.hoursTime}>12pm – 11pm</td>
+            </tr>
+            <tr>
+              <td className={styles.hoursDay}>Sunday</td>
+              <td className={styles.hoursTime}>12pm – 8pm</td>
+            </tr>
+            <tr>
+              <td className={styles.hoursDay}>Mon – Wed</td>
+              <td className={styles.hoursTime}>Closed</td>
+            </tr>
+          </tbody>
+        </table>
+        <p className={styles.hoursNote}>
+          Late-night Saturdays (until 2am) during OU football &amp; spring sessions.
+        </p>
+        <p className={styles.hoursNote}>
+          To update hours, edit <code>src/lib/config.ts</code> or contact your developer.
+        </p>
+      </div>
+
       <form onSubmit={handleChangePassword} className={styles.form}>
         <h2 className={styles.formTitle}>Change Password</h2>
 
