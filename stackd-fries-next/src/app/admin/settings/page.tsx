@@ -246,7 +246,7 @@ export default function SettingsPage() {
 
         <div className={styles.field}>
           <label className={styles.label}>Current Password</label>
-          <input type="password" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} className={styles.input} placeholder="Enter current password" required minLength={6} />
+          <input type="password" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} className={styles.input} placeholder="Enter current password" required />
         </div>
         <div className={styles.field}>
           <label className={styles.label}>New Password</label>
