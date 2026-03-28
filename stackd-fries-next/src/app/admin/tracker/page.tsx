@@ -25,6 +25,7 @@ export default function TrackerPage() {
     const { data, error } = await supabase
       .from('tracker_status')
       .select('*')
+      .order('created_at', { ascending: false })
       .limit(1)
       .single()
 

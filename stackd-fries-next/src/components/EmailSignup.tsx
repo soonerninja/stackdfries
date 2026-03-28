@@ -50,6 +50,7 @@ export default function EmailSignup() {
             <input
               type="email"
               placeholder="your email"
+              aria-label="Email address for drop alerts"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className={styles.input}

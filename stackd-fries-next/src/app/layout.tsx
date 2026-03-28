@@ -72,16 +72,9 @@ const jsonLd = {
   paymentAccepted: "Cash, Credit Card, Square",
   address: {
     "@type": "PostalAddress",
-    streetAddress: "Mobile Food Trailer",
     addressLocality: "Norman",
     addressRegion: "OK",
-    postalCode: "73069",
     addressCountry: "US",
-  },
-  geo: {
-    "@type": "GeoCoordinates",
-    latitude: 35.2226,
-    longitude: -97.4395,
   },
   areaServed: {
     "@type": "State",
@@ -97,10 +90,8 @@ const jsonLd = {
     "https://www.facebook.com/profile.php?id=61580845964760",
   ],
   openingHoursSpecification: [
-    { "@type": "OpeningHoursSpecification", dayOfWeek: "Thursday", opens: "17:00", closes: "22:00" },
-    { "@type": "OpeningHoursSpecification", dayOfWeek: "Friday", opens: "17:00", closes: "23:00" },
-    { "@type": "OpeningHoursSpecification", dayOfWeek: "Saturday", opens: "12:00", closes: "23:00" },
-    { "@type": "OpeningHoursSpecification", dayOfWeek: "Sunday", opens: "12:00", closes: "20:00" },
+    { "@type": "OpeningHoursSpecification", dayOfWeek: ["Thursday", "Friday"], opens: "17:00", closes: "23:00" },
+    { "@type": "OpeningHoursSpecification", dayOfWeek: ["Saturday", "Sunday"], opens: "12:00", closes: "23:00" },
   ],
   hasMenu: {
     "@type": "Menu",
