@@ -11,6 +11,7 @@ import EmailSignup from '@/components/EmailSignup';
 import Footer from '@/components/Footer';
 import MobileCta from '@/components/MobileCta';
 import ScrollReveal from '@/components/ScrollReveal';
+import BackToTop from '@/components/BackToTop';
 
 export const dynamic = 'force-dynamic';
 
@@ -32,6 +33,7 @@ export default function Home() {
       <Footer />
       <MobileCta />
       <ScrollReveal />
+      <BackToTop />
     </>
   );
 }

@@ -124,3 +124,42 @@
 .actionLinkSecondary:hover {
   background: rgba(212, 175, 55, 0.1);
 }
+
+.recentSection {
+  margin-top: 24px;
+  background: var(--rich-black);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--card-radius);
+  padding: 20px;
+}
+
+.recentTitle {
+  font-family: var(--font-label);
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 16px;
+}
+
+.recentItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.recentItem:last-child {
+  border-bottom: none;
+}
+
+.recentEmail {
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.recentDate {
+  font-size: 12px;
+  color: var(--text-muted);
+}
