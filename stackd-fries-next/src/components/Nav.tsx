@@ -20,6 +20,22 @@ export default function Nav() {
 
   const closeMenu = () => setMenuOpen(false);
 
+  // Close on Escape key
+  useEffect(() => {
+    if (!menuOpen) return;
+    document.body.style.overflow = 'hidden';
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.body.style.overflow = '';
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [menuOpen]);
+
   return (
     <>
       <nav className={`${styles.nav} ${scrolled ? styles.navScrolled : ''}`}>
@@ -54,7 +70,12 @@ export default function Nav() {
         </div>
       </nav>
 
-      <div className={`${styles.overlay} ${menuOpen ? styles.overlayOpen : ''}`}>
+      <div
+        className={`${styles.overlay} ${menuOpen ? styles.overlayOpen : ''}`}
+        role="dialog"
+        aria-modal="true"
+        onKeyDown={(e) => { if (e.key === 'Escape') closeMenu(); }}
+      >
         <a href="#menu" className={styles.overlayLink} onClick={closeMenu}>Menu</a>
         <a href="#tracker" className={styles.overlayLink} onClick={closeMenu}>Find Us</a>
         <a

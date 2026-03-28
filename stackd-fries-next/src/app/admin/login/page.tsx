@@ -59,6 +59,7 @@ export default function AdminLoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               className={styles.input}
               required
+              minLength={6}
               autoComplete="current-password"
             />
           </div>

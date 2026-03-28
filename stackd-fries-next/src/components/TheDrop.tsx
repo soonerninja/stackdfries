@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { createClient } from '@/lib/supabase-server';
 import type { CurrentDrop } from '@/types/database';
 import styles from './TheDrop.module.css';
@@ -29,8 +30,7 @@ export default async function TheDrop() {
         {data.teaser_text && <p className={styles.teaser}>{data.teaser_text}</p>}
         {data.image_url && (
           <div className={styles.image}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={data.image_url} alt={data.name} />
+            <Image src={data.image_url} alt={data.name} fill sizes="(max-width: 767px) 100vw, 500px" style={{ objectFit: 'cover' }} />
           </div>
         )}
         {data.available_date && (
