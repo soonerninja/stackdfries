@@ -107,6 +107,16 @@ export default function Nav() {
           >
             Instagram
           </a>
+          <span className={styles.overlaySocialDot}>·</span>
+          <a
+            href={siteConfig.social.facebook}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.overlaySocialLink}
+            onClick={closeMenu}
+          >
+            Facebook
+          </a>
         </div>
       </div>
     </>

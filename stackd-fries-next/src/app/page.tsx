@@ -1,8 +1,10 @@
+import { Suspense } from 'react';
 import Nav from '@/components/Nav';
 import Hero from '@/components/Hero';
 import LiveTracker from '@/components/LiveTracker';
 import TheDrop from '@/components/TheDrop';
 import MenuSection from '@/components/MenuSection';
+import MenuSkeleton from '@/components/MenuSkeleton';
 import About from '@/components/About';
 import Catering from '@/components/Catering';
 import EmailSignup from '@/components/EmailSignup';
@@ -20,7 +22,9 @@ export default function Home() {
         <Hero />
         <LiveTracker />
         <TheDrop />
-        <MenuSection />
+        <Suspense fallback={<MenuSkeleton />}>
+          <MenuSection />
+        </Suspense>
         <About />
         <Catering />
         <EmailSignup />
