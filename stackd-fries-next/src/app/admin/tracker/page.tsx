@@ -52,7 +52,7 @@ export default function TrackerPage() {
         showToast('Location captured', 'success')
       },
       () => {
-        setFeedback({ type: 'error', message: 'Could not get your location' })
+        showToast('Could not get your location', 'error')
       }
     )
   }
@@ -60,7 +60,7 @@ export default function TrackerPage() {
   async function goLive() {
     if (!tracker) return
     if (!locationName.trim()) {
-      setFeedback({ type: 'error', message: 'Location name is required' })
+      showToast('Location name is required', 'error')
       return
     }
     setSaving(true)
@@ -77,9 +77,9 @@ export default function TrackerPage() {
       .eq('id', tracker.id)
 
     if (error) {
-      setFeedback({ type: 'error', message: 'Failed to go live: ' + error.message })
+      showToast('Failed to go live: ' + error.message, 'error')
     } else {
-      setFeedback({ type: 'success', message: 'You are now LIVE!' })
+      showToast('You are now LIVE!', 'success')
       await fetchStatus()
     }
     setSaving(false)
@@ -98,9 +98,9 @@ export default function TrackerPage() {
       .eq('id', tracker.id)
 
     if (error) {
-      setFeedback({ type: 'error', message: 'Failed to go offline: ' + error.message })
+      showToast('Failed to go offline: ' + error.message, 'error')
     } else {
-      setFeedback({ type: 'success', message: 'You are now OFFLINE' })
+      showToast('You are now OFFLINE', 'success')
       await fetchStatus()
     }
     setSaving(false)
@@ -120,9 +120,9 @@ export default function TrackerPage() {
       .eq('id', tracker.id)
 
     if (error) {
-      setFeedback({ type: 'error', message: 'Failed to mark as closed: ' + error.message })
+      showToast('Failed to mark as closed: ' + error.message, 'error')
     } else {
-      setFeedback({ type: 'success', message: 'Marked as TEMPORARILY CLOSED' })
+      showToast('Marked as TEMPORARILY CLOSED', 'success')
       await fetchStatus()
     }
     setSaving(false)
@@ -140,9 +140,9 @@ export default function TrackerPage() {
       .eq('id', tracker.id)
 
     if (error) {
-      setFeedback({ type: 'error', message: 'Failed to clear closed status: ' + error.message })
+      showToast('Failed to clear closed status: ' + error.message, 'error')
     } else {
-      setFeedback({ type: 'success', message: 'Temporarily closed status removed' })
+      showToast('Temporarily closed status removed', 'success')
       await fetchStatus()
     }
     setSaving(false)
@@ -162,12 +162,6 @@ export default function TrackerPage() {
   return (
     <div>
       <h1 className={styles.heading}>Truck Tracker</h1>
-
-      {feedback && (
-        <div className={`${styles.feedback} ${feedback.type === 'success' ? styles.feedbackSuccess : styles.feedbackError}`}>
-          {feedback.message}
-        </div>
-      )}
 
       <div className={`${styles.statusBanner} ${isLive ? styles.statusBannerLive : isTempClosed ? styles.statusBannerClosed : styles.statusBannerOffline}`}>
         <div className={`${styles.statusText} ${isLive ? styles.statusTextLive : isTempClosed ? styles.statusTextClosed : styles.statusTextOffline}`}>
