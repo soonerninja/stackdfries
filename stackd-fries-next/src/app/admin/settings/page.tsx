@@ -4,8 +4,11 @@ import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase-browser'
 import styles from './settings.module.css'
 
-const DAYS = ['thu', 'fri', 'sat', 'sun'] as const
+const DAYS = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'] as const
 const DAY_LABELS: Record<string, string> = {
+  mon: 'Monday',
+  tue: 'Tuesday',
+  wed: 'Wednesday',
   thu: 'Thursday',
   fri: 'Friday',
   sat: 'Saturday',
@@ -51,7 +54,7 @@ export default function SettingsPage() {
 
   // Hours state
   const [hours, setHours] = useState<HoursData>(DEFAULT_HOURS)
-  const [closedDays, setClosedDays] = useState<Record<string, boolean>>({})
+  const [closedDays, setClosedDays] = useState<Record<string, boolean>>({ mon: true, tue: true, wed: true })
   const [hoursSaving, setHoursSaving] = useState(false)
   const [hoursFeedback, setHoursFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
   const [hoursLoaded, setHoursLoaded] = useState(false)
@@ -220,13 +223,6 @@ export default function SettingsPage() {
             </div>
           </div>
         ))}
-
-        <div className={styles.hourRow}>
-          <div className={styles.hourDay}>Mon – Wed</div>
-          <div className={styles.hourControls}>
-            <span className={styles.closedLabel}>Closed</span>
-          </div>
-        </div>
 
         <button
           type="button"
