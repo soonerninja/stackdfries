@@ -107,6 +107,50 @@ export default function TrackerPage() {
     setSaving(false)
   }
 
+  async function markTemporarilyClosed() {
+    if (!tracker) return
+    setSaving(true)
+    setFeedback(null)
+
+    const { error } = await supabase
+      .from('tracker_status')
+      .update({
+        is_live: false,
+        location_name: 'TEMPORARILY CLOSED',
+        went_offline_at: new Date().toISOString(),
+      })
+      .eq('id', tracker.id)
+
+    if (error) {
+      setFeedback({ type: 'error', message: 'Failed to mark as closed: ' + error.message })
+    } else {
+      setFeedback({ type: 'success', message: 'Marked as TEMPORARILY CLOSED' })
+      await fetchStatus()
+    }
+    setSaving(false)
+  }
+
+  async function clearTemporarilyClosed() {
+    if (!tracker) return
+    setSaving(true)
+    setFeedback(null)
+
+    const { error } = await supabase
+      .from('tracker_status')
+      .update({
+        location_name: null,
+      })
+      .eq('id', tracker.id)
+
+    if (error) {
+      setFeedback({ type: 'error', message: 'Failed to clear closed status: ' + error.message })
+    } else {
+      setFeedback({ type: 'success', message: 'Temporarily closed status removed' })
+      await fetchStatus()
+    }
+    setSaving(false)
+  }
+
   if (loading) {
     return <div className={styles.loading}>Loading tracker status...</div>
   }
@@ -116,6 +160,7 @@ export default function TrackerPage() {
   }
 
   const isLive = tracker.is_live
+  const isTempClosed = !isLive && tracker.location_name === 'TEMPORARILY CLOSED'
 
   return (
     <div>
@@ -127,13 +172,18 @@ export default function TrackerPage() {
         </div>
       )}
 
-      <div className={`${styles.statusBanner} ${isLive ? styles.statusBannerLive : styles.statusBannerOffline}`}>
-        <div className={`${styles.statusText} ${isLive ? styles.statusTextLive : styles.statusTextOffline}`}>
-          {isLive ? 'LIVE' : 'OFFLINE'}
+      <div className={`${styles.statusBanner} ${isLive ? styles.statusBannerLive : isTempClosed ? styles.statusBannerClosed : styles.statusBannerOffline}`}>
+        <div className={`${styles.statusText} ${isLive ? styles.statusTextLive : isTempClosed ? styles.statusTextClosed : styles.statusTextOffline}`}>
+          {isLive ? 'LIVE' : isTempClosed ? 'TEMPORARILY CLOSED' : 'OFFLINE'}
         </div>
         {isLive && tracker.location_name && (
           <div className={styles.locationInfo}>
             {tracker.location_name}
+          </div>
+        )}
+        {isTempClosed && (
+          <div className={styles.locationInfo}>
+            Public site shows a &ldquo;taking a break&rdquo; message instead of the schedule.
           </div>
         )}
       </div>
@@ -198,13 +248,32 @@ export default function TrackerPage() {
           {saving ? 'Going Offline...' : 'Go Offline'}
         </button>
       ) : (
-        <button
-          onClick={goLive}
-          disabled={saving}
-          className={`${styles.bigBtn} ${styles.bigBtnLive}`}
-        >
-          {saving ? 'Going Live...' : 'Go Live'}
-        </button>
+        <>
+          <button
+            onClick={goLive}
+            disabled={saving}
+            className={`${styles.bigBtn} ${styles.bigBtnLive}`}
+          >
+            {saving ? 'Going Live...' : 'Go Live'}
+          </button>
+          {isTempClosed ? (
+            <button
+              onClick={clearTemporarilyClosed}
+              disabled={saving}
+              className={`${styles.bigBtn} ${styles.bigBtnClearClosed}`}
+            >
+              {saving ? 'Clearing...' : 'Remove Temporarily Closed'}
+            </button>
+          ) : (
+            <button
+              onClick={markTemporarilyClosed}
+              disabled={saving}
+              className={`${styles.bigBtn} ${styles.bigBtnClosed}`}
+            >
+              {saving ? 'Updating...' : 'Mark Temporarily Closed'}
+            </button>
+          )}
+        </>
       )}
     </div>
   )
