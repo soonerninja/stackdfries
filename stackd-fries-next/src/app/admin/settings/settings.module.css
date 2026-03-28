@@ -96,43 +96,94 @@
   cursor: not-allowed;
 }
 
-.hoursTable {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 16px;
-}
-
-.hoursTable td {
+.hourRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 10px 0;
   border-bottom: 1px solid var(--border-subtle);
-  font-size: 14px;
+  gap: 12px;
 }
 
-.hoursDay {
+.hourDay {
   font-family: var(--font-label);
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 1px;
   color: var(--text-secondary);
+  min-width: 90px;
 }
 
-.hoursTime {
-  text-align: right;
+.hourControls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.timeSelect {
+  padding: 8px 10px;
+  background: var(--black);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
   color: var(--text-primary);
   font-family: var(--font-body);
+  font-size: 13px;
+  min-height: 40px;
+  cursor: pointer;
+  appearance: auto;
 }
 
-.hoursNote {
-  font-size: 12px;
+.timeSelect:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+
+.hourDash {
   color: var(--text-muted);
-  margin-top: 8px;
-  line-height: 1.5;
+  font-size: 14px;
 }
 
-.hoursNote code {
+.closedLabel {
+  color: var(--text-muted);
+  font-family: var(--font-label);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.closedToggle {
+  padding: 6px 12px;
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  color: var(--text-muted);
+  font-family: var(--font-label);
   font-size: 11px;
-  background: var(--black);
-  padding: 2px 6px;
-  border-radius: 3px;
-  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  min-height: 32px;
+  transition: all var(--transition-fast);
+}
+
+.closedToggle:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.closedToggleActive {
+  border-color: #22c55e;
+  color: #22c55e;
+}
+
+@media (max-width: 480px) {
+  .hourRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .hourControls {
+    flex-wrap: wrap;
+  }
 }
