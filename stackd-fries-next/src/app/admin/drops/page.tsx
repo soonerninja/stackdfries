@@ -156,12 +156,6 @@ export default function DropsPage() {
     <div>
       <h1 className={styles.heading}>Drops</h1>
 
-      {feedback && (
-        <div className={`${styles.feedback} ${feedback.type === 'success' ? styles.feedbackSuccess : styles.feedbackError}`}>
-          {feedback.message}
-        </div>
-      )}
-
       <div className={styles.currentDrop}>
         <div className={styles.currentDropLabel}>Current Active Drop</div>
         {activeDrop ? (
