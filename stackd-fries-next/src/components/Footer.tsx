@@ -37,7 +37,7 @@ export default function Footer() {
 
         <div className={styles.bottom}>
           <p className={styles.hours}>
-            Thu–Fri 5pm–11pm &nbsp;|&nbsp; Sat 12pm–2am (OU szn) &nbsp;|&nbsp; Sun 12pm–8pm
+            Thu–Sun &nbsp;|&nbsp; Check our schedule for hours
           </p>
           <div className={styles.legal}>
             <span>&copy; {new Date().getFullYear()} Stack&apos;d Fries&trade; &mdash; All rights reserved.</span>
