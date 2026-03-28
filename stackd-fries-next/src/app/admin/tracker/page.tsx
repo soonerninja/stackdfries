@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase-browser'
 import type { TrackerStatus } from '@/types/database'
+import { showToast } from '@/components/admin/Toast'
 import styles from './tracker.module.css'
 
 export default function TrackerPage() {
@@ -10,7 +11,6 @@ export default function TrackerPage() {
   const [tracker, setTracker] = useState<TrackerStatus | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
-  const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
 
   // Form fields for going live
   const [locationName, setLocationName] = useState('')
@@ -30,7 +30,7 @@ export default function TrackerPage() {
       .single()
 
     if (error) {
-      setFeedback({ type: 'error', message: 'Failed to load tracker status' })
+      showToast('Failed to load tracker status', 'error')
     } else {
       setTracker(data)
       if (data.location_name) setLocationName(data.location_name)
@@ -42,14 +42,14 @@ export default function TrackerPage() {
 
   function handleUseMyLocation() {
     if (!navigator.geolocation) {
-      setFeedback({ type: 'error', message: 'Geolocation not supported by your browser' })
+      showToast('Geolocation not supported by your browser', 'error')
       return
     }
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         setLat(String(pos.coords.latitude))
         setLng(String(pos.coords.longitude))
-        setFeedback({ type: 'success', message: 'Location captured' })
+        showToast('Location captured', 'success')
       },
       () => {
         setFeedback({ type: 'error', message: 'Could not get your location' })
@@ -64,7 +64,6 @@ export default function TrackerPage() {
       return
     }
     setSaving(true)
-    setFeedback(null)
 
     const { error } = await supabase
       .from('tracker_status')
@@ -89,7 +88,6 @@ export default function TrackerPage() {
   async function goOffline() {
     if (!tracker) return
     setSaving(true)
-    setFeedback(null)
 
     const { error } = await supabase
       .from('tracker_status')
@@ -111,7 +109,6 @@ export default function TrackerPage() {
   async function markTemporarilyClosed() {
     if (!tracker) return
     setSaving(true)
-    setFeedback(null)
 
     const { error } = await supabase
       .from('tracker_status')
@@ -134,7 +131,6 @@ export default function TrackerPage() {
   async function clearTemporarilyClosed() {
     if (!tracker) return
     setSaving(true)
-    setFeedback(null)
 
     const { error } = await supabase
       .from('tracker_status')
