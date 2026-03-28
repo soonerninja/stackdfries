@@ -24,11 +24,13 @@ export default async function AdminDashboardPage() {
     .select('*', { count: 'exact', head: true })
 
   // Fetch recent email signups
-  const { data: recentEmails } = await supabase
+  const { data: recentEmails, error: recentError } = await supabase
     .from('email_signups')
     .select('email, signed_up_at')
     .order('signed_up_at', { ascending: false })
     .limit(5)
+
+  console.log('recentEmails:', recentEmails, 'error:', recentError)
 
   // Fetch active drop
   const { data: activeDrop } = await supabase
@@ -92,19 +94,23 @@ export default async function AdminDashboardPage() {
         </div>
       </div>
 
-      {recentEmails && recentEmails.length > 0 && (
-        <div className={styles.recentSection}>
-          <div className={styles.recentTitle}>Recent Signups</div>
-          {recentEmails.map((signup: { email: string; signed_up_at: string }, i: number) => (
+      <div className={styles.recentSection}>
+        <div className={styles.recentTitle}>Recent Signups</div>
+        {recentEmails && recentEmails.length > 0 ? (
+          recentEmails.map((signup: { email: string; signed_up_at: string }, i: number) => (
             <div key={i} className={styles.recentItem}>
               <span className={styles.recentEmail}>{signup.email}</span>
               <span className={styles.recentDate}>
                 {new Date(signup.signed_up_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
               </span>
             </div>
-          ))}
-        </div>
-      )}
+          ))
+        ) : (
+          <div style={{ color: 'var(--text-muted)', fontSize: 14 }}>
+            {recentError ? `Error: ${recentError.message}` : 'No signups yet'}
+          </div>
+        )}
+      </div>
     </div>
   )
 }
