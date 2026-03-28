@@ -10,7 +10,7 @@ export const siteConfig = {
   social: {
     instagram: "https://instagram.com/stackdfries",
     tiktok: "https://tiktok.com/@stackdfries",
-    facebook: "https://facebook.com/stackdfries",
+    facebook: "https://www.facebook.com/profile.php?id=61580845964760",
   },
   location: {
     address: "123 Main St, Norman, OK 73069",
