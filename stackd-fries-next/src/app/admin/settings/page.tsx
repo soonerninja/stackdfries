@@ -113,9 +113,13 @@ export default function SettingsPage() {
       }
     })
 
+    // Try upsert
     const { error } = await supabase
       .from('site_settings')
-      .upsert({ key: 'hours', value: hoursToSave, updated_at: new Date().toISOString() })
+      .upsert(
+        { key: 'hours', value: hoursToSave, updated_at: new Date().toISOString() },
+        { onConflict: 'key' }
+      )
 
     if (error) {
       if (error.message?.includes('site_settings')) {
@@ -123,6 +127,19 @@ export default function SettingsPage() {
       } else {
         showToast('Failed to save: ' + error.message, 'error')
       }
+      setHoursSaving(false)
+      return
+    }
+
+    // Verify the save actually persisted (upsert can silently fail with RLS)
+    const { data: verify } = await supabase
+      .from('site_settings')
+      .select('value')
+      .eq('key', 'hours')
+      .single()
+
+    if (!verify?.value) {
+      showToast('Save blocked by permissions. Check Supabase RLS policies for site_settings.', 'error')
     } else {
       showToast('Hours updated!', 'success')
     }
