@@ -4,6 +4,8 @@ import { useEffect } from 'react';
 
 export default function ScrollReveal() {
   useEffect(() => {
+    const observed = new WeakSet<Element>();
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -16,22 +18,28 @@ export default function ScrollReveal() {
       { threshold: 0.1 }
     );
 
-    // Observe all current .reveal elements
-    function observeAll() {
+    function observeNew() {
       document.querySelectorAll('.reveal:not(.visible)').forEach((el) => {
-        observer.observe(el);
+        if (!observed.has(el)) {
+          observed.add(el);
+          observer.observe(el);
+        }
       });
     }
 
-    observeAll();
+    observeNew();
 
-    // Watch for new .reveal elements added to the DOM (client components that render late)
-    const mutation = new MutationObserver(() => observeAll());
+    let debounceTimer: ReturnType<typeof setTimeout>;
+    const mutation = new MutationObserver(() => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(observeNew, 100);
+    });
     mutation.observe(document.body, { childList: true, subtree: true });
 
     return () => {
       observer.disconnect();
       mutation.disconnect();
+      clearTimeout(debounceTimer);
     };
   }, []);
 

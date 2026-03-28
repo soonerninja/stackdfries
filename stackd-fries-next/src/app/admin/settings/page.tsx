@@ -128,6 +128,7 @@ export default function SettingsPage() {
             className={styles.input}
             placeholder="Enter current password"
             required
+            minLength={6}
           />
         </div>
 
@@ -140,6 +141,7 @@ export default function SettingsPage() {
             className={styles.input}
             placeholder="Enter new password"
             required
+            minLength={6}
           />
         </div>
 
@@ -152,6 +154,7 @@ export default function SettingsPage() {
             className={styles.input}
             placeholder="Confirm new password"
             required
+            minLength={6}
           />
         </div>
 
