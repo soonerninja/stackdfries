@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import styles from './MenuCard.module.css';
 
 interface MenuCardProps {
@@ -13,8 +14,7 @@ export default function MenuCard({ name, price, description, imageUrl, isSpecial
     <div className={`${styles.card} ${isSpecial ? styles.special : ''}`}>
       {imageUrl ? (
         <div className={styles.imageWrap}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={imageUrl} alt={name} />
+          <Image src={imageUrl} alt={name} fill sizes="(max-width: 767px) 100vw, 50vw" style={{ objectFit: 'cover' }} />
         </div>
       ) : (
         <div className={`${styles.imageWrap} ${styles.placeholder}`}>

@@ -32,8 +32,10 @@
 }
 
 .image {
+  position: relative;
   width: 100%;
   max-width: 500px;
+  aspect-ratio: 16 / 9;
   margin: 0 auto 24px;
   border-radius: var(--card-radius);
   overflow: hidden;
