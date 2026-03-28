@@ -133,6 +133,7 @@ section {
   position: relative;
   padding: var(--section-padding) 0;
   z-index: 1;
+  scroll-margin-top: var(--nav-height);
 }
 
 /* ============================================

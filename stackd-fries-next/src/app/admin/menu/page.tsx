@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import { createClient } from '@/lib/supabase-browser'
 import type { MenuItem } from '@/types/database'
 import styles from './menu.module.css'
@@ -168,7 +169,7 @@ export default function MenuPage() {
   return (
     <div>
       <div className={styles.topRow}>
-        <h1 className={styles.heading}>Menu</h1>
+        <Link href="/admin" className={styles.heading}>Menu</Link>
         {!showForm && (
           <button onClick={startAdd} className={styles.addBtn}>
             Add Item

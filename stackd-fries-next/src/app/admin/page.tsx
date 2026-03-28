@@ -79,6 +79,9 @@ export default async function AdminDashboardPage() {
           <Link href="/admin/emails" className={styles.actionLink}>
             View Emails
           </Link>
+          <Link href="/admin/settings" className={styles.actionLink}>
+            Settings
+          </Link>
           <a href="/" target="_blank" rel="noopener noreferrer" className={styles.actionLinkSecondary}>
             View Public Site
           </a>
