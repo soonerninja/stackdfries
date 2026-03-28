@@ -26,8 +26,8 @@ export default async function AdminDashboardPage() {
   // Fetch recent email signups
   const { data: recentEmails } = await supabase
     .from('email_signups')
-    .select('email, created_at')
-    .order('created_at', { ascending: false })
+    .select('email, signed_up_at')
+    .order('signed_up_at', { ascending: false })
     .limit(5)
 
   // Fetch active drop
@@ -95,11 +95,11 @@ export default async function AdminDashboardPage() {
       {recentEmails && recentEmails.length > 0 && (
         <div className={styles.recentSection}>
           <div className={styles.recentTitle}>Recent Signups</div>
-          {recentEmails.map((signup: { email: string; created_at: string }, i: number) => (
+          {recentEmails.map((signup: { email: string; signed_up_at: string }, i: number) => (
             <div key={i} className={styles.recentItem}>
               <span className={styles.recentEmail}>{signup.email}</span>
               <span className={styles.recentDate}>
-                {new Date(signup.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                {new Date(signup.signed_up_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
               </span>
             </div>
           ))}
