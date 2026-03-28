@@ -3,6 +3,8 @@ import { headers } from 'next/headers'
 import Link from 'next/link'
 import { logout } from './actions'
 import styles from './layout.module.css'
+import Toast from '@/components/admin/Toast'
+import SessionCheck from '@/components/admin/SessionCheck'
 
 const navLinks = [
   { href: '/admin', label: 'Dashboard' },
@@ -39,6 +41,8 @@ export default async function AdminLayout({
 
   return (
     <div className={styles.shell}>
+      <SessionCheck />
+      <Toast />
       <div className={styles.topBar}>
         <Link href="/admin" className={styles.brand}>Stack&apos;d Admin</Link>
         <div className={styles.topBarActions}>

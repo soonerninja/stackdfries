@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase-browser'
 import type { MenuItem } from '@/types/database'
+import { showToast } from '@/components/admin/Toast'
 import styles from './menu.module.css'
 
 const CATEGORIES = [
@@ -17,7 +18,6 @@ export default function MenuPage() {
   const [items, setItems] = useState<MenuItem[]>([])
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
-  const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
   const [showForm, setShowForm] = useState(false)
 
   // Form state
@@ -44,7 +44,7 @@ export default function MenuPage() {
       .order('name', { ascending: true })
 
     if (error) {
-      setFeedback({ type: 'error', message: 'Failed to load menu items' })
+      showToast('Failed to load menu items', 'error')
     } else {
       setItems(data || [])
     }
@@ -77,13 +77,13 @@ export default function MenuPage() {
     setVideoUrl(item.video_url || '')
     setAdditionalImages(item.images ? item.images.join(', ') : '')
     setShowForm(true)
-    setFeedback(null)
+
   }
 
   function startAdd() {
     resetForm()
     setShowForm(true)
-    setFeedback(null)
+
   }
 
   async function handleDelete(item: MenuItem) {
@@ -95,9 +95,9 @@ export default function MenuPage() {
       .eq('id', item.id)
 
     if (error) {
-      setFeedback({ type: 'error', message: 'Failed to delete: ' + error.message })
+      showToast('Failed to delete: ' + error.message, 'error')
     } else {
-      setFeedback({ type: 'success', message: `"${item.name}" deleted` })
+      showToast(`"${item.name}" deleted`, 'success')
       await fetchItems()
     }
   }
@@ -105,16 +105,15 @@ export default function MenuPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!name.trim()) {
-      setFeedback({ type: 'error', message: 'Name is required' })
+      showToast('Name is required', 'error')
       return
     }
     if (!price || isNaN(parseFloat(price)) || parseFloat(price) < 0) {
-      setFeedback({ type: 'error', message: 'Valid price is required' })
+      showToast('Valid price is required', 'error')
       return
     }
 
     setSaving(true)
-    setFeedback(null)
 
     const imagesArray = additionalImages.trim()
       ? additionalImages.split(',').map((s) => s.trim()).filter(Boolean)
@@ -139,9 +138,9 @@ export default function MenuPage() {
         .eq('id', editingId)
 
       if (error) {
-        setFeedback({ type: 'error', message: 'Failed to update: ' + error.message })
+        showToast('Failed to update: ' + error.message, 'error')
       } else {
-        setFeedback({ type: 'success', message: 'Item updated' })
+        showToast('Item updated', 'success')
         resetForm()
         await fetchItems()
       }
@@ -151,9 +150,9 @@ export default function MenuPage() {
         .insert(payload)
 
       if (error) {
-        setFeedback({ type: 'error', message: 'Failed to create: ' + error.message })
+        showToast('Failed to create: ' + error.message, 'error')
       } else {
-        setFeedback({ type: 'success', message: 'Item created' })
+        showToast('Item created', 'success')
         resetForm()
         await fetchItems()
       }
@@ -175,12 +174,6 @@ export default function MenuPage() {
           </button>
         )}
       </div>
-
-      {feedback && (
-        <div className={`${styles.feedback} ${feedback.type === 'success' ? styles.feedbackSuccess : styles.feedbackError}`}>
-          {feedback.message}
-        </div>
-      )}
 
       {showForm && (
         <form onSubmit={handleSubmit} className={styles.form}>
