@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase-browser'
+import { showToast } from '@/components/admin/Toast'
 import styles from './settings.module.css'
 
 const DAYS = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'] as const
@@ -50,13 +51,11 @@ export default function SettingsPage() {
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [saving, setSaving] = useState(false)
-  const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
 
   // Hours state
   const [hours, setHours] = useState<HoursData>(DEFAULT_HOURS)
   const [closedDays, setClosedDays] = useState<Record<string, boolean>>({ mon: true, tue: true, wed: true })
   const [hoursSaving, setHoursSaving] = useState(false)
-  const [hoursFeedback, setHoursFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
   const [hoursLoaded, setHoursLoaded] = useState(false)
 
   useEffect(() => {
@@ -105,7 +104,6 @@ export default function SettingsPage() {
 
   async function saveHours() {
     setHoursSaving(true)
-    setHoursFeedback(null)
 
     // Build hours object, omitting closed days
     const hoursToSave: HoursData = {}
@@ -121,30 +119,28 @@ export default function SettingsPage() {
 
     if (error) {
       if (error.message?.includes('site_settings')) {
-        setHoursFeedback({ type: 'error', message: 'Run the SQL migration to enable this feature (see below)' })
+        showToast('Run the SQL migration to enable this feature', 'error')
       } else {
-        setHoursFeedback({ type: 'error', message: 'Failed to save: ' + error.message })
+        showToast('Failed to save: ' + error.message, 'error')
       }
     } else {
-      setHoursFeedback({ type: 'success', message: 'Hours updated!' })
+      showToast('Hours updated!', 'success')
     }
     setHoursSaving(false)
   }
 
   async function handleChangePassword(e: React.FormEvent) {
     e.preventDefault()
-    setFeedback(null)
-
     if (!userEmail) {
-      setFeedback({ type: 'error', message: 'Unable to verify user. Please refresh and try again.' })
+      showToast('Unable to verify user. Please refresh and try again.', 'error')
       return
     }
     if (newPassword.length < 6) {
-      setFeedback({ type: 'error', message: 'Password must be at least 6 characters' })
+      showToast('Password must be at least 6 characters', 'error')
       return
     }
     if (newPassword !== confirmPassword) {
-      setFeedback({ type: 'error', message: 'Passwords do not match' })
+      showToast('Passwords do not match', 'error')
       return
     }
     setSaving(true)
@@ -154,16 +150,16 @@ export default function SettingsPage() {
       password: currentPassword,
     })
     if (signInError) {
-      setFeedback({ type: 'error', message: 'Current password is incorrect' })
+      showToast('Current password is incorrect', 'error')
       setSaving(false)
       return
     }
 
     const { error } = await supabase.auth.updateUser({ password: newPassword })
     if (error) {
-      setFeedback({ type: 'error', message: error.message })
+      showToast(error.message, 'error')
     } else {
-      setFeedback({ type: 'success', message: 'Password updated successfully' })
+      showToast('Password updated successfully', 'success')
       setCurrentPassword('')
       setNewPassword('')
       setConfirmPassword('')
@@ -177,12 +173,6 @@ export default function SettingsPage() {
 
       <div className={styles.form} style={{ marginBottom: 24 }}>
         <h2 className={styles.formTitle}>Business Hours</h2>
-
-        {hoursFeedback && (
-          <div className={`${styles.feedback} ${hoursFeedback.type === 'success' ? styles.feedbackSuccess : styles.feedbackError}`}>
-            {hoursFeedback.message}
-          </div>
-        )}
 
         {hoursLoaded && DAYS.map(day => (
           <div key={day} className={styles.hourRow}>
@@ -237,12 +227,6 @@ export default function SettingsPage() {
 
       <form onSubmit={handleChangePassword} className={styles.form}>
         <h2 className={styles.formTitle}>Change Password</h2>
-
-        {feedback && (
-          <div className={`${styles.feedback} ${feedback.type === 'success' ? styles.feedbackSuccess : styles.feedbackError}`}>
-            {feedback.message}
-          </div>
-        )}
 
         <div className={styles.field}>
           <label className={styles.label}>Current Password</label>
