@@ -78,7 +78,7 @@ export default function LiveTracker() {
           supabase
             .from('site_settings')
             .select('value')
-            .eq('key', 'business_hours')
+            .eq('key', 'hours')
             .single(),
         ]);
 
