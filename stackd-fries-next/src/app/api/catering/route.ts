@@ -95,7 +95,7 @@ export async function POST(request: Request) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          from: 'Stack\'d Fries <noreply@stackdfries.com>',
+          from: 'Stack\'d Fries <onboarding@resend.dev>',
           to: 'stackdfries@gmail.com',
           subject: `New Catering Inquiry: ${name} - ${event_type}`,
           html: `<h2>New Catering Inquiry</h2>
