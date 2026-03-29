@@ -169,7 +169,7 @@ export default function CateringForm() {
                   required
                   value={formData.event_date}
                   onChange={handleChange}
-                  className={`${styles.input} ${errors.event_date ? styles.inputError : ''}`}
+                  className={`${styles.input} ${styles.dateInput} ${errors.event_date ? styles.inputError : ''}`}
                 />
                 {errors.event_date && <p className={styles.fieldError}>{errors.event_date}</p>}
               </div>
