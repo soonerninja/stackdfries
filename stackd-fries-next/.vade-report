@@ -1,0 +1,43 @@
+# Vercel Speed Insights Installation Report
+
+## Overview
+Successfully installed and configured Vercel Speed Insights for the Stack'd Fries Next.js project.
+
+## Changes Made
+
+### 1. Package Installation
+- Installed `@vercel/speed-insights` package (latest version)
+- Package manager: npm
+- Updated `package.json` to include the new dependency
+- Updated `package-lock.json` with new dependency tree
+
+### 2. Code Integration
+**Modified: `src/app/layout.tsx`**
+- Added import statement: `import { SpeedInsights } from '@vercel/speed-insights/next';`
+- Added `<SpeedInsights />` component to the body, placed after the existing `<Analytics />` component
+- Implementation follows Next.js App Router best practices as documented in the official Vercel Speed Insights quickstart guide
+
+## Implementation Details
+
+The implementation follows the official Vercel documentation for Next.js App Router (v13.5+):
+- Used the Next.js-specific import path: `@vercel/speed-insights/next`
+- Placed the component at the root layout level to track all pages
+- Positioned alongside the existing Vercel Analytics component for consistent monitoring setup
+
+## Verification
+
+✅ **Build Status:** Successfully built with no errors
+- Command: `npm run build`
+- Result: Production build completed successfully
+
+✅ **Linting:** No new linting errors introduced
+- Command: `npm run lint`
+- Result: Pre-existing linting warnings in other files remain unchanged; no errors related to Speed Insights changes
+
+## Files Modified
+1. `package.json` - Added @vercel/speed-insights dependency
+2. `package-lock.json` - Updated with new package dependencies
+3. `src/app/layout.tsx` - Added SpeedInsights import and component
+
+## Next Steps
+Upon deployment to Vercel, Speed Insights will automatically activate and begin collecting performance metrics from user visits. No additional configuration is required.
