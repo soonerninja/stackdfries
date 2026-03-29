@@ -41,3 +41,16 @@ export interface EmailSignup {
   email: string;
   signed_up_at: string;
 }
+
+export interface CateringInquiry {
+  id: string;
+  name: string;
+  email: string;
+  phone: string | null;
+  event_date: string;
+  headcount: number;
+  event_type: string;
+  message: string | null;
+  status: string;
+  created_at: string;
+}

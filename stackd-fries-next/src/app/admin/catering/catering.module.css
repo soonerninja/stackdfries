@@ -1,0 +1,264 @@
+.heading {
+  font-family: var(--font-display);
+  font-size: 32px;
+  color: var(--gold);
+  margin-bottom: 24px;
+}
+
+.topRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.count {
+  font-family: var(--font-label);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+}
+
+.exportBtn {
+  font-family: var(--font-label);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  background: var(--gold);
+  color: var(--black);
+  border: 2px solid var(--gold);
+  border-radius: 4px;
+  padding: 14px 24px;
+  min-height: 48px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all var(--transition-fast);
+}
+
+.exportBtn:hover {
+  background: transparent;
+  color: var(--gold);
+}
+
+.tableWrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  font-family: var(--font-label);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  text-align: left;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-subtle);
+  white-space: nowrap;
+}
+
+.table td {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-primary);
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.table tbody tr {
+  transition: background var(--transition-fast);
+  cursor: pointer;
+}
+
+.table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.badge {
+  display: inline-block;
+  font-family: var(--font-label);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+.badgeNew {
+  background: rgba(242, 199, 68, 0.15);
+  color: var(--gold);
+}
+
+.badgeContacted {
+  background: rgba(100, 149, 237, 0.15);
+  color: #6495ed;
+}
+
+.badgeConfirmed {
+  background: rgba(76, 175, 80, 0.15);
+  color: #4caf50;
+}
+
+.badgeDeclined {
+  background: rgba(232, 57, 45, 0.15);
+  color: var(--red);
+}
+
+.expandedRow td {
+  padding: 0 16px 16px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.details {
+  background: var(--rich-black);
+  border-radius: var(--card-radius);
+  padding: 20px;
+}
+
+.detailGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 24px;
+  margin-bottom: 16px;
+}
+
+.detailLabel {
+  font-family: var(--font-label);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+}
+
+.detailValue {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.detailMessage {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.detailMessageLabel {
+  font-family: var(--font-label);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.statusActions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.statusBtn {
+  font-family: var(--font-label);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: 1px solid var(--border-subtle);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.statusBtn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.statusBtnActive {
+  border-color: var(--gold);
+  background: rgba(242, 199, 68, 0.1);
+  color: var(--gold);
+}
+
+.feedback {
+  text-align: center;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.feedbackError {
+  background: rgba(232, 57, 45, 0.15);
+  color: var(--red);
+  border: 1px solid var(--red);
+}
+
+.loading {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 40px;
+  font-size: 16px;
+}
+
+.empty {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 40px;
+  font-size: 14px;
+}
+
+/* Mobile card layout */
+@media (max-width: 600px) {
+  .table thead {
+    display: none;
+  }
+
+  .table,
+  .table tbody,
+  .table tr,
+  .table td {
+    display: block;
+  }
+
+  .table tr {
+    background: var(--rich-black);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 8px;
+  }
+
+  .table td {
+    padding: 4px 0;
+    border-bottom: none;
+  }
+
+  .table td:first-child {
+    font-weight: 600;
+  }
+
+  .detailGrid {
+    grid-template-columns: 1fr;
+  }
+}

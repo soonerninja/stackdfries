@@ -12,6 +12,7 @@ const navLinks = [
   { href: '/admin/drops', label: 'Drops' },
   { href: '/admin/menu', label: 'Menu' },
   { href: '/admin/emails', label: 'Emails' },
+  { href: '/admin/catering', label: 'Catering' },
   { href: '/admin/settings', label: 'Settings' },
 ]
 

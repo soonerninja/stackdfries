@@ -7,7 +7,7 @@ import MenuSection from '@/components/MenuSection';
 import MenuSkeleton from '@/components/MenuSkeleton';
 import About from '@/components/About';
 import HowItWorks from '@/components/HowItWorks';
-import Catering from '@/components/Catering';
+import CateringForm from '@/components/CateringForm';
 import EmailSignup from '@/components/EmailSignup';
 import Footer from '@/components/Footer';
 import MobileCta from '@/components/MobileCta';
@@ -29,7 +29,7 @@ export default function Home() {
         </Suspense>
         <About />
         <HowItWorks />
-        <Catering />
+        <CateringForm />
         <EmailSignup />
       </main>
       <Footer />

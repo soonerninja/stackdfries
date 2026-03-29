@@ -48,6 +48,7 @@ export default function Nav() {
           <div className={styles.desktopLinks}>
             <a href="#menu" className={styles.desktopLink}>Menu</a>
             <a href="#tracker" className={styles.desktopLink}>Find Us</a>
+            <a href="#catering" className={styles.desktopLink}>Catering</a>
             <DropBadge className={styles.desktopLink} />
             <LiveStatusBadge />
             <a
@@ -80,6 +81,7 @@ export default function Nav() {
       >
         <a href="#menu" className={styles.overlayLink} onClick={closeMenu}>Menu</a>
         <a href="#tracker" className={styles.overlayLink} onClick={closeMenu}>Find Us</a>
+        <a href="#catering" className={styles.overlayLink} onClick={closeMenu}>Catering</a>
         <DropBadge onClick={closeMenu} className={styles.overlayLink} />
         <a
           href={siteConfig.orderUrl}
