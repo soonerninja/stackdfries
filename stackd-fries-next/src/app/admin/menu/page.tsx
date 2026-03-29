@@ -119,7 +119,7 @@ export default function MenuPage() {
       ? additionalImages.split(',').map((s) => s.trim()).filter(Boolean)
       : null
 
-    const payload = {
+    const basePayload = {
       name: name.trim(),
       description: description.trim() || null,
       price: parseFloat(price),
@@ -127,35 +127,35 @@ export default function MenuPage() {
       sort_order: parseInt(sortOrder) || 0,
       is_active: isActive,
       image_url: imageUrl.trim() || null,
+    }
+
+    const extendedPayload = {
+      ...basePayload,
       video_url: videoUrl.trim() || null,
       images: imagesArray,
     }
 
-    if (editingId) {
-      const { error } = await supabase
-        .from('menu_items')
-        .update(payload)
-        .eq('id', editingId)
-
-      if (error) {
-        showToast('Failed to update: ' + error.message, 'error')
-      } else {
-        showToast('Item updated', 'success')
-        resetForm()
-        await fetchItems()
+    async function trySubmit(payload: Record<string, unknown>) {
+      if (editingId) {
+        return supabase.from('menu_items').update(payload).eq('id', editingId)
       }
+      return supabase.from('menu_items').insert(payload)
+    }
+
+    let { error } = await trySubmit(extendedPayload)
+
+    // Retry without video_url/images if columns don't exist
+    if (error?.message?.includes('images') || error?.message?.includes('video_url')) {
+      const retryResult = await trySubmit(basePayload)
+      error = retryResult.error
+    }
+
+    if (error) {
+      showToast(`Failed to ${editingId ? 'update' : 'create'}: ${error.message}`, 'error')
     } else {
-      const { error } = await supabase
-        .from('menu_items')
-        .insert(payload)
-
-      if (error) {
-        showToast('Failed to create: ' + error.message, 'error')
-      } else {
-        showToast('Item created', 'success')
-        resetForm()
-        await fetchItems()
-      }
+      showToast(editingId ? 'Item updated' : 'Item created', 'success')
+      resetForm()
+      await fetchItems()
     }
     setSaving(false)
   }
