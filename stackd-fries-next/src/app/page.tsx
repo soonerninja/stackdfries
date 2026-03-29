@@ -6,6 +6,7 @@ import TheDrop from '@/components/TheDrop';
 import MenuSection from '@/components/MenuSection';
 import MenuSkeleton from '@/components/MenuSkeleton';
 import About from '@/components/About';
+import HowItWorks from '@/components/HowItWorks';
 import Catering from '@/components/Catering';
 import EmailSignup from '@/components/EmailSignup';
 import Footer from '@/components/Footer';
@@ -27,6 +28,7 @@ export default function Home() {
           <MenuSection />
         </Suspense>
         <About />
+        <HowItWorks />
         <Catering />
         <EmailSignup />
       </main>
