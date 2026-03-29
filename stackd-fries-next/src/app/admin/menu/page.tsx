@@ -7,10 +7,12 @@ import { showToast } from '@/components/admin/Toast'
 import styles from './menu.module.css'
 
 const CATEGORIES = [
+  { value: 'loaded_fries', label: 'Loaded Fries' },
   { value: 'entrees', label: 'Entr\u00e9es' },
   { value: 'sides', label: 'Sides' },
   { value: 'drinks', label: 'Drinks' },
   { value: 'desserts', label: 'Desserts' },
+  { value: 'sides_drinks', label: 'Sides & Drinks' },
 ]
 
 export default function MenuPage() {

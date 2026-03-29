@@ -50,7 +50,7 @@ export default function DropMenuItem() {
               <p className={styles.description}>{drop.teaser_text}</p>
             )}
             {drop.available_date && (
-              <div className={styles.date}>Available {drop.available_date}</div>
+              <div className={styles.date}>Available {new Date(drop.available_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}</div>
             )}
           </div>
         </div>

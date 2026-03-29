@@ -3,7 +3,7 @@ export const siteConfig = {
   tagline: "Loaded. Always.",
   subtitle: "Oklahoma's premium loaded fries",
   contact: {
-    email: "stackfries@gmail.com",
+    email: "stackdfries@gmail.com",
     phone: "(405) 310-9971",
   },
   orderUrl: process.env.NEXT_PUBLIC_SQUARE_ORDER_URL || "https://stackdfries.square.site",
