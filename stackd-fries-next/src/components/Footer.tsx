@@ -38,7 +38,7 @@ export default function Footer() {
 
         <div className={styles.bottom}>
           <p className={styles.hours}>
-            Thu&ndash;Sun &middot; Hours vary &middot; Check Find Us for schedule
+            Thu&ndash;Sun &middot; Hours vary &middot; Check <a href="#tracker" style={{ color: 'var(--gold)', textDecoration: 'underline' }}>Find Us</a> for schedule
           </p>
           <div className={styles.legal}>
             <span>&copy; {new Date().getFullYear()} Stack&apos;d Fries&trade; &mdash; All rights reserved.</span>

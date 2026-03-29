@@ -35,6 +35,9 @@ export default function LiveStatusBadge() {
         if (trackerRes.data?.is_live) {
           setIsLive(true);
           setStatusText(`LIVE at ${trackerRes.data.location_name || 'our spot'}`);
+        } else if (trackerRes.data?.location_name === 'TEMPORARILY CLOSED') {
+          setIsLive(false);
+          setStatusText('Temporarily Closed');
         } else {
           const schedule = getStatusText(new Date(), dynamicHours);
           setIsLive(schedule.isOpen);
