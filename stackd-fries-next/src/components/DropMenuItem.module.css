@@ -1,5 +1,6 @@
 .wrapper {
   margin-bottom: 48px;
+  scroll-margin-top: 100px;
   animation: fadeSlideUp 0.6s ease-out both;
 }
 
