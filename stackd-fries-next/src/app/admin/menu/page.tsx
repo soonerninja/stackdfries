@@ -120,42 +120,41 @@ export default function MenuPage() {
 
     setSaving(true)
 
-    const imagesArray = additionalImages.trim()
-      ? additionalImages.split(',').map((s) => s.trim()).filter(Boolean)
-      : null
-
-    const basePayload = {
+    const payload: Record<string, unknown> = {
       name: name.trim(),
       description: description.trim() || null,
       price: parseFloat(price),
-      share_price: sharePrice && !isNaN(parseFloat(sharePrice)) ? parseFloat(sharePrice) : null,
       category,
       sort_order: parseInt(sortOrder) || 0,
       is_active: isActive,
       image_url: imageUrl.trim() || null,
     }
 
-    const extendedPayload = {
-      ...basePayload,
-      video_url: videoUrl.trim() || null,
-      images: imagesArray,
+    // Only include share_price if column exists (added via migration 005)
+    if (sharePrice && !isNaN(parseFloat(sharePrice))) {
+      payload.share_price = parseFloat(sharePrice)
+    } else {
+      payload.share_price = null
     }
 
-    async function trySubmit(payload: Record<string, unknown>) {
+    let result
+    if (editingId) {
+      result = await supabase.from('menu_items').update(payload).eq('id', editingId)
+    } else {
+      result = await supabase.from('menu_items').insert(payload)
+    }
+
+    let { error } = result
+
+    // If share_price column doesn't exist yet, retry without it
+    if (error?.message?.includes('share_price')) {
+      delete payload.share_price
       if (editingId) {
-        return supabase.from('menu_items').update(payload).eq('id', editingId)
+        result = await supabase.from('menu_items').update(payload).eq('id', editingId)
+      } else {
+        result = await supabase.from('menu_items').insert(payload)
       }
-      return supabase.from('menu_items').insert(payload)
-    }
-
-    let { error } = await trySubmit(extendedPayload)
-
-    // Retry without optional columns if they don't exist
-    if (error?.message?.includes('images') || error?.message?.includes('video_url') || error?.message?.includes('share_price')) {
-      const { share_price: _sp, ...fallbackPayload } = basePayload
-      void _sp
-      const retryResult = await trySubmit(fallbackPayload)
-      error = retryResult.error
+      error = result.error
     }
 
     if (error) {
