@@ -161,6 +161,19 @@ export default function MenuPage() {
     if (error) {
       showToast(`Failed to ${editingId ? 'update' : 'create'}: ${error.message}`, 'error')
     } else {
+      // Verify save actually persisted (RLS can silently block writes)
+      if (editingId) {
+        const { data: verify } = await supabase
+          .from('menu_items')
+          .select('price, share_price')
+          .eq('id', editingId)
+          .single()
+        if (verify && verify.price !== parseFloat(price)) {
+          showToast('Save appeared to work but was blocked by database permissions. Check RLS policies.', 'error')
+          setSaving(false)
+          return
+        }
+      }
       showToast(editingId ? 'Item updated' : 'Item created', 'success')
       resetForm()
       await fetchItems()
@@ -214,9 +227,8 @@ export default function MenuPage() {
             <div className={styles.field}>
               <label className={styles.label}>Price (Full Stack) *</label>
               <input
-                type="number"
-                step="0.01"
-                min="0"
+                type="text"
+                inputMode="decimal"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
                 placeholder="0.00"
@@ -226,9 +238,8 @@ export default function MenuPage() {
             <div className={styles.field}>
               <label className={styles.label}>Share Stack Price</label>
               <input
-                type="number"
-                step="0.01"
-                min="0"
+                type="text"
+                inputMode="decimal"
                 value={sharePrice}
                 onChange={(e) => setSharePrice(e.target.value)}
                 placeholder="Leave empty if N/A"
