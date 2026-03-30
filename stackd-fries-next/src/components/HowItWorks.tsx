@@ -26,16 +26,16 @@ export default function HowItWorks() {
 
         <div className={styles.steps}>
           {steps.map((step, i) => (
-            <div key={step.number} className={styles.stepWrapper}>
-              <div className={styles.card}>
+            <>
+              <div key={step.number} className={styles.card}>
                 <span className={styles.number}>{step.number}</span>
                 <h3 className={styles.title}>{step.title}</h3>
                 <p className={styles.description}>{step.description}</p>
               </div>
               {i < steps.length - 1 && (
-                <div className={styles.connector} aria-hidden="true" />
+                <div key={`c-${i}`} className={styles.connector} aria-hidden="true" />
               )}
-            </div>
+            </>
           ))}
         </div>
       </div>

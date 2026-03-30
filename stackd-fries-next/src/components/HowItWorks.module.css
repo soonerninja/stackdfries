@@ -10,13 +10,6 @@
   gap: 0;
 }
 
-.stepWrapper {
-  display: flex;
-  align-items: center;
-  flex: 1;
-  max-width: 340px;
-}
-
 .card {
   background: var(--rich-black);
   border: 1px solid var(--border-subtle);
@@ -24,6 +17,10 @@
   padding: 40px 24px;
   text-align: center;
   flex: 1;
+  max-width: 340px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .number {
@@ -56,6 +53,7 @@
   width: 40px;
   min-width: 40px;
   height: 1px;
+  align-self: center;
   background: repeating-linear-gradient(
     to right,
     var(--border-subtle),
@@ -72,18 +70,14 @@
     gap: 16px;
   }
 
-  .stepWrapper {
-    flex-direction: column;
-    max-width: 100%;
-    width: 100%;
-  }
-
   .connector {
     display: none;
   }
 
   .card {
     padding: 32px 20px;
+    max-width: 100%;
+    width: 100%;
   }
 
   .number {
