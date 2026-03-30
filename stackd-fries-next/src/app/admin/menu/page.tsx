@@ -139,40 +139,30 @@ export default function MenuPage() {
 
     let result
     if (editingId) {
-      result = await supabase.from('menu_items').update(payload).eq('id', editingId)
+      result = await supabase.from('menu_items').update(payload).eq('id', editingId).select()
     } else {
-      result = await supabase.from('menu_items').insert(payload)
+      result = await supabase.from('menu_items').insert(payload).select()
     }
 
-    let { error } = result
+    let { data: resultData, error } = result
 
     // If share_price column doesn't exist yet, retry without it
     if (error?.message?.includes('share_price')) {
       delete payload.share_price
       if (editingId) {
-        result = await supabase.from('menu_items').update(payload).eq('id', editingId)
+        result = await supabase.from('menu_items').update(payload).eq('id', editingId).select()
       } else {
-        result = await supabase.from('menu_items').insert(payload)
+        result = await supabase.from('menu_items').insert(payload).select()
       }
       error = result.error
+      resultData = result.data
     }
 
     if (error) {
-      showToast(`Failed to ${editingId ? 'update' : 'create'}: ${error.message}`, 'error')
+      showToast(`Failed: ${error.message}`, 'error')
+    } else if (!resultData || resultData.length === 0) {
+      showToast('Save blocked by database permissions — no rows were updated. Run the RLS policy SQL in Supabase.', 'error')
     } else {
-      // Verify save actually persisted (RLS can silently block writes)
-      if (editingId) {
-        const { data: verify } = await supabase
-          .from('menu_items')
-          .select('price, share_price')
-          .eq('id', editingId)
-          .single()
-        if (verify && verify.price !== parseFloat(price)) {
-          showToast('Save appeared to work but was blocked by database permissions. Check RLS policies.', 'error')
-          setSaving(false)
-          return
-        }
-      }
       showToast(editingId ? 'Item updated' : 'Item created', 'success')
       resetForm()
       await fetchItems()
