@@ -27,6 +27,7 @@ export default function MenuPage() {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [price, setPrice] = useState('')
+  const [sharePrice, setSharePrice] = useState('')
   const [category, setCategory] = useState('entrees')
   const [sortOrder, setSortOrder] = useState('0')
   const [isActive, setIsActive] = useState(true)
@@ -58,6 +59,7 @@ export default function MenuPage() {
     setName('')
     setDescription('')
     setPrice('')
+    setSharePrice('')
     setCategory('entrees')
     setSortOrder('0')
     setIsActive(true)
@@ -72,6 +74,7 @@ export default function MenuPage() {
     setName(item.name)
     setDescription(item.description || '')
     setPrice(String(item.price))
+    setSharePrice(item.share_price ? String(item.share_price) : '')
     setCategory(item.category)
     setSortOrder(String(item.sort_order))
     setIsActive(item.is_active)
@@ -125,6 +128,7 @@ export default function MenuPage() {
       name: name.trim(),
       description: description.trim() || null,
       price: parseFloat(price),
+      share_price: sharePrice && !isNaN(parseFloat(sharePrice)) ? parseFloat(sharePrice) : null,
       category,
       sort_order: parseInt(sortOrder) || 0,
       is_active: isActive,
@@ -146,9 +150,11 @@ export default function MenuPage() {
 
     let { error } = await trySubmit(extendedPayload)
 
-    // Retry without video_url/images if columns don't exist
-    if (error?.message?.includes('images') || error?.message?.includes('video_url')) {
-      const retryResult = await trySubmit(basePayload)
+    // Retry without optional columns if they don't exist
+    if (error?.message?.includes('images') || error?.message?.includes('video_url') || error?.message?.includes('share_price')) {
+      const { share_price: _sp, ...fallbackPayload } = basePayload
+      void _sp
+      const retryResult = await trySubmit(fallbackPayload)
       error = retryResult.error
     }
 
@@ -206,7 +212,7 @@ export default function MenuPage() {
 
           <div className={styles.formRow}>
             <div className={styles.field}>
-              <label className={styles.label}>Price *</label>
+              <label className={styles.label}>Price (Full Stack) *</label>
               <input
                 type="number"
                 step="0.01"
@@ -214,6 +220,18 @@ export default function MenuPage() {
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
                 placeholder="0.00"
+                className={styles.input}
+              />
+            </div>
+            <div className={styles.field}>
+              <label className={styles.label}>Share Stack Price</label>
+              <input
+                type="number"
+                step="0.01"
+                min="0"
+                value={sharePrice}
+                onChange={(e) => setSharePrice(e.target.value)}
+                placeholder="Leave empty if N/A"
                 className={styles.input}
               />
             </div>
@@ -311,7 +329,7 @@ export default function MenuPage() {
               <div className={styles.itemInfo}>
                 <div className={styles.itemName}>{item.name}</div>
                 <div className={styles.itemMeta}>
-                  <span>${item.price.toFixed(2)}</span>
+                  <span>${item.price.toFixed(2)}{item.share_price ? ` / $${item.share_price.toFixed(2)}` : ''}</span>
                   <span>{CATEGORIES.find((c) => c.value === item.category)?.label || item.category}</span>
                   <span>Order: {item.sort_order}</span>
                   <span>{item.is_active ? 'Active' : 'Inactive'}</span>

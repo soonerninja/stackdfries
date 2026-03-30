@@ -41,6 +41,7 @@ export default function MenuGrid({ items }: MenuGridProps) {
                 key={item.id}
                 name={item.name}
                 price={item.price}
+                sharePrice={item.share_price}
                 description={item.description}
                 imageUrl={item.image_url}
                 isSpecial={item.category === 'rotating_special'}

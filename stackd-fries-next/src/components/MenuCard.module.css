@@ -78,6 +78,43 @@
   line-height: 1;
 }
 
+.priceGroup {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.priceRow {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+}
+
+.priceDivider {
+  font-family: var(--font-body);
+  font-size: 16px;
+  color: var(--text-muted);
+  opacity: 0.4;
+}
+
+.priceLabels {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  margin-top: 3px;
+}
+
+.priceLabel {
+  font-family: var(--font-body);
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: lowercase;
+  letter-spacing: 0.5px;
+}
+
+.priceLabelSpacer {
+  width: 10px;
+}
+
 .description {
   font-family: var(--font-body);
   font-size: 14px;
