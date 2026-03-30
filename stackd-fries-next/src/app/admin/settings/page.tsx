@@ -99,7 +99,15 @@ export default function SettingsPage() {
   }
 
   function toggleClosed(day: string) {
+    const wasClosed = closedDays[day]
     setClosedDays(prev => ({ ...prev, [day]: !prev[day] }))
+    // When opening a day that has no hours set, give it defaults
+    if (wasClosed && !hours[day]) {
+      setHours(prev => ({
+        ...prev,
+        [day]: DEFAULT_HOURS[day] || { open: '17:00', close: '22:00' },
+      }))
+    }
   }
 
   async function saveHours() {
@@ -109,40 +117,37 @@ export default function SettingsPage() {
     const hoursToSave: HoursData = {}
     DAYS.forEach(d => {
       if (!closedDays[d]) {
-        hoursToSave[d] = hours[d] || DEFAULT_HOURS[d]
+        hoursToSave[d] = hours[d] || DEFAULT_HOURS[d] || { open: '17:00', close: '22:00' }
       }
     })
 
-    // Try upsert
-    const { error } = await supabase
+    // Try update first
+    const { data: updateData, error: updateError } = await supabase
       .from('site_settings')
-      .upsert(
-        { key: 'hours', value: hoursToSave, updated_at: new Date().toISOString() },
-        { onConflict: 'key' }
-      )
+      .update({ value: hoursToSave, updated_at: new Date().toISOString() })
+      .eq('key', 'hours')
+      .select()
 
-    if (error) {
-      if (error.message?.includes('site_settings')) {
-        showToast('Run the SQL migration to enable this feature', 'error')
-      } else {
-        showToast('Failed to save: ' + error.message, 'error')
-      }
+    if (updateError) {
+      showToast('Failed to save: ' + updateError.message, 'error')
       setHoursSaving(false)
       return
     }
 
-    // Verify the save actually persisted (upsert can silently fail with RLS)
-    const { data: verify } = await supabase
-      .from('site_settings')
-      .select('value')
-      .eq('key', 'hours')
-      .single()
+    // If no rows updated (row doesn't exist yet), insert
+    if (!updateData || updateData.length === 0) {
+      const { error: insertError } = await supabase
+        .from('site_settings')
+        .insert({ key: 'hours', value: hoursToSave, updated_at: new Date().toISOString() })
 
-    if (!verify?.value) {
-      showToast('Save blocked by permissions. Check Supabase RLS policies for site_settings.', 'error')
-    } else {
-      showToast('Hours updated!', 'success')
+      if (insertError) {
+        showToast('Failed to save: ' + insertError.message, 'error')
+        setHoursSaving(false)
+        return
+      }
     }
+
+    showToast('Hours updated!', 'success')
     setHoursSaving(false)
   }
 
