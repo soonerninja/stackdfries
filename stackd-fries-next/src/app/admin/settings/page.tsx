@@ -121,11 +121,6 @@ export default function SettingsPage() {
       }
     })
 
-    // Debug: show what we're saving
-    const savingDays = Object.keys(hoursToSave).join(', ')
-    const closedDaysList = DAYS.filter(d => closedDays[d]).join(', ')
-    showToast(`Saving open days: ${savingDays || 'none'} | Closed: ${closedDaysList || 'none'}`, 'success')
-
     // Try update first
     const { data: updateData, error: updateError } = await supabase
       .from('site_settings')
