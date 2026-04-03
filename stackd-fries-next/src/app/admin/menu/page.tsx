@@ -71,7 +71,7 @@ export default function MenuPage() {
     setEditingId(item.id)
     setName(item.name)
     setDescription(item.description || '')
-    setPrice(String(item.price))
+    setPrice(item.price != null ? String(item.price) : '')
     setSharePrice(item.share_price != null ? String(item.share_price) : '')
     setCategory(item.category)
     setSortOrder(String(item.sort_order))
@@ -332,7 +332,7 @@ export default function MenuPage() {
               <div className={styles.itemInfo}>
                 <div className={styles.itemName}>{item.name}</div>
                 <div className={styles.itemMeta}>
-                  <span>${item.price.toFixed(2)}</span>
+                  <span>{item.price != null ? `$${item.price.toFixed(2)}` : 'No price'}</span>
                   <span>{CATEGORIES.find((c) => c.value === item.category)?.label || item.category}</span>
                   <span>Order: {item.sort_order}</span>
                   <span>{item.is_active ? 'Active' : 'Inactive'}</span>
