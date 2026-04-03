@@ -31,16 +31,16 @@ export default function MenuCard({ name, price, sharePrice, description, imageUr
           <div className={styles.name}>{name}</div>
           {(hasSharePrice || hasFullPrice) && (
             <div className={styles.priceGroup}>
-              {hasSharePrice && (
-                <div className={styles.priceItem}>
-                  <span className={styles.priceLabel}>SHARE</span>
-                  <span className={styles.price}>${sharePrice.toFixed(2)}</span>
-                </div>
-              )}
               {hasFullPrice && (
                 <div className={styles.priceItem}>
                   {hasSharePrice && <span className={styles.priceLabel}>FULL</span>}
                   <span className={styles.price}>${price.toFixed(2)}</span>
+                </div>
+              )}
+              {hasSharePrice && (
+                <div className={styles.priceItem}>
+                  <span className={styles.priceLabel}>SHARE</span>
+                  <span className={styles.price}>${sharePrice.toFixed(2)}</span>
                 </div>
               )}
             </div>
