@@ -28,6 +28,7 @@
   /* Layout */
   --max-width: 1200px;
   --nav-height: 64px;
+  --banner-height: 40px;
 
   /* Z-index */
   --z-nav: 100;

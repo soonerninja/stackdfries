@@ -6,7 +6,7 @@
   text-align: center;
   position: relative;
   overflow: hidden;
-  padding: var(--section-padding) 0;
+  padding: calc(var(--banner-height) + var(--section-padding)) 0 var(--section-padding);
 }
 
 .hero::before {
