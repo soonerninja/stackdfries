@@ -6,7 +6,7 @@ import type { MenuItem } from '@/types/database'
 import styles from './menu.module.css'
 
 const CATEGORIES = [
-  { value: 'entrees', label: 'Entr\u00e9es' },
+  { value: 'stackd_fries', label: "Stack'd Fries" },
   { value: 'sides', label: 'Sides' },
   { value: 'drinks', label: 'Drinks' },
   { value: 'desserts', label: 'Desserts' },
@@ -25,7 +25,7 @@ export default function MenuPage() {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [price, setPrice] = useState('')
-  const [category, setCategory] = useState('entrees')
+  const [category, setCategory] = useState('stackd_fries')
   const [sortOrder, setSortOrder] = useState('0')
   const [isActive, setIsActive] = useState(true)
   const [imageUrl, setImageUrl] = useState('')
@@ -56,7 +56,7 @@ export default function MenuPage() {
     setName('')
     setDescription('')
     setPrice('')
-    setCategory('entrees')
+    setCategory('stackd_fries')
     setSortOrder('0')
     setIsActive(true)
     setImageUrl('')

@@ -3,15 +3,13 @@ import MenuCard from './MenuCard';
 import styles from './MenuSection.module.css';
 
 const CATEGORY_LABELS: Record<string, string> = {
-  entrees: 'ENTR\u00C9ES',
+  stackd_fries: "STACK'D FRIES",
   sides: 'SIDES',
   drinks: 'DRINKS',
   desserts: 'DESSERTS',
-  loaded_fries: 'LOADED FRIES',
-  sides_drinks: 'SIDES & DRINKS',
 };
 
-const categoryOrder = ['entrees', 'loaded_fries', 'sides', 'drinks', 'desserts', 'sides_drinks'];
+const categoryOrder = ['stackd_fries', 'sides', 'drinks', 'desserts'];
 
 interface MenuGridProps {
   items: MenuItem[];
