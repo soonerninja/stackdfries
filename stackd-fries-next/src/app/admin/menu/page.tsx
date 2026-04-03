@@ -25,6 +25,7 @@ export default function MenuPage() {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [price, setPrice] = useState('')
+  const [sharePrice, setSharePrice] = useState('')
   const [category, setCategory] = useState('stackd_fries')
   const [sortOrder, setSortOrder] = useState('0')
   const [isActive, setIsActive] = useState(true)
@@ -56,6 +57,7 @@ export default function MenuPage() {
     setName('')
     setDescription('')
     setPrice('')
+    setSharePrice('')
     setCategory('stackd_fries')
     setSortOrder('0')
     setIsActive(true)
@@ -70,6 +72,7 @@ export default function MenuPage() {
     setName(item.name)
     setDescription(item.description || '')
     setPrice(String(item.price))
+    setSharePrice(item.share_price != null ? String(item.share_price) : '')
     setCategory(item.category)
     setSortOrder(String(item.sort_order))
     setIsActive(item.is_active)
@@ -108,8 +111,8 @@ export default function MenuPage() {
       setFeedback({ type: 'error', message: 'Name is required' })
       return
     }
-    if (!price || isNaN(parseFloat(price)) || parseFloat(price) < 0) {
-      setFeedback({ type: 'error', message: 'Valid price is required' })
+    if (price && (isNaN(parseFloat(price)) || parseFloat(price) < 0)) {
+      setFeedback({ type: 'error', message: 'Price must be a valid number' })
       return
     }
 
@@ -123,7 +126,8 @@ export default function MenuPage() {
     const payload = {
       name: name.trim(),
       description: description.trim() || null,
-      price: parseFloat(price),
+      price: price ? parseFloat(price) : null,
+      share_price: sharePrice && !isNaN(parseFloat(sharePrice)) ? parseFloat(sharePrice) : null,
       category,
       sort_order: parseInt(sortOrder) || 0,
       is_active: isActive,
@@ -211,13 +215,25 @@ export default function MenuPage() {
 
           <div className={styles.formRow}>
             <div className={styles.field}>
-              <label className={styles.label}>Price *</label>
+              <label className={styles.label}>Price (Full)</label>
               <input
                 type="number"
                 step="0.01"
                 min="0"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
+                placeholder="0.00"
+                className={styles.input}
+              />
+            </div>
+            <div className={styles.field}>
+              <label className={styles.label}>Price (Share)</label>
+              <input
+                type="number"
+                step="0.01"
+                min="0"
+                value={sharePrice}
+                onChange={(e) => setSharePrice(e.target.value)}
                 placeholder="0.00"
                 className={styles.input}
               />
