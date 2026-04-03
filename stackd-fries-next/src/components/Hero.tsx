@@ -13,7 +13,7 @@ export default function Hero() {
           <div>OKLAHOMA&apos;S PREMIUM</div>
           <div className={styles.taglineGold}>LOADED FRIES</div>
         </div>
-        <p className={styles.subtitle}>Founded in Norman. Served statewide.</p>
+        <p className={styles.subtitle}>Fresh-cut loaded fries — founded in Norman, served statewide.</p>
         <div className={styles.ctas}>
           <a
             href={siteConfig.orderUrl}

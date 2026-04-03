@@ -10,15 +10,16 @@ export default function About() {
         <div className={styles.grid}>
           <div className={styles.mainText}>
             <p className={styles.lead}>
-              Founded in Norman. Now Oklahoma&apos;s go-to for loaded fries.
+              Norman&apos;s original loaded fries food trailer — now serving all of Oklahoma.
             </p>
             <p className={styles.body}>
-              Stack&apos;d Fries is what happens when street food meets obsession. Every order stacked
-              high with flavor — no half-measures, no boring fries. We started with a simple idea:
-              fries should be the main event, not a side dish.
+              Stack&apos;d Fries is what happens when street food meets obsession. Fresh-cut fries loaded
+              high with buffalo chicken, carne asada, street corn, and more — no half-measures, no
+              boring fries. We started with a simple idea: fries should be the main event.
             </p>
             <p className={styles.body}>
-              From our trailer to your hands — loaded, stacked, and worth the wait.
+              Find our trailer in Norman and around the OKC metro. Follow us on TikTok and Instagram
+              to track our location — or check the live tracker above.
             </p>
           </div>
 

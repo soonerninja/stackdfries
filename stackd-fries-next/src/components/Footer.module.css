@@ -95,6 +95,15 @@ a.footerLink:hover {
   opacity: 0.5;
 }
 
+.legalLink {
+  color: var(--text-muted);
+  transition: color 150ms ease;
+}
+
+.legalLink:hover {
+  color: var(--gold);
+}
+
 @media (max-width: 767px) {
   .footer {
     padding: 48px 20px 80px;

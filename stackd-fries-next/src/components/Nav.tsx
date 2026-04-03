@@ -74,6 +74,7 @@ export default function Nav() {
         className={`${styles.overlay} ${menuOpen ? styles.overlayOpen : ''}`}
         role="dialog"
         aria-modal="true"
+        aria-label="Navigation menu"
         onKeyDown={(e) => { if (e.key === 'Escape') closeMenu(); }}
       >
         <a href="#menu" className={styles.overlayLink} onClick={closeMenu}>Menu</a>

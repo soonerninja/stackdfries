@@ -42,6 +42,8 @@ export default function Footer() {
           <div className={styles.legal}>
             <span>&copy; {new Date().getFullYear()} Stack&apos;d Fries&trade; &mdash; All rights reserved.</span>
             <span className={styles.legalDivider}>|</span>
+            <a href="/privacy" className={styles.legalLink}>Privacy Policy</a>
+            <span className={styles.legalDivider}>|</span>
             <span>Norman, Oklahoma</span>
           </div>
         </div>
