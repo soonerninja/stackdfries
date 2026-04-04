@@ -77,7 +77,7 @@ const jsonLd = {
   url: "https://stackdfries.com",
   logo: "https://stackdfries.com/og-image.png",
   image: "https://stackdfries.com/og-image.png",
-  telephone: "(405) 435-1002",
+  telephone: "(405) 310-9971",
   email: "stackfries@gmail.com",
   servesCuisine: ["American", "Street Food", "Loaded Fries", "Fast Casual"],
   priceRange: "$",

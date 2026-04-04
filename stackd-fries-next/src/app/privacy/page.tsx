@@ -131,7 +131,7 @@ export default function PrivacyPage() {
             <strong>Stack&apos;d Fries</strong><br />
             Norman, Oklahoma<br />
             <a href="mailto:stackfries@gmail.com">stackfries@gmail.com</a><br />
-            <a href="tel:+14054351002">(405) 435-1002</a>
+            <a href="tel:+14054351002">(405) 310-9971</a>
           </p>
         </section>
       </div>

@@ -93,7 +93,6 @@ export default function LiveTracker() {
           <div className={styles.closedContent}>
             <p className={styles.closedMessage}>We&apos;re taking a break! Check back soon.</p>
             <div className={styles.contactInfo}>
-              <div>{siteConfig.location.address}</div>
               <div>
                 <a href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a>
               </div>
@@ -123,7 +122,6 @@ export default function LiveTracker() {
             </table>
             <p className={styles.seasonNote}>Late-night Saturdays (until 2am) during OU football &amp; spring sessions.</p>
             <div className={styles.contactInfo}>
-              <div>{siteConfig.location.address}</div>
               <div>
                 <a href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a>
               </div>
