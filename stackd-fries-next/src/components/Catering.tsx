@@ -11,7 +11,7 @@ export default function Catering() {
         </p>
         <div className={styles.ctas}>
           <a
-            href={`mailto:${siteConfig.contact.email}`}
+            href="/catering"
             className="btn btn-outline"
           >
             Hit us up
