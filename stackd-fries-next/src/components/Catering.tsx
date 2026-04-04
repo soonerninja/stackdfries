@@ -32,6 +32,14 @@ export default function Catering() {
           >
             DM on Instagram
           </a>
+          <a
+            href={siteConfig.social.facebook}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-outline"
+          >
+            DM on Facebook
+          </a>
         </div>
       </div>
     </section>

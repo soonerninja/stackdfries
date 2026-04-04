@@ -109,7 +109,7 @@ const jsonLd = {
   sameAs: [
     "https://www.tiktok.com/@stackdfries",
     "https://www.instagram.com/stackdfries",
-    "https://www.facebook.com/profile.php?id=61580845964760",
+    "https://www.facebook.com/stackdfries",
     // Add your Google Business Profile URL here, e.g.:
     // "https://g.page/r/YOUR_BUSINESS_ID"
   ],
