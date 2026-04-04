@@ -32,8 +32,7 @@ export default async function MenuSection() {
         <div className={styles.orderWrap}>
           <a
             href={siteConfig.orderUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+            {...(siteConfig.orderUrl.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
             className="btn btn-primary"
           >
             Order Now

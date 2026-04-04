@@ -18,7 +18,7 @@ export default function Footer() {
               <div className={styles.linkGroupTitle}>Quick Links</div>
               <a href="#menu" className={styles.footerLink}>Menu</a>
               <a href="#tracker" className={styles.footerLink}>Find Us</a>
-              <a href={siteConfig.orderUrl} target="_blank" rel="noopener noreferrer" className={styles.footerLink}>Order Now</a>
+              <a href={siteConfig.orderUrl} {...(siteConfig.orderUrl.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})} className={styles.footerLink}>Order Now</a>
             </div>
             <div className={styles.linkGroup}>
               <div className={styles.linkGroupTitle}>Connect</div>

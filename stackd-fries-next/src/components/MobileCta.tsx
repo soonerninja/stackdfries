@@ -6,8 +6,7 @@ export default function MobileCta() {
     <div className={styles.bar}>
       <a
         href={siteConfig.orderUrl}
-        target="_blank"
-        rel="noopener noreferrer"
+        {...(siteConfig.orderUrl.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
         className={styles.link}
       >
         Order Now

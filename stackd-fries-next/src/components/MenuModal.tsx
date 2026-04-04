@@ -114,8 +114,7 @@ export default function MenuModal({ item, onClose }: MenuModalProps) {
           )}
           <a
             href={siteConfig.orderUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+            {...(siteConfig.orderUrl.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
             className={styles.orderBtn}
           >
             Order Now
