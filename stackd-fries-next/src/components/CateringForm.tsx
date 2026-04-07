@@ -23,6 +23,7 @@ export default function CateringForm() {
     headcount: '',
     event_type: '',
     message: '',
+    company: '', // honeypot — real users leave this empty
   });
   const [status, setStatus] = useState<Status>('idle');
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -90,6 +91,7 @@ export default function CateringForm() {
           headcount: '',
           event_type: '',
           message: '',
+          company: '',
         });
       } else {
         setStatus('error');
@@ -116,6 +118,17 @@ export default function CateringForm() {
           </div>
         ) : (
           <form className={styles.form} onSubmit={handleSubmit} noValidate>
+            {/* Honeypot — hidden from real users, bots tend to fill it */}
+            <input
+              type="text"
+              name="company"
+              tabIndex={-1}
+              autoComplete="off"
+              value={formData.company}
+              onChange={handleChange}
+              style={{ position: 'absolute', left: '-10000px', width: 1, height: 1, opacity: 0 }}
+              aria-hidden="true"
+            />
             <div className={styles.row}>
               <div className={styles.field}>
                 <label htmlFor="catering-name" className={styles.label}>Name *</label>

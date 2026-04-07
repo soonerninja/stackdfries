@@ -112,16 +112,23 @@ export function getStatusText(now: Date = new Date(), dynamicHours?: HoursMap): 
   return { isOpen: false, text: getNextOpenTime(now, dynamicHours) };
 }
 
-export function getFormattedHours(): { day: string; hours: string }[] {
+export function getFormattedHours(dynamicHours?: HoursMap): { day: string; hours: string }[] {
   const displayDays: { key: DayKey; label: string }[] = [
+    { key: "mon", label: "Monday" },
+    { key: "tue", label: "Tuesday" },
+    { key: "wed", label: "Wednesday" },
     { key: "thu", label: "Thursday" },
     { key: "fri", label: "Friday" },
     { key: "sat", label: "Saturday" },
     { key: "sun", label: "Sunday" },
   ];
 
+  const source: Record<string, HoursRange | undefined> = dynamicHours
+    ? (dynamicHours as Record<string, HoursRange | undefined>)
+    : (siteConfig.hours.default as Record<string, HoursRange>);
+
   return displayDays.map(({ key, label }) => {
-    const range = (siteConfig.hours.default as Record<string, HoursRange>)[key];
+    const range = source[key];
     if (!range) return { day: label, hours: "Closed" };
 
     const format = (t: string) => {

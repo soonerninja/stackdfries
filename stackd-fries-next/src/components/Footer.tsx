@@ -1,7 +1,28 @@
 import { siteConfig } from '@/lib/config';
+import { createClient } from '@/lib/supabase-server';
+import { getFormattedHours, type HoursMap } from '@/lib/hours';
 import styles from './Footer.module.css';
 
-export default function Footer() {
+async function loadHours(): Promise<HoursMap | undefined> {
+  try {
+    const supabase = await createClient();
+    const { data } = await supabase
+      .from('site_settings')
+      .select('value')
+      .eq('key', 'hours')
+      .maybeSingle();
+    return (data?.value as HoursMap | undefined) ?? undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+export default async function Footer() {
+  const dynamicHours = await loadHours();
+  const formatted = getFormattedHours(dynamicHours).filter((h) => h.hours !== 'Closed');
+  const hoursLine = formatted.length
+    ? formatted.map((h) => `${h.day.slice(0, 3)} ${h.hours}`).join(' · ')
+    : 'Hours vary — check Find Us for schedule';
   return (
     <footer className={styles.footer}>
       <div className="container">
@@ -39,7 +60,7 @@ export default function Footer() {
 
         <div className={styles.bottom}>
           <p className={styles.hours}>
-            Thu&ndash;Sun &middot; Hours vary &middot; Check <a href="#tracker" style={{ color: 'var(--gold)', textDecoration: 'underline' }}>Find Us</a> for schedule
+            {hoursLine} &middot; <a href="#tracker" style={{ color: 'var(--gold)', textDecoration: 'underline' }}>Find Us</a>
           </p>
           <div className={styles.legal}>
             <span>&copy; {new Date().getFullYear()} Stack&apos;d Fries&trade; &mdash; All rights reserved.</span>
