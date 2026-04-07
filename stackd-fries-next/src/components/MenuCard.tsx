@@ -39,7 +39,7 @@ export default function MenuCard({ name, price, sharePrice, description, imageUr
               )}
               {hasSharePrice && (
                 <div className={styles.priceItem}>
-                  <span className={styles.priceLabel}>SHARE</span>
+                  <span className={styles.priceLabel}>SHARE (2-PERSON)</span>
                   <span className={styles.price}>${sharePrice.toFixed(2)}</span>
                 </div>
               )}

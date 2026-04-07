@@ -11,7 +11,11 @@ const CATEGORY_LABELS: Record<string, string> = {
   sides_drinks: 'SIDES & DRINKS',
 };
 
-const categoryOrder = ['entrees', 'loaded_fries', 'sides', 'drinks', 'desserts', 'sides_drinks'];
+const categoryOrder = ['entrees', 'entree', 'loaded_fries', 'sides', 'desserts', 'sides_drinks', 'drinks'];
+
+function normalizeCategory(c: string): string {
+  return (c || '').trim().toLowerCase().replace(/[\s-]+/g, '_');
+}
 
 interface MenuGridProps {
   items: MenuItem[];
@@ -20,7 +24,7 @@ interface MenuGridProps {
 export default function MenuGrid({ items }: MenuGridProps) {
   const grouped: Record<string, MenuItem[]> = {};
   for (const item of items) {
-    const cat = item.category;
+    const cat = normalizeCategory(item.category);
     if (!grouped[cat]) grouped[cat] = [];
     grouped[cat].push(item);
   }
