@@ -1,0 +1,200 @@
+.section {
+  background: transparent;
+  border-top: 1px solid var(--border-subtle);
+  scroll-margin-top: 100px;
+}
+
+.subtitle {
+  font-family: var(--font-body);
+  font-size: 16px;
+  color: var(--text-secondary);
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.form {
+  max-width: 640px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  font-family: var(--font-label);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.input {
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 15px;
+  padding: 14px 16px;
+  border-radius: 4px;
+  border: 1px solid var(--border-subtle);
+  background: var(--black);
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color var(--transition-fast);
+  min-height: 44px;
+}
+
+.input:focus {
+  border-color: var(--gold);
+}
+
+.input::placeholder {
+  color: var(--text-muted);
+}
+
+/* Make date picker calendar icon visible on dark background */
+.dateInput {
+  cursor: pointer;
+  color-scheme: dark;
+}
+
+.dateInput::-webkit-calendar-picker-indicator {
+  filter: invert(82%) sepia(50%) saturate(500%) hue-rotate(5deg) brightness(105%);
+  cursor: pointer;
+  opacity: 1;
+  width: 24px;
+  height: 24px;
+}
+
+.select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23999' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding-right: 40px;
+  cursor: pointer;
+}
+
+.select option {
+  background: var(--black);
+  color: var(--text-primary);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.inputError {
+  border-color: var(--red) !important;
+}
+
+.fieldError {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--red);
+  margin-top: 6px;
+}
+
+.submitBtn {
+  align-self: center;
+  min-width: 200px;
+}
+
+.submitBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.errorMessage {
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--red);
+}
+
+.successWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  animation: successFadeIn 0.5s ease forwards;
+}
+
+.successCheck {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid var(--gold);
+  color: var(--gold);
+  font-size: 24px;
+  animation: goldPulse 1.2s ease-out;
+}
+
+.successMessage {
+  text-align: center;
+  font-family: var(--font-label);
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--gold);
+}
+
+@keyframes successFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes goldPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(242, 199, 68, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 12px rgba(242, 199, 68, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(242, 199, 68, 0);
+  }
+}
+
+@media (max-width: 767px) {
+  .section {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .row {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .input {
+    min-height: 48px;
+    font-size: 16px;
+  }
+
+  .submitBtn {
+    width: 100%;
+    min-height: 48px;
+  }
+}

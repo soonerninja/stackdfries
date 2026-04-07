@@ -5,9 +5,6 @@
 }
 
 .topBar {
-  position: sticky;
-  top: 0;
-  z-index: 100;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -15,7 +12,7 @@
   background: var(--rich-black);
   border-bottom: 1px solid var(--border-subtle);
   gap: 12px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 .brand {
@@ -74,8 +71,8 @@
 
 .nav {
   position: sticky;
-  top: 48px;
-  z-index: 99;
+  top: 0;
+  z-index: 100;
   display: flex;
   gap: 0;
   background: var(--rich-black);
@@ -121,6 +118,10 @@
 @media (max-width: 600px) {
   .topBar {
     padding: 10px 16px;
+  }
+
+  .nav {
+    top: 0;
   }
 
   .navLink {

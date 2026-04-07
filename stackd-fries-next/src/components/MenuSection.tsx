@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase-server';
 import { siteConfig } from '@/lib/config';
 import type { MenuItem } from '@/types/database';
 import MenuGrid from './MenuGrid';
+import DropMenuItem from './DropMenuItem';
 import styles from './MenuSection.module.css';
 
 export default async function MenuSection() {
@@ -27,6 +28,7 @@ export default async function MenuSection() {
       <div className="container">
         <h2 className="section-title">THE MENU</h2>
 
+        <DropMenuItem />
         <MenuGrid items={items} />
 
         <div className={styles.orderWrap}>

@@ -1,0 +1,23 @@
+.banner {
+  background: var(--red);
+  color: #fff;
+  padding: 10px 20px;
+  font-family: var(--font-label);
+  font-size: 14px;
+  text-align: center;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.link {
+  color: #fff;
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.link:hover {
+  opacity: 0.85;
+}

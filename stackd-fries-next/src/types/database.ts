@@ -14,6 +14,7 @@ export interface MenuItem {
   name: string;
   description: string | null;
   price: number;
+  share_price: number | null;
   category: string;
   image_url: string | null;
   video_url: string | null;
@@ -40,4 +41,17 @@ export interface EmailSignup {
   id: string;
   email: string;
   signed_up_at: string;
+}
+
+export interface CateringInquiry {
+  id: string;
+  name: string;
+  email: string;
+  phone: string | null;
+  event_date: string;
+  headcount: number;
+  event_type: string;
+  message: string | null;
+  status: string;
+  created_at: string;
 }

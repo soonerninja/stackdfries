@@ -3,13 +3,16 @@
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase-browser'
 import type { MenuItem } from '@/types/database'
+import { showToast } from '@/components/admin/Toast'
 import styles from './menu.module.css'
 
 const CATEGORIES = [
+  { value: 'loaded_fries', label: 'Loaded Fries' },
   { value: 'entrees', label: 'Entr\u00e9es' },
   { value: 'sides', label: 'Sides' },
   { value: 'drinks', label: 'Drinks' },
   { value: 'desserts', label: 'Desserts' },
+  { value: 'sides_drinks', label: 'Sides & Drinks' },
 ]
 
 export default function MenuPage() {
@@ -17,7 +20,6 @@ export default function MenuPage() {
   const [items, setItems] = useState<MenuItem[]>([])
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
-  const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
   const [showForm, setShowForm] = useState(false)
 
   // Form state
@@ -25,6 +27,7 @@ export default function MenuPage() {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [price, setPrice] = useState('')
+  const [sharePrice, setSharePrice] = useState('')
   const [category, setCategory] = useState('entrees')
   const [sortOrder, setSortOrder] = useState('0')
   const [isActive, setIsActive] = useState(true)
@@ -44,7 +47,7 @@ export default function MenuPage() {
       .order('name', { ascending: true })
 
     if (error) {
-      setFeedback({ type: 'error', message: 'Failed to load menu items' })
+      showToast('Failed to load menu items', 'error')
     } else {
       setItems(data || [])
     }
@@ -56,6 +59,7 @@ export default function MenuPage() {
     setName('')
     setDescription('')
     setPrice('')
+    setSharePrice('')
     setCategory('entrees')
     setSortOrder('0')
     setIsActive(true)
@@ -70,6 +74,7 @@ export default function MenuPage() {
     setName(item.name)
     setDescription(item.description || '')
     setPrice(String(item.price))
+    setSharePrice(item.share_price ? String(item.share_price) : '')
     setCategory(item.category)
     setSortOrder(String(item.sort_order))
     setIsActive(item.is_active)
@@ -77,13 +82,13 @@ export default function MenuPage() {
     setVideoUrl(item.video_url || '')
     setAdditionalImages(item.images ? item.images.join(', ') : '')
     setShowForm(true)
-    setFeedback(null)
+
   }
 
   function startAdd() {
     resetForm()
     setShowForm(true)
-    setFeedback(null)
+
   }
 
   async function handleDelete(item: MenuItem) {
@@ -95,9 +100,9 @@ export default function MenuPage() {
       .eq('id', item.id)
 
     if (error) {
-      setFeedback({ type: 'error', message: 'Failed to delete: ' + error.message })
+      showToast('Failed to delete: ' + error.message, 'error')
     } else {
-      setFeedback({ type: 'success', message: `"${item.name}" deleted` })
+      showToast(`"${item.name}" deleted`, 'success')
       await fetchItems()
     }
   }
@@ -105,22 +110,17 @@ export default function MenuPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!name.trim()) {
-      setFeedback({ type: 'error', message: 'Name is required' })
+      showToast('Name is required', 'error')
       return
     }
     if (!price || isNaN(parseFloat(price)) || parseFloat(price) < 0) {
-      setFeedback({ type: 'error', message: 'Valid price is required' })
+      showToast('Valid price is required', 'error')
       return
     }
 
     setSaving(true)
-    setFeedback(null)
 
-    const imagesArray = additionalImages.trim()
-      ? additionalImages.split(',').map((s) => s.trim()).filter(Boolean)
-      : null
-
-    const payload = {
+    const payload: Record<string, unknown> = {
       name: name.trim(),
       description: description.trim() || null,
       price: parseFloat(price),
@@ -128,35 +128,44 @@ export default function MenuPage() {
       sort_order: parseInt(sortOrder) || 0,
       is_active: isActive,
       image_url: imageUrl.trim() || null,
-      video_url: videoUrl.trim() || null,
-      images: imagesArray,
     }
 
-    if (editingId) {
-      const { error } = await supabase
-        .from('menu_items')
-        .update(payload)
-        .eq('id', editingId)
-
-      if (error) {
-        setFeedback({ type: 'error', message: 'Failed to update: ' + error.message })
-      } else {
-        setFeedback({ type: 'success', message: 'Item updated' })
-        resetForm()
-        await fetchItems()
-      }
+    // Only include share_price if column exists (added via migration 005)
+    if (sharePrice && !isNaN(parseFloat(sharePrice))) {
+      payload.share_price = parseFloat(sharePrice)
     } else {
-      const { error } = await supabase
-        .from('menu_items')
-        .insert(payload)
+      payload.share_price = null
+    }
 
-      if (error) {
-        setFeedback({ type: 'error', message: 'Failed to create: ' + error.message })
+    let result
+    if (editingId) {
+      result = await supabase.from('menu_items').update(payload).eq('id', editingId).select()
+    } else {
+      result = await supabase.from('menu_items').insert(payload).select()
+    }
+
+    let { data: resultData, error } = result
+
+    // If share_price column doesn't exist yet, retry without it
+    if (error?.message?.includes('share_price')) {
+      delete payload.share_price
+      if (editingId) {
+        result = await supabase.from('menu_items').update(payload).eq('id', editingId).select()
       } else {
-        setFeedback({ type: 'success', message: 'Item created' })
-        resetForm()
-        await fetchItems()
+        result = await supabase.from('menu_items').insert(payload).select()
       }
+      error = result.error
+      resultData = result.data
+    }
+
+    if (error) {
+      showToast(`Failed: ${error.message}`, 'error')
+    } else if (!resultData || resultData.length === 0) {
+      showToast('Save blocked by database permissions — no rows were updated. Run the RLS policy SQL in Supabase.', 'error')
+    } else {
+      showToast(editingId ? 'Item updated' : 'Item created', 'success')
+      resetForm()
+      await fetchItems()
     }
     setSaving(false)
   }
@@ -175,12 +184,6 @@ export default function MenuPage() {
           </button>
         )}
       </div>
-
-      {feedback && (
-        <div className={`${styles.feedback} ${feedback.type === 'success' ? styles.feedbackSuccess : styles.feedbackError}`}>
-          {feedback.message}
-        </div>
-      )}
 
       {showForm && (
         <form onSubmit={handleSubmit} className={styles.form}>
@@ -211,14 +214,24 @@ export default function MenuPage() {
 
           <div className={styles.formRow}>
             <div className={styles.field}>
-              <label className={styles.label}>Price *</label>
+              <label className={styles.label}>Price (Full Stack) *</label>
               <input
-                type="number"
-                step="0.01"
-                min="0"
+                type="text"
+                inputMode="decimal"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
                 placeholder="0.00"
+                className={styles.input}
+              />
+            </div>
+            <div className={styles.field}>
+              <label className={styles.label}>Share Stack Price</label>
+              <input
+                type="text"
+                inputMode="decimal"
+                value={sharePrice}
+                onChange={(e) => setSharePrice(e.target.value)}
+                placeholder="Leave empty if N/A"
                 className={styles.input}
               />
             </div>
@@ -316,7 +329,7 @@ export default function MenuPage() {
               <div className={styles.itemInfo}>
                 <div className={styles.itemName}>{item.name}</div>
                 <div className={styles.itemMeta}>
-                  <span>${item.price.toFixed(2)}</span>
+                  <span>${item.price.toFixed(2)}{item.share_price ? ` / $${item.share_price.toFixed(2)}` : ''}</span>
                   <span>{CATEGORIES.find((c) => c.value === item.category)?.label || item.category}</span>
                   <span>Order: {item.sort_order}</span>
                   <span>{item.is_active ? 'Active' : 'Inactive'}</span>

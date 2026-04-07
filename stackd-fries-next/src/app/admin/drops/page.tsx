@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase-browser'
 import type { CurrentDrop } from '@/types/database'
+import { showToast } from '@/components/admin/Toast'
 import styles from './drops.module.css'
 
 function formatDateShort(dateStr: string | null): string {
@@ -24,7 +25,6 @@ export default function DropsPage() {
   const [drops, setDrops] = useState<CurrentDrop[]>([])
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
-  const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
 
   // Form state
   const [editingId, setEditingId] = useState<string | null>(null)
@@ -46,7 +46,7 @@ export default function DropsPage() {
       .order('created_at', { ascending: false })
 
     if (error) {
-      setFeedback({ type: 'error', message: 'Failed to load drops' })
+      showToast('Failed to load drops', 'error')
     } else {
       setDrops(data || [])
     }
@@ -71,7 +71,6 @@ export default function DropsPage() {
     setEndDate(drop.end_date || '')
     setImageUrl(drop.image_url || '')
     setIsActive(drop.is_active)
-    setFeedback(null)
   }
 
   async function handleDelete(drop: CurrentDrop) {
@@ -83,9 +82,9 @@ export default function DropsPage() {
       .eq('id', drop.id)
 
     if (error) {
-      setFeedback({ type: 'error', message: 'Failed to delete drop: ' + error.message })
+      showToast('Failed to delete drop: ' + error.message, 'error')
     } else {
-      setFeedback({ type: 'success', message: 'Drop deleted' })
+      showToast('Drop deleted', 'success')
       await fetchDrops()
     }
   }
@@ -93,11 +92,10 @@ export default function DropsPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!name.trim()) {
-      setFeedback({ type: 'error', message: 'Name is required' })
+      showToast('Name is required', 'error')
       return
     }
     setSaving(true)
-    setFeedback(null)
 
     // Base payload without date columns (they may not exist yet)
     const basePayload: Record<string, unknown> = {
@@ -130,7 +128,7 @@ export default function DropsPage() {
       const retryResult = await trySubmit(basePayload)
       error = retryResult.error
       if (!error) {
-        setFeedback({ type: 'success', message: (editingId ? 'Drop updated' : 'Drop created') + ' (run SQL migration to enable date fields)' })
+        showToast((editingId ? 'Drop updated' : 'Drop created') + ' (run SQL migration to enable date fields)', 'success')
         resetForm()
         await fetchDrops()
         setSaving(false)
@@ -139,9 +137,9 @@ export default function DropsPage() {
     }
 
     if (error) {
-      setFeedback({ type: 'error', message: `Failed to ${editingId ? 'update' : 'create'} drop: ` + error.message })
+      showToast(`Failed to ${editingId ? 'update' : 'create'} drop: ` + error.message, 'error')
     } else {
-      setFeedback({ type: 'success', message: editingId ? 'Drop updated' : 'Drop created' })
+      showToast(editingId ? 'Drop updated' : 'Drop created', 'success')
       resetForm()
       await fetchDrops()
     }
@@ -157,12 +155,6 @@ export default function DropsPage() {
   return (
     <div>
       <h1 className={styles.heading}>Drops</h1>
-
-      {feedback && (
-        <div className={`${styles.feedback} ${feedback.type === 'success' ? styles.feedbackSuccess : styles.feedbackError}`}>
-          {feedback.message}
-        </div>
-      )}
 
       <div className={styles.currentDrop}>
         <div className={styles.currentDropLabel}>Current Active Drop</div>

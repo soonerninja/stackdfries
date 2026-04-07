@@ -15,10 +15,12 @@ export default function About() {
             <p className={styles.body}>
               Stack&apos;d Fries is what happens when street food meets obsession. Every order stacked
               high with flavor — no half-measures, no boring fries. We started with a simple idea:
-              fries should be the main event, not a side dish.
+              fries should be the main event, not a side dish. Check out our{' '}
+              <a href="#menu" className={styles.inlineLink}>full menu</a> to see what we mean.
             </p>
             <p className={styles.body}>
-              From our trailer to your hands — loaded, stacked, and worth the wait.
+              From our trailer to your hands — loaded, stacked, and worth the wait.{' '}
+              <a href="#tracker" className={styles.inlineLink}>Find us</a> at our next stop.
             </p>
           </div>
 

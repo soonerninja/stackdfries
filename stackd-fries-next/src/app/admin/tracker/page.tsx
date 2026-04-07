@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase-browser'
 import type { TrackerStatus } from '@/types/database'
+import { showToast } from '@/components/admin/Toast'
 import styles from './tracker.module.css'
 
 export default function TrackerPage() {
@@ -10,7 +11,6 @@ export default function TrackerPage() {
   const [tracker, setTracker] = useState<TrackerStatus | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
-  const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
 
   // Form fields for going live
   const [locationName, setLocationName] = useState('')
@@ -25,11 +25,12 @@ export default function TrackerPage() {
     const { data, error } = await supabase
       .from('tracker_status')
       .select('*')
+      .order('created_at', { ascending: false })
       .limit(1)
       .single()
 
     if (error) {
-      setFeedback({ type: 'error', message: 'Failed to load tracker status' })
+      showToast('Failed to load tracker status', 'error')
     } else {
       setTracker(data)
       if (data.location_name) setLocationName(data.location_name)
@@ -41,17 +42,17 @@ export default function TrackerPage() {
 
   function handleUseMyLocation() {
     if (!navigator.geolocation) {
-      setFeedback({ type: 'error', message: 'Geolocation not supported by your browser' })
+      showToast('Geolocation not supported by your browser', 'error')
       return
     }
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         setLat(String(pos.coords.latitude))
         setLng(String(pos.coords.longitude))
-        setFeedback({ type: 'success', message: 'Location captured' })
+        showToast('Location captured', 'success')
       },
       () => {
-        setFeedback({ type: 'error', message: 'Could not get your location' })
+        showToast('Could not get your location', 'error')
       }
     )
   }
@@ -59,11 +60,10 @@ export default function TrackerPage() {
   async function goLive() {
     if (!tracker) return
     if (!locationName.trim()) {
-      setFeedback({ type: 'error', message: 'Location name is required' })
+      showToast('Location name is required', 'error')
       return
     }
     setSaving(true)
-    setFeedback(null)
 
     const { error } = await supabase
       .from('tracker_status')
@@ -77,9 +77,9 @@ export default function TrackerPage() {
       .eq('id', tracker.id)
 
     if (error) {
-      setFeedback({ type: 'error', message: 'Failed to go live: ' + error.message })
+      showToast('Failed to go live: ' + error.message, 'error')
     } else {
-      setFeedback({ type: 'success', message: 'You are now LIVE!' })
+      showToast('You are now LIVE!', 'success')
       await fetchStatus()
     }
     setSaving(false)
@@ -88,7 +88,6 @@ export default function TrackerPage() {
   async function goOffline() {
     if (!tracker) return
     setSaving(true)
-    setFeedback(null)
 
     const { error } = await supabase
       .from('tracker_status')
@@ -99,9 +98,9 @@ export default function TrackerPage() {
       .eq('id', tracker.id)
 
     if (error) {
-      setFeedback({ type: 'error', message: 'Failed to go offline: ' + error.message })
+      showToast('Failed to go offline: ' + error.message, 'error')
     } else {
-      setFeedback({ type: 'success', message: 'You are now OFFLINE' })
+      showToast('You are now OFFLINE', 'success')
       await fetchStatus()
     }
     setSaving(false)
@@ -110,7 +109,6 @@ export default function TrackerPage() {
   async function markTemporarilyClosed() {
     if (!tracker) return
     setSaving(true)
-    setFeedback(null)
 
     const { error } = await supabase
       .from('tracker_status')
@@ -122,9 +120,9 @@ export default function TrackerPage() {
       .eq('id', tracker.id)
 
     if (error) {
-      setFeedback({ type: 'error', message: 'Failed to mark as closed: ' + error.message })
+      showToast('Failed to mark as closed: ' + error.message, 'error')
     } else {
-      setFeedback({ type: 'success', message: 'Marked as TEMPORARILY CLOSED' })
+      showToast('Marked as TEMPORARILY CLOSED', 'success')
       await fetchStatus()
     }
     setSaving(false)
@@ -133,7 +131,6 @@ export default function TrackerPage() {
   async function clearTemporarilyClosed() {
     if (!tracker) return
     setSaving(true)
-    setFeedback(null)
 
     const { error } = await supabase
       .from('tracker_status')
@@ -143,9 +140,9 @@ export default function TrackerPage() {
       .eq('id', tracker.id)
 
     if (error) {
-      setFeedback({ type: 'error', message: 'Failed to clear closed status: ' + error.message })
+      showToast('Failed to clear closed status: ' + error.message, 'error')
     } else {
-      setFeedback({ type: 'success', message: 'Temporarily closed status removed' })
+      showToast('Temporarily closed status removed', 'success')
       await fetchStatus()
     }
     setSaving(false)
@@ -165,12 +162,6 @@ export default function TrackerPage() {
   return (
     <div>
       <h1 className={styles.heading}>Truck Tracker</h1>
-
-      {feedback && (
-        <div className={`${styles.feedback} ${feedback.type === 'success' ? styles.feedbackSuccess : styles.feedbackError}`}>
-          {feedback.message}
-        </div>
-      )}
 
       <div className={`${styles.statusBanner} ${isLive ? styles.statusBannerLive : isTempClosed ? styles.statusBannerClosed : styles.statusBannerOffline}`}>
         <div className={`${styles.statusText} ${isLive ? styles.statusTextLive : isTempClosed ? styles.statusTextClosed : styles.statusTextOffline}`}>

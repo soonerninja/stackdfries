@@ -7,32 +7,95 @@ import { getFormattedHours } from '@/lib/hours';
 import type { TrackerStatus } from '@/types/database';
 import styles from './LiveTracker.module.css';
 
+type DayKey = 'sun' | 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat';
+interface HoursRange { open: string; close: string; }
+type HoursMap = Partial<Record<DayKey, HoursRange>>;
+
+const ALL_DAYS: { key: DayKey; label: string }[] = [
+  { key: 'mon', label: 'Monday' },
+  { key: 'tue', label: 'Tuesday' },
+  { key: 'wed', label: 'Wednesday' },
+  { key: 'thu', label: 'Thursday' },
+  { key: 'fri', label: 'Friday' },
+  { key: 'sat', label: 'Saturday' },
+  { key: 'sun', label: 'Sunday' },
+];
+
+function formatTime(t: string) {
+  const [hours, minutes] = t.split(':').map(Number);
+  const period = hours >= 12 ? 'pm' : 'am';
+  const displayHour = hours > 12 ? hours - 12 : hours === 0 ? 12 : hours;
+  const displayMin = minutes > 0 ? `:${String(minutes).padStart(2, '0')}` : '';
+  return `${displayHour}${displayMin}${period}`;
+}
+
+function buildHoursDisplay(hoursMap: HoursMap): { day: string; hours: string }[] {
+  const result: { day: string; hours: string }[] = [];
+  let closedStart: string | null = null;
+  let closedEnd: string | null = null;
+
+  for (const { key, label } of ALL_DAYS) {
+    const range = hoursMap[key];
+    if (!range) {
+      if (!closedStart) closedStart = label;
+      closedEnd = label;
+    } else {
+      // Flush any pending closed range
+      if (closedStart) {
+        const closedLabel = closedStart === closedEnd ? closedStart : `${closedStart.slice(0, 3)}–${closedEnd!.slice(0, 3)}`;
+        result.push({ day: closedLabel, hours: 'Closed' });
+        closedStart = null;
+        closedEnd = null;
+      }
+      result.push({ day: label, hours: `${formatTime(range.open)} – ${formatTime(range.close)}` });
+    }
+  }
+  // Flush trailing closed
+  if (closedStart) {
+    const closedLabel = closedStart === closedEnd ? closedStart : `${closedStart.slice(0, 3)}–${closedEnd!.slice(0, 3)}`;
+    result.push({ day: closedLabel, hours: 'Closed' });
+  }
+  return result;
+}
+
 export default function LiveTracker() {
   const [tracker, setTracker] = useState<TrackerStatus | null>(null);
+  const [hours, setHours] = useState<{ day: string; hours: string }[]>(getFormattedHours());
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const supabase = createClient();
 
-    async function fetchStatus() {
+    async function fetchData() {
       try {
-        const { data } = await supabase
-          .from('tracker_status')
-          .select('*')
-          .order('created_at', { ascending: false })
-          .limit(1)
-          .single<TrackerStatus>();
+        const [trackerRes, hoursRes] = await Promise.all([
+          supabase
+            .from('tracker_status')
+            .select('*')
+            .order('created_at', { ascending: false })
+            .limit(1)
+            .single<TrackerStatus>(),
+          supabase
+            .from('site_settings')
+            .select('value')
+            .eq('key', 'hours')
+            .single(),
+        ]);
 
-        setTracker(data ?? null);
+        setTracker(trackerRes.data ?? null);
+
+        if (hoursRes.data?.value) {
+          const savedHours = hoursRes.data.value as HoursMap;
+          setHours(buildHoursDisplay(savedHours));
+        }
       } catch {
-        // If fetch fails, show closed state
         setTracker(null);
       }
       setLoaded(true);
     }
 
-    fetchStatus();
-    const interval = setInterval(fetchStatus, 60_000);
+    fetchData();
+    const interval = setInterval(fetchData, 60_000);
     return () => clearInterval(interval);
   }, []);
 
@@ -40,7 +103,6 @@ export default function LiveTracker() {
 
   const isLive = tracker?.is_live ?? false;
   const isTempClosed = !isLive && tracker?.location_name === 'TEMPORARILY CLOSED';
-  const hours = getFormattedHours();
 
   return (
     <section className={`${styles.section} reveal`} id="tracker">
@@ -93,7 +155,6 @@ export default function LiveTracker() {
           <div className={styles.closedContent}>
             <p className={styles.closedMessage}>We&apos;re taking a break! Check back soon.</p>
             <div className={styles.contactInfo}>
-              <div>{siteConfig.location.address}</div>
               <div>
                 <a href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a>
               </div>
@@ -115,15 +176,10 @@ export default function LiveTracker() {
                     <td>{h.hours}</td>
                   </tr>
                 ))}
-                <tr>
-                  <td>Mon–Wed</td>
-                  <td>Closed</td>
-                </tr>
               </tbody>
             </table>
             <p className={styles.seasonNote}>Late-night Saturdays (until 2am) during OU football &amp; spring sessions.</p>
             <div className={styles.contactInfo}>
-              <div>{siteConfig.location.address}</div>
               <div>
                 <a href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a>
               </div>

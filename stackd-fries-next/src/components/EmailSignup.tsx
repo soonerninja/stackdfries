@@ -8,11 +8,23 @@ type Status = 'idle' | 'loading' | 'success' | 'duplicate' | 'error';
 export default function EmailSignup() {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<Status>('idle');
+  const [validationError, setValidationError] = useState('');
+
+  function validateEmail(value: string): string {
+    if (!value.trim()) return 'Email is required.';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return 'Enter a valid email address.';
+    return '';
+  }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    if (!email) return;
 
+    const error = validateEmail(email);
+    if (error) {
+      setValidationError(error);
+      return;
+    }
+    setValidationError('');
     setStatus('loading');
 
     try {
@@ -44,25 +56,38 @@ export default function EmailSignup() {
         <p className={styles.subtitle}>Drop alerts. Secret menu items. First dibs.</p>
 
         {status === 'success' ? (
-          <p className={styles.message}>you&apos;re in. watch your inbox.</p>
+          <div className={styles.successWrap}>
+            <span className={styles.successCheck}>&#10003;</span>
+            <p className={styles.message}>you&apos;re in. watch your inbox.</p>
+          </div>
         ) : (
-          <form className={styles.form} onSubmit={handleSubmit}>
-            <input
-              type="email"
-              placeholder="your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className={styles.input}
-              required
-            />
-            <button type="submit" className={`btn btn-primary ${styles.button}`} disabled={status === 'loading'}>
-              {status === 'loading' ? 'Sending...' : 'GET DROP ALERTS'}
-            </button>
-          </form>
+          <>
+            <form className={styles.form} onSubmit={handleSubmit} noValidate>
+              <div className={styles.inputWrap}>
+                <input
+                  type="email"
+                  placeholder="your email"
+                  aria-label="Email address for drop alerts"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    if (validationError) setValidationError('');
+                  }}
+                  className={`${styles.input} ${validationError ? styles.inputError : ''}`}
+                />
+                {validationError && (
+                  <p className={styles.inlineError}>{validationError}</p>
+                )}
+              </div>
+              <button type="submit" className={`btn btn-primary ${styles.button}`} disabled={status === 'loading'}>
+                {status === 'loading' ? 'Sending...' : 'GET DROP ALERTS'}
+              </button>
+            </form>
+          </>
         )}
 
         {status === 'duplicate' && (
-          <p className={styles.messageMuted}>you&apos;re already on the list.</p>
+          <p className={styles.messageDuplicate}>already subscribed! you&apos;re on the list.</p>
         )}
         {status === 'error' && (
           <p className={styles.messageError}>something went wrong. try again.</p>

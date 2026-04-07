@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { createClient } from '@/lib/supabase-browser';
-import { getStatusText } from '@/lib/hours';
+import { getStatusText, type HoursMap } from '@/lib/hours';
 import type { TrackerStatus } from '@/types/database';
 import styles from './LiveStatusBadge.module.css';
 
@@ -16,18 +16,30 @@ export default function LiveStatusBadge() {
 
     async function fetchStatus() {
       try {
-        const { data } = await supabase
-          .from('tracker_status')
-          .select('*')
-          .order('created_at', { ascending: false })
-          .limit(1)
-          .single<TrackerStatus>();
+        const [trackerRes, hoursRes] = await Promise.all([
+          supabase
+            .from('tracker_status')
+            .select('*')
+            .order('created_at', { ascending: false })
+            .limit(1)
+            .single<TrackerStatus>(),
+          supabase
+            .from('site_settings')
+            .select('value')
+            .eq('key', 'hours')
+            .single(),
+        ]);
 
-        if (data?.is_live) {
+        const dynamicHours = hoursRes.data?.value as HoursMap | undefined;
+
+        if (trackerRes.data?.is_live) {
           setIsLive(true);
-          setStatusText(`LIVE at ${data.location_name || 'our spot'}`);
+          setStatusText(`LIVE at ${trackerRes.data.location_name || 'our spot'}`);
+        } else if (trackerRes.data?.location_name === 'TEMPORARILY CLOSED') {
+          setIsLive(false);
+          setStatusText('Temporarily Closed');
         } else {
-          const schedule = getStatusText();
+          const schedule = getStatusText(new Date(), dynamicHours);
           setIsLive(schedule.isOpen);
           setStatusText(schedule.text);
         }

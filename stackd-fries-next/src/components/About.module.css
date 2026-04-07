@@ -59,6 +59,17 @@
   color: var(--text-muted);
 }
 
+.inlineLink {
+  color: var(--gold);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(242, 199, 68, 0.4);
+  transition: border-color var(--transition-fast);
+}
+
+.inlineLink:hover {
+  border-bottom-color: var(--gold);
+}
+
 .followUs {
   margin-top: 48px;
   text-align: center;

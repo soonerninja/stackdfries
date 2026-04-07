@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase-browser'
+import { showToast } from '@/components/admin/Toast'
 import styles from './settings.module.css'
 
 const DAYS = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'] as const
@@ -50,13 +51,11 @@ export default function SettingsPage() {
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [saving, setSaving] = useState(false)
-  const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
 
   // Hours state
   const [hours, setHours] = useState<HoursData>(DEFAULT_HOURS)
   const [closedDays, setClosedDays] = useState<Record<string, boolean>>({ mon: true, tue: true, wed: true })
   const [hoursSaving, setHoursSaving] = useState(false)
-  const [hoursFeedback, setHoursFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
   const [hoursLoaded, setHoursLoaded] = useState(false)
 
   useEffect(() => {
@@ -100,51 +99,70 @@ export default function SettingsPage() {
   }
 
   function toggleClosed(day: string) {
+    const wasClosed = closedDays[day]
     setClosedDays(prev => ({ ...prev, [day]: !prev[day] }))
+    // When opening a day that has no hours set, give it defaults
+    if (wasClosed && !hours[day]) {
+      setHours(prev => ({
+        ...prev,
+        [day]: DEFAULT_HOURS[day] || { open: '17:00', close: '22:00' },
+      }))
+    }
   }
 
   async function saveHours() {
     setHoursSaving(true)
-    setHoursFeedback(null)
 
     // Build hours object, omitting closed days
     const hoursToSave: HoursData = {}
     DAYS.forEach(d => {
       if (!closedDays[d]) {
-        hoursToSave[d] = hours[d] || DEFAULT_HOURS[d]
+        hoursToSave[d] = hours[d] || DEFAULT_HOURS[d] || { open: '17:00', close: '22:00' }
       }
     })
 
-    const { error } = await supabase
+    // Try update first
+    const { data: updateData, error: updateError } = await supabase
       .from('site_settings')
-      .upsert({ key: 'hours', value: hoursToSave, updated_at: new Date().toISOString() })
+      .update({ value: hoursToSave, updated_at: new Date().toISOString() })
+      .eq('key', 'hours')
+      .select()
 
-    if (error) {
-      if (error.message?.includes('site_settings')) {
-        setHoursFeedback({ type: 'error', message: 'Run the SQL migration to enable this feature (see below)' })
-      } else {
-        setHoursFeedback({ type: 'error', message: 'Failed to save: ' + error.message })
-      }
-    } else {
-      setHoursFeedback({ type: 'success', message: 'Hours updated!' })
+    if (updateError) {
+      showToast('Failed to save: ' + updateError.message, 'error')
+      setHoursSaving(false)
+      return
     }
+
+    // If no rows updated (row doesn't exist yet), insert
+    if (!updateData || updateData.length === 0) {
+      const { error: insertError } = await supabase
+        .from('site_settings')
+        .insert({ key: 'hours', value: hoursToSave, updated_at: new Date().toISOString() })
+
+      if (insertError) {
+        showToast('Failed to save: ' + insertError.message, 'error')
+        setHoursSaving(false)
+        return
+      }
+    }
+
+    showToast('Hours updated!', 'success')
     setHoursSaving(false)
   }
 
   async function handleChangePassword(e: React.FormEvent) {
     e.preventDefault()
-    setFeedback(null)
-
     if (!userEmail) {
-      setFeedback({ type: 'error', message: 'Unable to verify user. Please refresh and try again.' })
+      showToast('Unable to verify user. Please refresh and try again.', 'error')
       return
     }
     if (newPassword.length < 6) {
-      setFeedback({ type: 'error', message: 'Password must be at least 6 characters' })
+      showToast('Password must be at least 6 characters', 'error')
       return
     }
     if (newPassword !== confirmPassword) {
-      setFeedback({ type: 'error', message: 'Passwords do not match' })
+      showToast('Passwords do not match', 'error')
       return
     }
     setSaving(true)
@@ -154,16 +172,16 @@ export default function SettingsPage() {
       password: currentPassword,
     })
     if (signInError) {
-      setFeedback({ type: 'error', message: 'Current password is incorrect' })
+      showToast('Current password is incorrect', 'error')
       setSaving(false)
       return
     }
 
     const { error } = await supabase.auth.updateUser({ password: newPassword })
     if (error) {
-      setFeedback({ type: 'error', message: error.message })
+      showToast(error.message, 'error')
     } else {
-      setFeedback({ type: 'success', message: 'Password updated successfully' })
+      showToast('Password updated successfully', 'success')
       setCurrentPassword('')
       setNewPassword('')
       setConfirmPassword('')
@@ -177,12 +195,6 @@ export default function SettingsPage() {
 
       <div className={styles.form} style={{ marginBottom: 24 }}>
         <h2 className={styles.formTitle}>Business Hours</h2>
-
-        {hoursFeedback && (
-          <div className={`${styles.feedback} ${hoursFeedback.type === 'success' ? styles.feedbackSuccess : styles.feedbackError}`}>
-            {hoursFeedback.message}
-          </div>
-        )}
 
         {hoursLoaded && DAYS.map(day => (
           <div key={day} className={styles.hourRow}>
@@ -238,15 +250,9 @@ export default function SettingsPage() {
       <form onSubmit={handleChangePassword} className={styles.form}>
         <h2 className={styles.formTitle}>Change Password</h2>
 
-        {feedback && (
-          <div className={`${styles.feedback} ${feedback.type === 'success' ? styles.feedbackSuccess : styles.feedbackError}`}>
-            {feedback.message}
-          </div>
-        )}
-
         <div className={styles.field}>
           <label className={styles.label}>Current Password</label>
-          <input type="password" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} className={styles.input} placeholder="Enter current password" required minLength={6} />
+          <input type="password" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} className={styles.input} placeholder="Enter current password" required />
         </div>
         <div className={styles.field}>
           <label className={styles.label}>New Password</label>

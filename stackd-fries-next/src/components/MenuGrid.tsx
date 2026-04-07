@@ -25,7 +25,10 @@ export default function MenuGrid({ items }: MenuGridProps) {
     grouped[cat].push(item);
   }
 
-  const sortedCategories = categoryOrder.filter((c) => grouped[c]);
+  // Show categories in preferred order, then any remaining categories not in the list
+  const knownCategories = categoryOrder.filter((c) => grouped[c]);
+  const extraCategories = Object.keys(grouped).filter((c) => !categoryOrder.includes(c));
+  const sortedCategories = [...knownCategories, ...extraCategories];
 
   return (
     <>
@@ -38,6 +41,7 @@ export default function MenuGrid({ items }: MenuGridProps) {
                 key={item.id}
                 name={item.name}
                 price={item.price}
+                sharePrice={item.share_price}
                 description={item.description}
                 imageUrl={item.image_url}
                 isSpecial={item.category === 'rotating_special'}

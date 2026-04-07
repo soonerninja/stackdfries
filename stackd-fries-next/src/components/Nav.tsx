@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { siteConfig } from '@/lib/config';
 import LiveStatusBadge from './LiveStatusBadge';
+import DropBadge from './DropBadge';
 import styles from './Nav.module.css';
 
 export default function Nav() {
@@ -47,6 +48,8 @@ export default function Nav() {
           <div className={styles.desktopLinks}>
             <a href="#menu" className={styles.desktopLink}>Menu</a>
             <a href="#tracker" className={styles.desktopLink}>Find Us</a>
+            <a href="#catering" className={styles.desktopLink}>Catering</a>
+            <DropBadge className={styles.desktopLink} />
             <LiveStatusBadge />
             <a
               href={siteConfig.orderUrl}
@@ -78,6 +81,8 @@ export default function Nav() {
       >
         <a href="#menu" className={styles.overlayLink} onClick={closeMenu}>Menu</a>
         <a href="#tracker" className={styles.overlayLink} onClick={closeMenu}>Find Us</a>
+        <a href="#catering" className={styles.overlayLink} onClick={closeMenu}>Catering</a>
+        <DropBadge onClick={closeMenu} className={styles.overlayLink} />
         <a
           href={siteConfig.orderUrl}
           target="_blank"
@@ -106,6 +111,16 @@ export default function Nav() {
             onClick={closeMenu}
           >
             Instagram
+          </a>
+          <span className={styles.overlaySocialDot}>·</span>
+          <a
+            href={siteConfig.social.facebook}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.overlaySocialLink}
+            onClick={closeMenu}
+          >
+            Facebook
           </a>
         </div>
       </div>

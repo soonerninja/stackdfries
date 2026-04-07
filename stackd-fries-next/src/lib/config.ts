@@ -3,13 +3,13 @@ export const siteConfig = {
   tagline: "Loaded. Always.",
   subtitle: "Oklahoma's premium loaded fries",
   contact: {
-    email: "stackfries@gmail.com",
-    phone: "(405) 435-1002",
+    email: "stackdfries@gmail.com",
+    phone: "(405) 310-9971",
   },
   orderUrl: process.env.NEXT_PUBLIC_SQUARE_ORDER_URL || "https://stackdfries.square.site",
   social: {
-    instagram: "https://instagram.com/stackdfries",
-    tiktok: "https://tiktok.com/@stackdfries",
+    instagram: "https://www.instagram.com/stackdfries",
+    tiktok: "https://www.tiktok.com/@stackdfries",
     facebook: "https://www.facebook.com/profile.php?id=61580845964760",
   },
   location: {
