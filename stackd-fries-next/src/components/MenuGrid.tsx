@@ -11,7 +11,8 @@ const CATEGORY_LABELS: Record<string, string> = {
   sides_drinks: 'SIDES & DRINKS',
 };
 
-const categoryOrder = ['entrees', 'entree', 'loaded_fries', 'sides', 'desserts', 'sides_drinks', 'drinks'];
+// Categories that should always render BEFORE drinks, in this order.
+const priorityOrder = ['entrees', 'entree', 'loaded_fries', 'sides', 'desserts', 'sides_drinks'];
 
 function normalizeCategory(c: string): string {
   return (c || '').trim().toLowerCase().replace(/[\s-]+/g, '_');
@@ -29,10 +30,14 @@ export default function MenuGrid({ items }: MenuGridProps) {
     grouped[cat].push(item);
   }
 
-  // Show categories in preferred order, then any remaining categories not in the list
-  const knownCategories = categoryOrder.filter((c) => grouped[c]);
-  const extraCategories = Object.keys(grouped).filter((c) => !categoryOrder.includes(c));
-  const sortedCategories = [...knownCategories, ...extraCategories];
+  // Render order: priority categories (entrees first) → unknown/extra categories → drinks last.
+  // Drinks always render last so the menu leads with food.
+  const priorityKnown = priorityOrder.filter((c) => grouped[c]);
+  const extraCategories = Object.keys(grouped).filter(
+    (c) => !priorityOrder.includes(c) && c !== 'drinks'
+  );
+  const trailing = grouped['drinks'] ? ['drinks'] : [];
+  const sortedCategories = [...priorityKnown, ...extraCategories, ...trailing];
 
   return (
     <>
