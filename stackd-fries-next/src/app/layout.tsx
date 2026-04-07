@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Analytics } from '@vercel/analytics/react';
 import { createClient } from '@/lib/supabase-server';
-import type { HoursMap } from '@/lib/hours';
 import PageTracker from '@/components/PageTracker';
 import "./globals.css";
 
@@ -112,51 +111,12 @@ async function getMenuSections() {
   }
 }
 
-const DAY_LABEL: Record<string, string> = {
-  mon: 'Monday', tue: 'Tuesday', wed: 'Wednesday', thu: 'Thursday',
-  fri: 'Friday', sat: 'Saturday', sun: 'Sunday',
-};
-
-async function getDynamicHours(): Promise<HoursMap | undefined> {
-  try {
-    const supabase = await createClient();
-    const { data } = await supabase
-      .from('site_settings')
-      .select('value')
-      .eq('key', 'hours')
-      .maybeSingle();
-    return (data?.value as HoursMap | undefined) ?? undefined;
-  } catch {
-    return undefined;
-  }
-}
-
-function buildOpeningHoursSpec(hours: HoursMap | undefined) {
-  if (!hours) {
-    return [
-      { "@type": "OpeningHoursSpecification", dayOfWeek: ["Thursday", "Friday"], opens: "17:00", closes: "23:00" },
-      { "@type": "OpeningHoursSpecification", dayOfWeek: ["Saturday", "Sunday"], opens: "12:00", closes: "23:00" },
-    ];
-  }
-  return Object.entries(hours)
-    .filter(([, range]) => range && range.open && range.close)
-    .map(([day, range]) => ({
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: DAY_LABEL[day] ?? day,
-      opens: range!.open,
-      closes: range!.close,
-    }));
-}
-
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [menuSections, dynamicHours] = await Promise.all([
-    getMenuSections(),
-    getDynamicHours(),
-  ]);
+  const menuSections = await getMenuSections();
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -190,7 +150,10 @@ export default async function RootLayout({
       "https://www.instagram.com/stackdfries",
       "https://www.facebook.com/profile.php?id=61580845964760",
     ],
-    openingHoursSpecification: buildOpeningHoursSpec(dynamicHours),
+    openingHoursSpecification: [
+      { "@type": "OpeningHoursSpecification", dayOfWeek: ["Thursday", "Friday"], opens: "17:00", closes: "23:00" },
+      { "@type": "OpeningHoursSpecification", dayOfWeek: ["Saturday", "Sunday"], opens: "12:00", closes: "23:00" },
+    ],
     hasMenu: {
       "@type": "Menu",
       url: "https://stackdfries.com/#menu",

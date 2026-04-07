@@ -1,28 +1,7 @@
 import { siteConfig } from '@/lib/config';
-import { createClient } from '@/lib/supabase-server';
-import { getFormattedHours, type HoursMap } from '@/lib/hours';
 import styles from './Footer.module.css';
 
-async function loadHours(): Promise<HoursMap | undefined> {
-  try {
-    const supabase = await createClient();
-    const { data } = await supabase
-      .from('site_settings')
-      .select('value')
-      .eq('key', 'hours')
-      .maybeSingle();
-    return (data?.value as HoursMap | undefined) ?? undefined;
-  } catch {
-    return undefined;
-  }
-}
-
-export default async function Footer() {
-  const dynamicHours = await loadHours();
-  const formatted = getFormattedHours(dynamicHours).filter((h) => h.hours !== 'Closed');
-  const hoursLine = formatted.length
-    ? formatted.map((h) => `${h.day.slice(0, 3)} ${h.hours}`).join(' · ')
-    : 'Hours vary — check Find Us for schedule';
+export default function Footer() {
   return (
     <footer className={styles.footer}>
       <div className="container">
@@ -47,7 +26,9 @@ export default async function Footer() {
               <a href={siteConfig.social.tiktok} target="_blank" rel="noopener noreferrer" className={styles.footerLink}>TikTok</a>
               <a href={siteConfig.social.instagram} target="_blank" rel="noopener noreferrer" className={styles.footerLink}>Instagram</a>
               <a href={siteConfig.social.facebook} target="_blank" rel="noopener noreferrer" className={styles.footerLink}>Facebook</a>
-              {/* Add Google Business Profile link once set up */}
+              {siteConfig.social.googleBusiness && (
+                <a href={siteConfig.social.googleBusiness} target="_blank" rel="noopener noreferrer" className={styles.footerLink}>Google</a>
+              )}
             </div>
             <div className={styles.linkGroup}>
               <div className={styles.linkGroupTitle}>Contact</div>
@@ -60,7 +41,7 @@ export default async function Footer() {
 
         <div className={styles.bottom}>
           <p className={styles.hours}>
-            {hoursLine} &middot; <a href="#tracker" style={{ color: 'var(--gold)', textDecoration: 'underline' }}>Find Us</a>
+            Thu&ndash;Sun &middot; Hours vary &middot; Check <a href="#tracker" style={{ color: 'var(--gold)', textDecoration: 'underline' }}>Find Us</a> for schedule
           </p>
           <div className={styles.legal}>
             <span>&copy; {new Date().getFullYear()} Stack&apos;d Fries&trade; &mdash; All rights reserved.</span>

@@ -11,6 +11,9 @@ export const siteConfig = {
     instagram: "https://www.instagram.com/stackdfries",
     tiktok: "https://www.tiktok.com/@stackdfries",
     facebook: "https://www.facebook.com/profile.php?id=61580845964760",
+    // Paste the full Google Maps place URL once the profile is claimed.
+    // Example: "https://g.page/r/abc123xyz"
+    googleBusiness: "",
   },
   location: {
     address: "123 Main St, Norman, OK 73069",
