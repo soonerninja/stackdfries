@@ -40,6 +40,18 @@ export default async function AdminDashboardPage() {
     .from('email_signups')
     .select('*', { count: 'exact', head: true })
 
+  // Fetch pending catering inquiries count (status = 'new')
+  let pendingCateringCount = 0
+  try {
+    const { count } = await supabase
+      .from('catering_inquiries')
+      .select('*', { count: 'exact', head: true })
+      .eq('status', 'new')
+    pendingCateringCount = count ?? 0
+  } catch {
+    // catering_inquiries table/RLS may not be ready — dashboard still works
+  }
+
   // Fetch recent email signups
   const { data: recentEmails } = await supabase
     .from('email_signups')
@@ -152,6 +164,17 @@ export default async function AdminDashboardPage() {
           <div className={styles.statLabel}>Email Signups</div>
           <div className={`${styles.statValue} ${styles.statValueLarge}`}>{emailCount ?? 0}</div>
         </div>
+
+        <Link
+          href="/admin/catering"
+          className={`${styles.statCard} ${pendingCateringCount > 0 ? styles.statCardLive : ''}`}
+          style={{ textDecoration: 'none' }}
+        >
+          <div className={styles.statLabel}>Pending Catering</div>
+          <div className={`${styles.statValue} ${pendingCateringCount > 0 ? styles.statValueLive : ''}`}>
+            {pendingCateringCount}
+          </div>
+        </Link>
 
         <div className={`${styles.statCard} ${hasActiveDrop ? styles.statCardDrop : ''}`}>
           <div className={styles.statLabel}>Active Drop</div>

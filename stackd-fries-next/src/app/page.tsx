@@ -1,4 +1,5 @@
 import { Suspense } from 'react';
+import OpeningBanner from '@/components/OpeningBanner';
 import Nav from '@/components/Nav';
 import Hero from '@/components/Hero';
 import LiveTracker from '@/components/LiveTracker';
@@ -19,6 +20,7 @@ export const dynamic = 'force-dynamic';
 export default function Home() {
   return (
     <>
+      <OpeningBanner />
       <Nav />
       <main>
         <Hero />

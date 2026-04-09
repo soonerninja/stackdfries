@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import OpeningBanner from '@/components/OpeningBanner';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import CateringForm from '@/components/CateringForm';
@@ -58,6 +59,7 @@ export default function CateringPage() {
 
   return (
     <>
+      <OpeningBanner />
       <Nav />
       <main className={styles.page}>
         <section className={styles.hero}>

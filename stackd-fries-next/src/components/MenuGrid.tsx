@@ -43,7 +43,9 @@ export default function MenuGrid({ items }: MenuGridProps) {
     <>
       {sortedCategories.map((cat) => (
         <div key={cat} className={styles.category}>
-          <h3 className={styles.categoryTitle}>{CATEGORY_LABELS[cat] || cat}</h3>
+          {CATEGORY_LABELS[cat] && (
+            <h3 className={styles.categoryTitle}>{CATEGORY_LABELS[cat]}</h3>
+          )}
           <div className={styles.grid}>
             {grouped[cat].map((item) => (
               <MenuCard
