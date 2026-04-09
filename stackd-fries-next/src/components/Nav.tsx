@@ -57,8 +57,7 @@ export default function Nav() {
             <LiveStatusBadge />
             <a
               href={siteConfig.orderUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+              {...(siteConfig.orderUrl.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
               className={`${styles.desktopLink} ${styles.orderLink}`}
             >
               Order
@@ -89,8 +88,7 @@ export default function Nav() {
         <DropBadge onClick={closeMenu} className={styles.overlayLink} />
         <a
           href={siteConfig.orderUrl}
-          target="_blank"
-          rel="noopener noreferrer"
+          {...(siteConfig.orderUrl.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
           className={styles.overlayLink}
           onClick={closeMenu}
         >

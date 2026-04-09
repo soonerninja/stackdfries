@@ -70,8 +70,8 @@ export async function POST(request: Request) {
     if (!event_date) {
       return NextResponse.json({ error: 'Event date is required' }, { status: 400 });
     }
-    if (!headcount || typeof headcount !== 'number' || headcount < 10) {
-      return NextResponse.json({ error: 'Headcount must be at least 10' }, { status: 400 });
+    if (!headcount || typeof headcount !== 'number' || headcount < 25) {
+      return NextResponse.json({ error: 'Headcount must be at least 25' }, { status: 400 });
     }
     if (!event_type || typeof event_type !== 'string' || event_type.length > 80) {
       return NextResponse.json({ error: 'Event type is required' }, { status: 400 });

@@ -8,7 +8,7 @@ import styles from './catering.module.css';
 export const metadata: Metadata = {
   title: 'Catering & Events — Loaded Fries in Oklahoma',
   description:
-    "Book Stack'd Fries for your OU game day, corporate event, wedding, or private party. Loaded fries catering across Oklahoma. 10 guest minimum, 24-hour response.",
+    "Book Stack'd Fries for your OU game day, corporate event, wedding, or private party. Loaded fries catering across Oklahoma. 25 guest minimum, 24-hour response.",
   alternates: { canonical: 'https://stackdfries.com/catering' },
   openGraph: {
     title: "Catering & Events — Stack'd Fries",
@@ -26,7 +26,7 @@ const FAQS: { q: string; a: string }[] = [
   },
   {
     q: "What's the minimum headcount?",
-    a: 'Our catering minimum is 10 guests. There is no hard maximum — we scale to the event.',
+    a: 'Our catering minimum is 25 guests. There is no hard maximum — we scale to the event.',
   },
   {
     q: 'How far in advance should I book?',
@@ -34,7 +34,7 @@ const FAQS: { q: string; a: string }[] = [
   },
   {
     q: 'What do you need from us on-site?',
-    a: 'A 10x10 ft flat spot for the trailer and access to 120V power. If power is not available we can bring a generator — just let us know in your inquiry.',
+    a: 'A 10x16 ft flat spot for the trailer and access to a 30-amp outlet. If power is not available we can bring a generator — just let us know in your inquiry.',
   },
   {
     q: 'Can you accommodate dietary restrictions?',
@@ -67,7 +67,7 @@ export default function CateringPage() {
             <h1 className={styles.title}>CATERING &amp; EVENTS</h1>
             <p className={styles.lede}>
               OU game days, corporate events, weddings, private parties — we bring the stack.
-              Serving all of Oklahoma, 10 guest minimum, 24-hour response.
+              Serving all of Oklahoma, 25 guest minimum, 24-hour response.
             </p>
           </div>
         </section>

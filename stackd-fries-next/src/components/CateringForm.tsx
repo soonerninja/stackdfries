@@ -39,8 +39,8 @@ export default function CateringForm() {
     if (!formData.event_date) errs.event_date = 'Event date is required.';
     if (!formData.headcount) {
       errs.headcount = 'Headcount is required.';
-    } else if (parseInt(formData.headcount, 10) < 10) {
-      errs.headcount = 'Minimum 10 guests.';
+    } else if (parseInt(formData.headcount, 10) < 25) {
+      errs.headcount = 'Minimum 25 guests.';
     }
     if (!formData.event_type) errs.event_type = 'Select an event type.';
     return errs;
@@ -102,7 +102,7 @@ export default function CateringForm() {
   }
 
   return (
-    <section id="catering" className={`${styles.section} reveal`}>
+    <section id="catering" className={styles.section}>
       <div className="container">
         <h2 className="section-title">CATERING &amp; EVENTS</h2>
         <p className={styles.subtitle}>
@@ -196,7 +196,7 @@ export default function CateringForm() {
                   type="number"
                   name="headcount"
                   required
-                  min={10}
+                  min={25}
                   value={formData.headcount}
                   onChange={handleChange}
                   className={`${styles.input} ${errors.headcount ? styles.inputError : ''}`}

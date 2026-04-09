@@ -17,8 +17,7 @@ export default function Hero() {
         <div className={styles.ctas}>
           <a
             href={siteConfig.orderUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+            {...(siteConfig.orderUrl.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
             className="btn btn-primary"
           >
             ORDER NOW

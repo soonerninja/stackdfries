@@ -6,7 +6,7 @@ export const siteConfig = {
     email: "stackdfries@gmail.com",
     phone: "(405) 310-9971",
   },
-  orderUrl: process.env.NEXT_PUBLIC_SQUARE_ORDER_URL || "https://stackdfries.square.site",
+  orderUrl: process.env.NEXT_PUBLIC_SQUARE_ORDER_URL || "/order",
   social: {
     instagram: "https://www.instagram.com/stackdfries",
     tiktok: "https://www.tiktok.com/@stackdfries",

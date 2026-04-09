@@ -16,10 +16,16 @@ export default function Footer() {
           <div className={styles.links}>
             <div className={styles.linkGroup}>
               <div className={styles.linkGroupTitle}>Quick Links</div>
-              <a href="#menu" className={styles.footerLink}>Menu</a>
-              <a href="#tracker" className={styles.footerLink}>Find Us</a>
-              <a href="#catering" className={styles.footerLink}>Catering</a>
-              <a href={siteConfig.orderUrl} target="_blank" rel="noopener noreferrer" className={styles.footerLink}>Order Now</a>
+              <a href="/#menu" className={styles.footerLink}>Menu</a>
+              <a href="/#tracker" className={styles.footerLink}>Find Us</a>
+              <a href="/catering" className={styles.footerLink}>Catering</a>
+              <a
+                href={siteConfig.orderUrl}
+                {...(siteConfig.orderUrl.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                className={styles.footerLink}
+              >
+                Order Now
+              </a>
             </div>
             <div className={styles.linkGroup}>
               <div className={styles.linkGroupTitle}>Connect</div>
@@ -41,7 +47,7 @@ export default function Footer() {
 
         <div className={styles.bottom}>
           <p className={styles.hours}>
-            Thu&ndash;Sun &middot; Hours vary &middot; Check <a href="#tracker" style={{ color: 'var(--gold)', textDecoration: 'underline' }}>Find Us</a> for schedule
+            Thu&ndash;Sun &middot; Hours vary &middot; Check <a href="/#tracker" style={{ color: 'var(--gold)', textDecoration: 'underline' }}>Find Us</a> for schedule
           </p>
           <div className={styles.legal}>
             <span>&copy; {new Date().getFullYear()} Stack&apos;d Fries&trade; &mdash; All rights reserved.</span>
