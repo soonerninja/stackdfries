@@ -136,6 +136,11 @@ section {
   z-index: 1;
 }
 
+/* Anchor targets must clear the fixed banner + nav so #menu etc. don't hide under the header. */
+section[id] {
+  scroll-margin-top: calc(var(--banner-height) + var(--nav-height) + 12px);
+}
+
 /* ============================================
    Buttons
    ============================================ */

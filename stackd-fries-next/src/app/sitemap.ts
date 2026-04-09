@@ -1,29 +1,24 @@
 import type { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  const now = new Date();
   return [
     {
       url: 'https://stackdfries.com',
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: 'weekly',
       priority: 1,
     },
     {
-      url: 'https://stackdfries.com/#menu',
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
+      url: 'https://stackdfries.com/catering',
+      lastModified: now,
+      changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
-      url: 'https://stackdfries.com/#catering',
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
-      url: 'https://stackdfries.com/catering',
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
+      url: 'https://stackdfries.com/order',
+      lastModified: now,
+      changeFrequency: 'weekly',
       priority: 0.7,
     },
   ];

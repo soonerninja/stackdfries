@@ -47,7 +47,7 @@ const FAQS: { q: string; a: string }[] = [
 ];
 
 export default function CateringPage() {
-  const jsonLd = {
+  const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     mainEntity: FAQS.map(({ q, a }) => ({
@@ -55,6 +55,15 @@ export default function CateringPage() {
       name: q,
       acceptedAnswer: { '@type': 'Answer', text: a },
     })),
+  };
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://stackdfries.com' },
+      { '@type': 'ListItem', position: 2, name: 'Catering', item: 'https://stackdfries.com/catering' },
+    ],
   };
 
   return (
@@ -72,6 +81,10 @@ export default function CateringPage() {
           </div>
         </section>
 
+        <div id="inquiry">
+          <CateringForm />
+        </div>
+
         <section id="faq" className={styles.faqSection}>
           <div className="container">
             <h2 className="section-title">FREQUENTLY ASKED</h2>
@@ -85,15 +98,15 @@ export default function CateringPage() {
             </div>
           </div>
         </section>
-
-        <div id="inquiry">
-          <CateringForm />
-        </div>
       </main>
       <Footer />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
     </>
   );

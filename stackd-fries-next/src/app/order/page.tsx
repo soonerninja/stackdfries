@@ -10,6 +10,15 @@ export const metadata: Metadata = {
   alternates: { canonical: 'https://stackdfries.com/order' },
 };
 
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://stackdfries.com' },
+    { '@type': 'ListItem', position: 2, name: 'Order', item: 'https://stackdfries.com/order' },
+  ],
+};
+
 export default function OrderPage() {
   return (
     <>
@@ -66,6 +75,10 @@ export default function OrderPage() {
           </div>
         </div>
       </main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
     </>
   );
 }

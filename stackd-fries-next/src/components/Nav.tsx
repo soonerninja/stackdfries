@@ -25,6 +25,19 @@ export default function Nav() {
 
   const closeMenu = () => setMenuOpen(false);
 
+  // Smooth-scroll to an in-page section even when the URL hash is already set
+  // (browser no-ops a second hash click otherwise). Falls through to default
+  // navigation when we're on a different route.
+  const handleHashClick = (hash: string) => (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!isHome) return; // let the browser navigate to /#hash normally
+    const id = hash.replace(/^#/, '');
+    const el = document.getElementById(id);
+    if (!el) return;
+    e.preventDefault();
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    closeMenu();
+  };
+
   // Close on Escape key
   useEffect(() => {
     if (!menuOpen) return;
@@ -45,13 +58,22 @@ export default function Nav() {
     <>
       <nav className={`${styles.nav} ${scrolled ? styles.navScrolled : ''}`}>
         <div className={styles.inner}>
-          <a href={isHome ? '#top' : '/'} className={styles.logo}>
+          <a
+            href={isHome ? '#top' : '/'}
+            onClick={(e) => {
+              if (isHome) {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }
+            }}
+            className={styles.logo}
+          >
             STACK&apos;D <span className={styles.logoGold}>FRIES</span>
           </a>
 
           <div className={styles.desktopLinks}>
-            <a href={`${linkPrefix}#menu`} className={styles.desktopLink}>Menu</a>
-            <a href={`${linkPrefix}#tracker`} className={styles.desktopLink}>Find Us</a>
+            <a href={`${linkPrefix}#menu`} onClick={handleHashClick('#menu')} className={styles.desktopLink}>Menu</a>
+            <a href={`${linkPrefix}#tracker`} onClick={handleHashClick('#tracker')} className={styles.desktopLink}>Find Us</a>
             <a href="/catering" className={styles.desktopLink}>Catering</a>
             <DropBadge className={styles.desktopLink} />
             <LiveStatusBadge />
@@ -82,8 +104,20 @@ export default function Nav() {
         aria-modal="true"
         onKeyDown={(e) => { if (e.key === 'Escape') closeMenu(); }}
       >
-        <a href={`${linkPrefix}#menu`} className={styles.overlayLink} onClick={closeMenu}>Menu</a>
-        <a href={`${linkPrefix}#tracker`} className={styles.overlayLink} onClick={closeMenu}>Find Us</a>
+        <a
+          href={`${linkPrefix}#menu`}
+          className={styles.overlayLink}
+          onClick={(e) => { handleHashClick('#menu')(e); closeMenu(); }}
+        >
+          Menu
+        </a>
+        <a
+          href={`${linkPrefix}#tracker`}
+          className={styles.overlayLink}
+          onClick={(e) => { handleHashClick('#tracker')(e); closeMenu(); }}
+        >
+          Find Us
+        </a>
         <a href="/catering" className={styles.overlayLink} onClick={closeMenu}>Catering</a>
         <DropBadge onClick={closeMenu} className={styles.overlayLink} />
         <a

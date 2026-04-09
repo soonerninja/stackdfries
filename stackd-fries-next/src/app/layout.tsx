@@ -104,6 +104,15 @@ async function getMenuSections() {
         "@type": "MenuItem" as const,
         name: item.name,
         description: item.description ?? undefined,
+        ...(item.price != null && item.price > 0
+          ? {
+              offers: {
+                "@type": "Offer" as const,
+                price: item.price.toFixed(2),
+                priceCurrency: "USD",
+              },
+            }
+          : {}),
       })),
     }));
   } catch {
@@ -120,27 +129,37 @@ export default async function RootLayout({
 
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "FoodEstablishment",
-    "@id": "https://stackdfries.com",
+    "@type": "Restaurant",
+    "@id": "https://stackdfries.com/#restaurant",
     name: "Stack'd Fries",
     description: "Oklahoma's premium loaded fries — buffalo chicken, carne asada, street corn & more. Founded in Norman, served statewide.",
     url: "https://stackdfries.com",
-    telephone: "(405) 310-9971",
+    telephone: "+14053109971",
     email: "stackdfries@gmail.com",
+    image: "https://stackdfries.com/opengraph-image",
+    logo: "https://stackdfries.com/favicon.svg",
     servesCuisine: ["American", "Street Food", "Loaded Fries"],
     priceRange: "$",
     currenciesAccepted: "USD",
     paymentAccepted: "Cash, Credit Card, Square",
+    acceptsReservations: false,
     address: {
       "@type": "PostalAddress",
       addressLocality: "Norman",
       addressRegion: "OK",
+      postalCode: "73069",
       addressCountry: "US",
     },
-    areaServed: {
-      "@type": "State",
-      name: "Oklahoma",
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: 35.2226,
+      longitude: -97.4395,
     },
+    areaServed: [
+      { "@type": "City", name: "Norman" },
+      { "@type": "City", name: "Oklahoma City" },
+      { "@type": "State", name: "Oklahoma" },
+    ],
     foundingLocation: {
       "@type": "Place",
       name: "Norman, Oklahoma",
