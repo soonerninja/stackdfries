@@ -32,11 +32,20 @@ export const metadata: Metadata = {
     url: "https://stackdfries.com",
     siteName: "Stack'd Fries",
     locale: "en_US",
+    images: [
+      {
+        url: "https://xjhcnoypmwknbeglwhvd.supabase.co/storage/v1/object/public/Public%20Images/SF-Backdrop-2.png",
+        width: 1200,
+        height: 630,
+        alt: "Stack'd Fries — Oklahoma's Premium Loaded Fries",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Stack'd Fries | Oklahoma's Premium Loaded Fries",
     description: "Oklahoma's premium loaded fries. Founded in Norman, served statewide. Loaded. Always.",
+    images: ["https://xjhcnoypmwknbeglwhvd.supabase.co/storage/v1/object/public/Public%20Images/SF-Backdrop-2.png"],
   },
   robots: {
     index: true,
