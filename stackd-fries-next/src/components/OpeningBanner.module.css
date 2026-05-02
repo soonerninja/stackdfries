@@ -4,12 +4,14 @@
   left: 0;
   right: 0;
   height: var(--banner-height);
+  padding: 0 12px;
   z-index: 101;
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--rich-black);
   border-bottom: 2px solid var(--gold);
+  overflow: hidden;
 }
 
 .text {
@@ -18,4 +20,34 @@
   letter-spacing: 0.15em;
   color: var(--gold);
   text-align: center;
+  white-space: nowrap;
+  margin: 0;
+}
+
+.full {
+  display: inline;
+}
+
+.compact {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .text {
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+  }
+  .full {
+    display: none;
+  }
+  .compact {
+    display: inline;
+  }
+}
+
+@media (max-width: 360px) {
+  .text {
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+  }
 }
