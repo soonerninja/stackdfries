@@ -4,7 +4,7 @@ export default function OpeningBanner() {
   return (
     <div className={styles.banner}>
       <p className={styles.text}>
-        🔥 GRAND OPENING — MAY 2ND 🔥
+        🔥 LAUNCHING AT NORMAN ARTS FESTIVAL — MAY 16 & 17 🔥
       </p>
     </div>
   );
