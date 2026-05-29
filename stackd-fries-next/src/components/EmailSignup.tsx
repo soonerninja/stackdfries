@@ -50,7 +50,7 @@ export default function EmailSignup() {
   }
 
   return (
-    <section className={`${styles.section} reveal`}>
+    <section id="signup" className={`${styles.section} reveal`}>
       <div className="container">
         <h2 className="section-title">THE LIST</h2>
         <p className={styles.subtitle}>Drop alerts. Secret menu items. First dibs.</p>
