@@ -6,7 +6,7 @@ import styles from './order.module.css';
 export const metadata: Metadata = {
   title: "Online Ordering — Coming Soon — Stack'd Fries",
   description:
-    "Online ordering from Stack'd Fries is coming soon. Catch us in person at the Norman Arts Festival, May 16 & 17. Follow along so you don't miss the drop.",
+    "Online ordering from Stack'd Fries is coming soon. Follow along so you don't miss the drop.",
   alternates: { canonical: 'https://stackdfries.com/order' },
 };
 
@@ -30,14 +30,11 @@ export default function OrderPage() {
             ONLINE ORDERING<br />
             <span className={styles.titleGold}>COMING SOON</span>
           </h1>
-          <div className={styles.dateRow}>
-            <span className={styles.dateRowDot} />
-            Catch us at Norman Arts Festival · May 16 & 17
-          </div>
           <p className={styles.subtitle}>
-            We&apos;re launching in person at the Norman Arts Festival —
-            online ordering won&apos;t be available that weekend.
-            Come find us downtown and grab a stack hot off the fryer.
+            We&apos;re putting the finishing touches on online ordering.
+            In the meantime, come find us in person and grab a stack hot
+            off the fryer — and follow along so you&apos;re first to know
+            when it goes live.
           </p>
           <div className={styles.divider} />
           <p className={styles.followText}>
