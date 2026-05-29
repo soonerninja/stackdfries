@@ -1,4 +1,3 @@
-import { createClient } from '@/lib/supabase-server'
 import { headers } from 'next/headers'
 import Link from 'next/link'
 import { logout } from './actions'
@@ -22,21 +21,17 @@ export default async function AdminLayout({
   children: React.ReactNode
 }) {
   const headerList = await headers()
-  const pathname = headerList.get('x-next-pathname') || headerList.get('x-invoke-path') || ''
+  const pathname =
+    headerList.get('x-pathname') ||
+    headerList.get('x-next-pathname') ||
+    headerList.get('x-invoke-path') ||
+    ''
 
-  // On the login page, just render children without the admin shell
-  const isLoginPage = pathname.startsWith('/admin/login')
-
-  if (isLoginPage) {
-    return <>{children}</>
-  }
-
-  // Check auth for the admin shell
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-
-  // If somehow no user (middleware should catch this, but safety check)
-  if (!user) {
+  // The login page renders without the admin shell. Every other /admin route
+  // is auth-protected by the middleware (it redirects unauthenticated users
+  // to /admin/login), so by the time we render here the user is signed in and
+  // the shell should always show — no fragile server-side session re-check.
+  if (pathname.startsWith('/admin/login')) {
     return <>{children}</>
   }
 
