@@ -13,6 +13,7 @@ import Footer from '@/components/Footer';
 import MobileCta from '@/components/MobileCta';
 import ScrollReveal from '@/components/ScrollReveal';
 import BackToTop from '@/components/BackToTop';
+import PromoPopup from '@/components/PromoPopup';
 
 export const dynamic = 'force-dynamic';
 
@@ -36,6 +37,7 @@ export default function Home() {
       <MobileCta />
       <ScrollReveal />
       <BackToTop />
+      <PromoPopup />
     </>
   );
 }

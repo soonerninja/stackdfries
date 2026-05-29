@@ -64,6 +64,15 @@ export default function SettingsPage() {
   const [bannerSaving, setBannerSaving] = useState(false)
   const [bannerLoaded, setBannerLoaded] = useState(false)
 
+  // Popup state
+  const [popupEnabled, setPopupEnabled] = useState(false)
+  const [popupTitle, setPopupTitle] = useState('')
+  const [popupBody, setPopupBody] = useState('')
+  const [popupCtaLabel, setPopupCtaLabel] = useState('')
+  const [popupCtaUrl, setPopupCtaUrl] = useState('')
+  const [popupSaving, setPopupSaving] = useState(false)
+  const [popupLoaded, setPopupLoaded] = useState(false)
+
   useEffect(() => {
     async function fetchUser() {
       const { data: { user } } = await supabase.auth.getUser()
@@ -152,6 +161,74 @@ export default function SettingsPage() {
 
     showToast('Banner updated!', 'success')
     setBannerSaving(false)
+  }
+
+  useEffect(() => {
+    async function fetchPopup() {
+      try {
+        const { data } = await supabase
+          .from('site_settings')
+          .select('value')
+          .eq('key', 'popup')
+          .limit(1)
+          .single()
+        const saved = data?.value as {
+          enabled?: boolean; title?: string; body?: string; ctaLabel?: string; ctaUrl?: string
+        } | undefined
+        if (saved) {
+          setPopupEnabled(Boolean(saved.enabled))
+          setPopupTitle(typeof saved.title === 'string' ? saved.title : '')
+          setPopupBody(typeof saved.body === 'string' ? saved.body : '')
+          setPopupCtaLabel(typeof saved.ctaLabel === 'string' ? saved.ctaLabel : '')
+          setPopupCtaUrl(typeof saved.ctaUrl === 'string' ? saved.ctaUrl : '')
+        }
+      } catch {
+        // Row doesn't exist yet — popup stays off
+      }
+      setPopupLoaded(true)
+    }
+    fetchPopup()
+  }, [supabase])
+
+  async function savePopup() {
+    setPopupSaving(true)
+
+    const popupToSave = {
+      enabled: popupEnabled,
+      title: popupTitle.trim(),
+      body: popupBody.trim(),
+      ctaLabel: popupCtaLabel.trim(),
+      ctaUrl: popupCtaUrl.trim(),
+    }
+
+    // Try update first
+    const { data: updateData, error: updateError } = await supabase
+      .from('site_settings')
+      .update({ value: popupToSave, updated_at: new Date().toISOString() })
+      .eq('key', 'popup')
+      .select()
+
+    if (updateError) {
+      showToast('Failed to save: ' + updateError.message, 'error')
+      setPopupSaving(false)
+      return
+    }
+
+    // If no rows updated (row doesn't exist yet), insert
+    if (!updateData || updateData.length === 0) {
+      const { error: insertError } = await supabase
+        .from('site_settings')
+        .insert({ key: 'popup', value: popupToSave, updated_at: new Date().toISOString() })
+
+      if (insertError) {
+        showToast('Failed to save: ' + insertError.message, 'error')
+        setPopupSaving(false)
+        return
+      }
+    }
+
+    showToast('Popup updated!', 'success')
+    setPopupSaving(false)
   }
 
   function updateHour(day: string, field: 'open' | 'close', value: string) {
@@ -297,6 +374,89 @@ export default function SettingsPage() {
           className={styles.saveBtn}
         >
           {bannerSaving ? 'Saving...' : 'Save Banner'}
+        </button>
+      </div>
+
+      <div className={styles.form} style={{ marginBottom: 24 }}>
+        <h2 className={styles.formTitle}>Promo Popup</h2>
+
+        <div className={styles.bannerToggleRow}>
+          <span className={styles.bannerToggleLabel}>
+            {popupEnabled ? 'Popup is ON' : 'Popup is OFF'}
+          </span>
+          <button
+            type="button"
+            onClick={() => setPopupEnabled(v => !v)}
+            className={`${styles.closedToggle} ${popupEnabled ? styles.closedToggleActive : ''}`}
+            disabled={!popupLoaded}
+          >
+            {popupEnabled ? 'Turn off' : 'Turn on'}
+          </button>
+        </div>
+
+        <div className={styles.field}>
+          <label className={styles.label}>Headline</label>
+          <input
+            type="text"
+            value={popupTitle}
+            onChange={e => setPopupTitle(e.target.value)}
+            className={styles.input}
+            maxLength={60}
+            placeholder="e.g. Get 10% Off"
+            disabled={!popupLoaded}
+          />
+        </div>
+
+        <div className={styles.field}>
+          <label className={styles.label}>Message</label>
+          <textarea
+            value={popupBody}
+            onChange={e => setPopupBody(e.target.value)}
+            className={styles.input}
+            rows={3}
+            maxLength={300}
+            placeholder="e.g. Sign up for our newsletter and use code FRIES10 on your first order."
+            disabled={!popupLoaded}
+          />
+        </div>
+
+        <div className={styles.field}>
+          <label className={styles.label}>Button Label (optional)</label>
+          <input
+            type="text"
+            value={popupCtaLabel}
+            onChange={e => setPopupCtaLabel(e.target.value)}
+            className={styles.input}
+            maxLength={30}
+            placeholder="e.g. Sign Up"
+            disabled={!popupLoaded}
+          />
+        </div>
+
+        <div className={styles.field}>
+          <label className={styles.label}>Button Link (optional)</label>
+          <input
+            type="text"
+            value={popupCtaUrl}
+            onChange={e => setPopupCtaUrl(e.target.value)}
+            className={styles.input}
+            placeholder="e.g. /#signup or https://..."
+            disabled={!popupLoaded}
+          />
+          <p className={styles.bannerHint}>
+            Shows once per visitor on the home page. Editing the text shows it
+            again to everyone. Leave the button fields empty for a message-only
+            popup. Turn off to hide it.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          onClick={savePopup}
+          disabled={popupSaving || !popupLoaded}
+          className={styles.saveBtn}
+        >
+          {popupSaving ? 'Saving...' : 'Save Popup'}
         </button>
       </div>
 
