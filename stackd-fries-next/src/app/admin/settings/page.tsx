@@ -58,6 +58,12 @@ export default function SettingsPage() {
   const [hoursSaving, setHoursSaving] = useState(false)
   const [hoursLoaded, setHoursLoaded] = useState(false)
 
+  // Banner state
+  const [bannerEnabled, setBannerEnabled] = useState(false)
+  const [bannerText, setBannerText] = useState('')
+  const [bannerSaving, setBannerSaving] = useState(false)
+  const [bannerLoaded, setBannerLoaded] = useState(false)
+
   useEffect(() => {
     async function fetchUser() {
       const { data: { user } } = await supabase.auth.getUser()
@@ -90,6 +96,63 @@ export default function SettingsPage() {
     }
     fetchHours()
   }, [supabase])
+
+  useEffect(() => {
+    async function fetchBanner() {
+      try {
+        const { data } = await supabase
+          .from('site_settings')
+          .select('value')
+          .eq('key', 'banner')
+          .limit(1)
+          .single()
+        const saved = data?.value as { enabled?: boolean; text?: string } | undefined
+        if (saved) {
+          setBannerEnabled(Boolean(saved.enabled))
+          setBannerText(typeof saved.text === 'string' ? saved.text : '')
+        }
+      } catch {
+        // Row doesn't exist yet — banner stays off
+      }
+      setBannerLoaded(true)
+    }
+    fetchBanner()
+  }, [supabase])
+
+  async function saveBanner() {
+    setBannerSaving(true)
+
+    const bannerToSave = { enabled: bannerEnabled, text: bannerText.trim() }
+
+    // Try update first
+    const { data: updateData, error: updateError } = await supabase
+      .from('site_settings')
+      .update({ value: bannerToSave, updated_at: new Date().toISOString() })
+      .eq('key', 'banner')
+      .select()
+
+    if (updateError) {
+      showToast('Failed to save: ' + updateError.message, 'error')
+      setBannerSaving(false)
+      return
+    }
+
+    // If no rows updated (row doesn't exist yet), insert
+    if (!updateData || updateData.length === 0) {
+      const { error: insertError } = await supabase
+        .from('site_settings')
+        .insert({ key: 'banner', value: bannerToSave, updated_at: new Date().toISOString() })
+
+      if (insertError) {
+        showToast('Failed to save: ' + insertError.message, 'error')
+        setBannerSaving(false)
+        return
+      }
+    }
+
+    showToast('Banner updated!', 'success')
+    setBannerSaving(false)
+  }
 
   function updateHour(day: string, field: 'open' | 'close', value: string) {
     setHours(prev => ({
@@ -192,6 +255,50 @@ export default function SettingsPage() {
   return (
     <div>
       <h1 className={styles.heading}>Settings</h1>
+
+      <div className={styles.form} style={{ marginBottom: 24 }}>
+        <h2 className={styles.formTitle}>Site Banner</h2>
+
+        <div className={styles.bannerToggleRow}>
+          <span className={styles.bannerToggleLabel}>
+            {bannerEnabled ? 'Banner is ON' : 'Banner is OFF'}
+          </span>
+          <button
+            type="button"
+            onClick={() => setBannerEnabled(v => !v)}
+            className={`${styles.closedToggle} ${bannerEnabled ? styles.closedToggleActive : ''}`}
+            disabled={!bannerLoaded}
+          >
+            {bannerEnabled ? 'Turn off' : 'Turn on'}
+          </button>
+        </div>
+
+        <div className={styles.field}>
+          <label className={styles.label}>Banner Text</label>
+          <textarea
+            value={bannerText}
+            onChange={e => setBannerText(e.target.value)}
+            className={styles.input}
+            rows={2}
+            maxLength={120}
+            placeholder="e.g. 🔥 Find us at the OKC Food Truck Festival — Sat 12pm 🔥"
+            disabled={!bannerLoaded}
+          />
+          <p className={styles.bannerHint}>
+            Shows as a gold bar across the top of the site. Leave empty (or turn off) to hide it.
+            Keep it short — it sits on one line. {bannerText.trim().length}/120
+          </p>
+        </div>
+
+        <button
+          type="button"
+          onClick={saveBanner}
+          disabled={bannerSaving || !bannerLoaded}
+          className={styles.saveBtn}
+        >
+          {bannerSaving ? 'Saving...' : 'Save Banner'}
+        </button>
+      </div>
 
       <div className={styles.form} style={{ marginBottom: 24 }}>
         <h2 className={styles.formTitle}>Business Hours</h2>

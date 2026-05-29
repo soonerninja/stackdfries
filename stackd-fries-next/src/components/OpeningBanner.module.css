@@ -24,24 +24,10 @@
   margin: 0;
 }
 
-.full {
-  display: inline;
-}
-
-.compact {
-  display: none;
-}
-
 @media (max-width: 640px) {
   .text {
     font-size: 0.95rem;
     letter-spacing: 0.08em;
-  }
-  .full {
-    display: none;
-  }
-  .compact {
-    display: inline;
   }
 }
 

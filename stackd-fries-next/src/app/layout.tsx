@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Analytics } from '@vercel/analytics/react';
 import { createClient } from '@/lib/supabase-server';
 import PageTracker from '@/components/PageTracker';
+import { getBanner, bannerActive } from '@/lib/banner';
 import "./globals.css";
 
 export const viewport: Viewport = {
@@ -135,6 +136,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const menuSections = await getMenuSections();
+  const bannerVisible = bannerActive(await getBanner());
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -204,7 +206,7 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body>
+      <body style={bannerVisible ? undefined : ({ '--banner-height': '0px' } as React.CSSProperties)}>
         {children}
         <PageTracker />
         <Analytics />

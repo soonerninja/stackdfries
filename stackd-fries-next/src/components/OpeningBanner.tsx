@@ -1,16 +1,13 @@
 import styles from './OpeningBanner.module.css';
+import { getBanner, bannerActive } from '@/lib/banner';
 
-export default function OpeningBanner() {
+export default async function OpeningBanner() {
+  const banner = await getBanner();
+  if (!bannerActive(banner)) return null;
+
   return (
     <div className={styles.banner}>
-      <p className={styles.text}>
-        <span className={styles.full}>
-          🔥 LAUNCHING AT NORMAN ARTS FESTIVAL — MAY 16 & 17 🔥
-        </span>
-        <span className={styles.compact}>
-          🔥 NORMAN ARTS FEST · MAY 16–17 🔥
-        </span>
-      </p>
+      <p className={styles.text}>{banner.text.trim()}</p>
     </div>
   );
 }

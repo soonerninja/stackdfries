@@ -70,6 +70,35 @@
   border-color: var(--gold);
 }
 
+textarea.input {
+  resize: vertical;
+  line-height: 1.4;
+}
+
+.bannerToggleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.bannerToggleLabel {
+  font-family: var(--font-label);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+}
+
+.bannerHint {
+  margin-top: 8px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
 .saveBtn {
   width: 100%;
   padding: 14px;
