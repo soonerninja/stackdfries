@@ -27,7 +27,9 @@ export default function Footer() {
                 Order Now
               </a>
             </div>
-            <div className={styles.linkGroup}>
+            {/* id="follow" is the landing target for the /follow short link
+                (see next.config.ts redirects) — used on printed QR codes. */}
+            <div className={styles.linkGroup} id="follow">
               <div className={styles.linkGroupTitle}>Connect</div>
               <a href={siteConfig.social.tiktok} target="_blank" rel="noopener noreferrer" className={styles.footerLink}>TikTok</a>
               <a href={siteConfig.social.instagram} target="_blank" rel="noopener noreferrer" className={styles.footerLink}>Instagram</a>

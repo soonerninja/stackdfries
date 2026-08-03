@@ -42,6 +42,22 @@ const nextConfig: NextConfig = {
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
+
+  async redirects() {
+    return [
+      {
+        // Short link for printed material / QR codes ("follow us").
+        // Deliberately 302 and NOT 301/308: a permanent redirect gets cached by
+        // browsers and QR scanners indefinitely, so anyone who scanned an old
+        // flyer would be pinned to the old destination forever. 302 keeps this
+        // repointable — change `destination` and previously-scanned codes follow.
+        // `statusCode` is used instead of `permanent: false`, which would emit 307.
+        source: "/follow",
+        destination: "/#follow",
+        statusCode: 302,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
