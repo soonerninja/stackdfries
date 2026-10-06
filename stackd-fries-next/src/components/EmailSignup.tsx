@@ -2,6 +2,7 @@
 
 import { useState, FormEvent } from 'react';
 import styles from './EmailSignup.module.css';
+import { trackMetaEvent } from './MetaPixel';
 
 type Status = 'idle' | 'loading' | 'success' | 'duplicate' | 'error';
 
@@ -38,6 +39,7 @@ export default function EmailSignup() {
 
       if (res.ok) {
         setStatus('success');
+        trackMetaEvent('Lead', { content_name: 'Email Signup' });
         setEmail('');
       } else if (data.code === 'duplicate') {
         setStatus('duplicate');

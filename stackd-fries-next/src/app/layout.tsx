@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Analytics } from '@vercel/analytics/react';
 import { createClient } from '@/lib/supabase-server';
 import PageTracker from '@/components/PageTracker';
+import MetaPixel from '@/components/MetaPixel';
 import { getBanner, bannerActive } from '@/lib/banner';
 import "./globals.css";
 
@@ -209,6 +210,7 @@ export default async function RootLayout({
       <body style={bannerVisible ? undefined : ({ '--banner-height': '0px' } as React.CSSProperties)}>
         {children}
         <PageTracker />
+        <MetaPixel />
         <Analytics />
       </body>
     </html>
